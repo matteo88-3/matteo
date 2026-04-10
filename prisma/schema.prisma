@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Attraction {
+  at_id         Int    @id @default(autoincrement())
+  attract_name  String
+  attract_img   String
+  main_descript String
+  status        String
+}
+
+model Chapter {
+  chap_id       Int    @id @default(autoincrement())
+  chap_no       String
+  course_no     String
+  chap_name     String
+  chap_duration String
+  description   String
+  status        String
+}
+
+model Community {
+  com_id          Int    @id @default(autoincrement())
+  com_no          String
+  com_name        String
+  com_simple      String
+  com_description String
+  com_img         String
+  status          String
+}
+
+model Course {
+  course_id          Int    @id @default(autoincrement())
+  course_no          String
+  course_name        String
+  course_price       String
+  course_duration    String
+  course_description String
+  course_img         String
+  status             String
+}
+
+model Enroll {
+  enroll_id    Int          @id @default(autoincrement())
+  enroll_no    String
+  course_no    String
+  user_no      Int
+  step         String
+  status       String
+  UsersAccount UsersAccount @relation(fields: [user_no], references: [user_no], onDelete: Cascade)
+}
+
+model Event {
+  eve_id          Int    @id @default(autoincrement())
+  eve_no          String
+  com_no          String
+  eve_name        String
+  eve_simple      String
+  eve_location    String
+  eve_price       String
+  eve_description String
+  eve_start       String
+  eve_end         String
+  eve_img         String
+  status          String
+}
+
+model Message {
+  mes_id      Int    @id @default(autoincrement())
+  name        String
+  email       String
+  phonenumber String
+  subject     String
+  message     String
+  dates       String
+  status      String
+}
+
+model Newsletter {
+  new_id Int    @id @default(autoincrement())
+  email  String
+  dates  String
+  status String
+}
+
+model Staff {
+  staff_id Int    @id @default(autoincrement())
+  staff_no String
+  name     String
+  position String
+  images   String
+  status   String
+}
+
+model SupImage {
+  sup_id Int    @id @default(autoincrement())
+  eve_no String
+  images String
+  status String
+}
+
+model Testimonials {
+  tes_id      Int    @id @default(autoincrement())
+  tes_no      String
+  tes_name    String
+  tes_message String
+  tes_image   String
+  status      String
+}
+
+model UsersAccount {
+  user_no     Int      @id @default(autoincrement())
+  userIdno    String
+  first_name  String
+  last_name   String
+  email       String
+  phonenumber String
+  passwords   String
+  dates       String
+  access      Int
+  status      String
+  Enroll      Enroll[]
+}
