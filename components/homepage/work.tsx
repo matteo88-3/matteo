@@ -5,6 +5,8 @@ import {
   X, Send, Users, Mic2, BookOpen, Globe, ChevronDown, CheckCircle2,
 } from "lucide-react";
 
+import { toast } from "sonner";
+
 type CollabType = "" | "speaking" | "partnership" | "investment" | "media" | "mentorship" | "other";
 
 interface FormState {
@@ -12,6 +14,7 @@ interface FormState {
   email: string;
   organization: string;
   collabType: CollabType;
+  type:string;
   message: string;
 }
 
@@ -36,6 +39,7 @@ const EMPTY_FORM: FormState = {
   email: "",
   organization: "",
   collabType: "",
+  type:'collaboration',
   message: "",
 };
 
@@ -53,15 +57,10 @@ export default function CollaborateSection() {
   }, [open]);
 
   // Close on Escape
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") handleClose(); };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
 
   const handleClose = () => {
     setOpen(false);
-    setTimeout(() => { setSubmitted(false); setForm(EMPTY_FORM); setErrors({}); }, 300);
+   
   };
 
   const validate = (): boolean => {
@@ -75,15 +74,37 @@ export default function CollaborateSection() {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
+
+    try {
+      const res = await fetch("/api/create/create.request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.message || "Something went wrong");
+      }
+
+      // ✅ SUCCESS
       setSubmitted(true);
-    }, 1500);
+      toast.success("Request sent successfully!");
+
+    } catch (err: any) {
+      // ❌ ERROR
+      toast.error(err.message || "Failed to send request");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const set = (field: keyof FormState) => (
@@ -135,7 +156,7 @@ export default function CollaborateSection() {
       {open && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-          onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}
+       
         >
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
 
@@ -173,6 +194,9 @@ export default function CollaborateSection() {
             ) : (
               /* Form */
               <form onSubmit={handleSubmit} noValidate className="p-6 space-y-5">
+                <input type="hidden"    value={`collaboration`}
+                    onChange={set("type")}
+                    />
 
                 {/* Name */}
                 <div>

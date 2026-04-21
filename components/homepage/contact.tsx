@@ -1,49 +1,90 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Mail, Linkedin, Send, User, Building, AtSign, FileText, HelpCircle } from 'lucide-react';
+import { Mail, Linkedin, Send, User, Building, AtSign, FileText, HelpCircle, CheckCircle2 } from 'lucide-react';
+import { toast } from 'sonner';
+
+interface FormState {
+  name: string;
+  email: string;
+  organization: string;
+  collabType: string;
+  type:string;
+  message: string;
+}
+
+const EMPTY_FORM: FormState = {
+  name: "",
+  email: "",
+  organization: "",
+  collabType: "",
+  type: "contact",
+  message: "",
+};
+
 
 const ContactPage: React.FC = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    company: '',
-    email: '',
-    inquiryType: 'Speaking Engagement',
-    message: ''
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [open, setOpen] = useState(false);
+  const [form, setForm] = useState<FormState>(EMPTY_FORM);
+  const [errors, setErrors] = useState<Partial<FormState>>({});
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+
+   const validate = (): boolean => {
+    const e: Partial<FormState> = {};
+    if (!form.name.trim()) e.name = "Your name is required.";
+    if (!form.email.trim()) e.email = "Email address is required.";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Please enter a valid email.";
+    if (!form.collabType) e.collabType = "Please add your subject ";
+    if (!form.message.trim()) e.message = "Please tell us a bit about your proposal.";
+    setErrors(e);
+    return Object.keys(e).length === 0;
   };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus(null);
+    if (!validate()) return;
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Form submitted:', formData);
-      setSubmitStatus({
-        type: 'success',
-        message: 'Thank you! We\'ll get back to you within 24 hours.'
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/create/create.request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
       });
-      setIsSubmitting(false);
-      setFormData({
-        name: '',
-        company: '',
-        email: '',
-        inquiryType: 'Speaking Engagement',
-        message: ''
-      });
-      
-      // Clear success message after 5 seconds
-      setTimeout(() => setSubmitStatus(null), 5000);
-    }, 1500);
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.message || "Something went wrong");
+      }
+
+      // ✅ SUCCESS
+      setSubmitted(true);
+      toast.success("Request sent successfully!");
+
+    } catch (err: any) {
+      // ❌ ERROR
+      toast.error(err.message || "Failed to send request");
+    } finally {
+      setLoading(false);
+    }
   };
+
+    const handleanother =() => {
+    setSubmitted(false);
+  }
+
+  const set = (field: keyof FormState) => (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    ) => {
+      setForm(prev => ({ ...prev, [field]: e.target.value }));
+      setErrors(prev => ({ ...prev, [field]: undefined }));
+    };
 
   return (
     <div id="contact" className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-24">
@@ -114,11 +155,30 @@ const ContactPage: React.FC = () => {
           <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
             <div className="p-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Send a Message</h2>
-              
+            {submitted ? (
+              <div className="p-8 text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle2 className="w-8 h-8 text-green-600" />
+                </div>
+                <h4 className="text-xl font-bold text-gray-900 mb-2">Request Sent!</h4>
+                <p className="text-gray-500 text-sm leading-relaxed max-w-xs mx-auto mb-6">
+                  Thanks for reaching out. Matteo's team will review your message and get back to you shortly.
+                </p>
+                <button
+                  onClick={handleanother}
+                  className="px-6 py-2.5 rounded-full bg-primary text-white font-semibold text-sm hover:opacity-90 transition"
+                >
+                  Add another
+                </button>
+              </div>
+            ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Name & Company - 2 columns */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
+                      <input type="hidden"    value={`contact`}
+                    onChange={set("type")}
+                    />
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Full Name *
                     </label>
@@ -127,8 +187,8 @@ const ContactPage: React.FC = () => {
                       <input
                         type="text"
                         name="name"
-                        value={formData.name}
-                        onChange={handleChange}
+                        value={form.name}
+                       onChange={set("name")}
                         required
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         placeholder="John Doe"
@@ -145,8 +205,8 @@ const ContactPage: React.FC = () => {
                       <input
                         type="text"
                         name="company"
-                        value={formData.company}
-                        onChange={handleChange}
+                       value={form.organization}
+                    onChange={set("organization")}
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         placeholder="Acme Corp"
                       />
@@ -164,8 +224,8 @@ const ContactPage: React.FC = () => {
                     <input
                       type="email"
                       name="email"
-                      value={formData.email}
-                      onChange={handleChange}
+                      value={form.email}
+                    onChange={set("email")}
                       required
                       className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                       placeholder="john@example.com"
@@ -178,21 +238,19 @@ const ContactPage: React.FC = () => {
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Inquiry Type *
                   </label>
-                  <div className="relative">
-                    <HelpCircle className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <select
+                   <div className="relative">
+                      <HelpCircle className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <input
+                      type="inquiryType"
                       name="inquiryType"
-                      value={formData.inquiryType}
-                      onChange={handleChange}
+                      value={form.collabType}
+                      onChange={set("collabType")}
                       required
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all appearance-none bg-white"
-                    >
-                      <option>Speaking Engagement</option>
-                      <option>Advisory Services</option>
-                      <option>Event Partnership</option>
-                      <option>Other</option>
-                    </select>
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                      placeholder="subject of your inquiry"
+                    />
                   </div>
+               
                 </div>
 
                 {/* Message */}
@@ -204,8 +262,8 @@ const ContactPage: React.FC = () => {
                     <FileText className="absolute left-3 top-4 w-4 h-4 text-gray-400" />
                     <textarea
                       name="message"
-                      value={formData.message}
-                      onChange={handleChange}
+                     value={form.message}
+                      onChange={set("message")}
                       required
                       rows={4}
                       className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
@@ -217,10 +275,10 @@ const ContactPage: React.FC = () => {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={loading}
                   className="w-full bg-gradient-to-r from-primary to-indigo-600 text-white font-bold py-4 rounded-xl hover:shadow-lg transform hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
                 >
-                  {isSubmitting ? (
+                  {loading ? (
                     <>
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                       Sending...
@@ -233,17 +291,12 @@ const ContactPage: React.FC = () => {
                   )}
                 </button>
 
-                {/* Status Message */}
-                {submitStatus && (
-                  <div className={`mt-4 p-4 rounded-xl ${
-                    submitStatus.type === 'success' 
-                      ? 'bg-green-50 border border-green-200 text-green-800' 
-                      : 'bg-red-50 border border-red-200 text-red-800'
-                  }`}>
-                    <p className="text-sm font-medium">{submitStatus.message}</p>
-                  </div>
-                )}
+              
+                
               </form>
+             
+  
+)}
             </div>
           </div>
         </div>

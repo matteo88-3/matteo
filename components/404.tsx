@@ -106,8 +106,8 @@ export default function NotFound() {
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Email Us</h3>
               <p className="text-gray-600 text-sm mb-3">24/7 Support</p>
-              <a href="mailto:support@elohimgroupltd.com" className="text-[#0b4a6f] font-medium hover:underline">
-                support@elohimgroupltd.com
+              <a href="mailto:support@matteorizz.com" className="text-[#0b4a6f] font-medium hover:underline">
+                support@matteorizz.com
               </a>
             </div>
 

@@ -17,210 +17,76 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
-
-interface Event {
-  eventId: string;
-  eventTitle: string;
-  coverimage: string;
-  eventDate: string;
-  eventTime: string;
-  hourstart: string;
-  hourend: string;
-  eventLocation?: string;
-  description?: string;
-  attendees?: string;
-}
-
-const DUMMY_EVENTS: Event[] = [
-  {
-    eventId: "1",
-    eventTitle: "Tech Conference 2024",
-    coverimage: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop",
-    eventDate: "2026-12-15",
-    eventTime: "10:00 AM - 6:00 PM",
-    hourstart: "10:00",
-    hourend: "18:00",
-    eventLocation: "San Francisco, CA",
-    description: "The premier tech conference of the year bringing together innovators, engineers, and visionaries to shape the future of technology. Sessions on AI, cloud, and developer tools.",
-    attendees: "2,400 registered",
-  },
-  {
-    eventId: "2",
-    eventTitle: "AI Summit - Future of Intelligence",
-    coverimage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop",
-    eventDate: "2024-12-20",
-    eventTime: "9:00 AM - 5:00 PM",
-    hourstart: "09:00",
-    hourend: "17:00",
-    eventLocation: "New York, NY",
-    description: "Dive deep into the latest AI breakthroughs with leading researchers and industry practitioners. Workshops, panels, and networking across two packed days.",
-    attendees: "1,800 attended",
-  },
-  {
-    eventId: "3",
-    eventTitle: "Developer Workshop: React & Next.js",
-    coverimage: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=600&fit=crop",
-    eventDate: "2024-11-10",
-    eventTime: "1:00 PM - 4:00 PM",
-    hourstart: "13:00",
-    hourend: "16:00",
-    eventLocation: "Online (Zoom)",
-    description: "Hands-on workshop covering the latest React patterns and Next.js App Router. Suitable for intermediate developers looking to level up their frontend skills.",
-    attendees: "640 attended",
-  },
-  {
-    eventId: "4",
-    eventTitle: "Blockchain & Web3 Conference",
-    coverimage: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&h=600&fit=crop",
-    eventDate: "2024-11-25",
-    eventTime: "10:00 AM - 7:00 PM",
-    hourstart: "10:00",
-    hourend: "19:00",
-    eventLocation: "Miami, FL",
-    description: "Explore decentralized technologies, NFT ecosystems, DeFi protocols, and the infrastructure powering the next iteration of the web.",
-    attendees: "3,100 attended",
-  },
-  {
-    eventId: "5",
-    eventTitle: "UX/UI Design Hackathon",
-    coverimage: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&h=600&fit=crop",
-    eventDate: "2024-10-05",
-    eventTime: "9:00 AM - 9:00 PM",
-    hourstart: "09:00",
-    hourend: "21:00",
-    eventLocation: "Austin, TX",
-    description: "48 hours to design, prototype, and pitch a product concept. Teams compete for mentorship prizes and visibility with top design studios.",
-    attendees: "520 attended",
-  },
-  {
-    eventId: "6",
-    eventTitle: "Cybersecurity Summit 2024",
-    coverimage: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=600&fit=crop",
-    eventDate: "2025-01-18",
-    eventTime: "8:00 AM - 6:00 PM",
-    hourstart: "08:00",
-    hourend: "18:00",
-    eventLocation: "Chicago, IL",
-    description: "Security professionals share threat intelligence, tooling, and defensive strategies in an era of escalating cyber risks.",
-    attendees: "980 attended",
-  },
-  {
-    eventId: "7",
-    eventTitle: "Data Science Symposium",
-    coverimage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
-    eventDate: "2025-02-10",
-    eventTime: "10:00 AM - 5:00 PM",
-    hourstart: "10:00",
-    hourend: "17:00",
-    eventLocation: "Boston, MA",
-    description: "Academic and industry researchers present cutting-edge findings in machine learning, statistical modeling, and large-scale data engineering.",
-    attendees: "1,150 attended",
-  },
-  {
-    eventId: "8",
-    eventTitle: "Startup Pitch Night",
-    coverimage: "https://images.unsplash.com/photo-1556761175-4b46a572b786?w=800&h=600&fit=crop",
-    eventDate: "2026-04-10",
-    eventTime: "8:00 AM - 10:00 PM",
-    hourstart: "08:00",
-    hourend: "22:00",
-    eventLocation: "Seattle, WA",
-    description: "Early-stage founders pitch to a panel of investors and experienced operators. A great evening to network, get inspired, and maybe find your next co-founder.",
-    attendees: "310 registered",
-  },
-  {
-    eventId: "9",
-    eventTitle: "Cloud Computing Workshop",
-    coverimage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop",
-    eventDate: "2024-12-05",
-    eventTime: "11:00 AM - 3:00 PM",
-    hourstart: "11:00",
-    hourend: "15:00",
-    eventLocation: "Online (Teams)",
-    description: "Practical deep-dive into AWS, Azure, and GCP architectures. Learn cost-optimization strategies, multi-cloud patterns, and infrastructure-as-code best practices.",
-    attendees: "760 attended",
-  },
-];
+import { useEvents, Event } from '@/lib/api/fetch.events';
 
 type FilterType = 'all' | 'upcoming' | 'happening' | 'ended';
 type EventWithStatus = Event & { status: 'upcoming' | 'happening' | 'ended' };
 
 const EVENTS_PER_PAGE = 6;
+const DESCRIPTION_CHAR_LIMIT = 220;
+
+/* Strip HTML tags for plain-text length check */
+const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '');
 
 const NewUpcomingEvent: React.FC = () => {
-  const [loading, setLoading] = useState(true);
-  const [events, setEvents] = useState<Event[]>([]);
-  const [awardsError, setAwardsError] = useState('');
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedEvent, setSelectedEvent] = useState<EventWithStatus | null>(null);
+  const [showFullDesc, setShowFullDesc] = useState(false);
 
+  const { data, isLoading, error, isError } = useEvents();
+  const events: Event[] = data?.eventsdata || [];
+
+  const sortedEvents = [...events].sort(
+    (a, b) => new Date(b.eventDate).getTime() - new Date(a.eventDate).getTime()
+  );
+
+  /* Lock scroll when modal is open */
   useEffect(() => {
-    const timer = setTimeout(() => {
-      try {
-        // Sort by date ascending
-       const sorted = [...DUMMY_EVENTS].sort(
-  (a, b) => new Date(b.eventDate).getTime() - new Date(a.eventDate).getTime()
-);
-        setEvents(sorted);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error loading events:', error);
-        setAwardsError("An error occurred while loading events.");
-        setLoading(false);
-      }
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Close modal on Escape key
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setSelectedEvent(null);
-    };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, []);
-
-  // Prevent body scroll when modal is open
-  useEffect(() => {
-    if (selectedEvent) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = selectedEvent ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [selectedEvent]);
 
+  /* Close full-desc inner modal when main modal closes */
+  useEffect(() => {
+    if (!selectedEvent) setShowFullDesc(false);
+  }, [selectedEvent]);
+
+  /* Block Escape key from closing modals */
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') e.stopImmediatePropagation();
+    };
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
+  }, []);
+
   const now = new Date();
 
-  const categorizedEvents: EventWithStatus[] = events.map(event => {
-    const eventStartDate = new Date(event.eventDate);
+  const categorizedEvents: EventWithStatus[] = sortedEvents.map((event) => {
+    const base = new Date(event.eventDate);
 
-    const startDateTime = new Date(eventStartDate);
-    const [startHours, startMinutes] = event.hourstart.split(":").map(Number);
-    startDateTime.setHours(startHours, startMinutes, 0, 0);
+    const startDT = new Date(base);
+    const [sh, sm] = (event.hourstart || '00:00').split(':').map(Number);
+    startDT.setHours(sh, sm, 0, 0);
 
-    const endDateTime = new Date(eventStartDate);
-    const [endHours, endMinutes] = event.hourend.split(":").map(Number);
-    endDateTime.setHours(endHours, endMinutes, 0, 0);
+    const endDT = new Date(base);
+    const [eh, em] = (event.hourend || '00:00').split(':').map(Number);
+    endDT.setHours(eh, em, 0, 0);
 
-    let status: 'upcoming' | 'happening' | 'ended' = "upcoming";
-    if (isAfter(now, startDateTime) && isBefore(now, endDateTime)) {
-      status = "happening";
-    } else if (isAfter(now, endDateTime)) {
-      status = "ended";
-    }
+    let status: 'upcoming' | 'happening' | 'ended' = 'upcoming';
+    if (isAfter(now, startDT) && isBefore(now, endDT)) status = 'happening';
+    else if (isAfter(now, endDT)) status = 'ended';
 
     return { ...event, status };
   });
 
-  const filteredEvents = categorizedEvents.filter(event =>
-    activeFilter === 'all' || event.status === activeFilter
+  const filteredEvents = categorizedEvents.filter(
+    (e) => activeFilter === 'all' || e.status === activeFilter
   );
 
   const totalPages = Math.ceil(filteredEvents.length / EVENTS_PER_PAGE);
+
   const paginatedEvents = filteredEvents.slice(
     (currentPage - 1) * EVENTS_PER_PAGE,
     currentPage * EVENTS_PER_PAGE
@@ -234,43 +100,67 @@ const NewUpcomingEvent: React.FC = () => {
   const getStatusConfig = (status: string) => {
     switch (status) {
       case 'happening':
-        return {
-          icon: PlayCircle,
-          text: 'Live Now',
-          badgeClass: 'bg-gradient-to-r from-green-500 to-emerald-600',
-          ctaLabel: 'Join Now',
-        };
+        return { icon: PlayCircle, text: 'Live Now', badgeClass: 'bg-gradient-to-r from-green-500 to-emerald-600' };
       case 'ended':
-        return {
-          icon: CheckCircle2,
-          text: 'Event Ended',
-          badgeClass: 'bg-secondary',
-          ctaLabel: 'View Details',
-        };
+        return { icon: CheckCircle2, text: 'Event Ended', badgeClass: 'bg-secondary' };
       default:
-        return {
-          icon: Clock4,
-          text: 'Upcoming',
-          badgeClass: 'bg-primary',
-          ctaLabel: 'Book Your Seat',
-        };
+        return { icon: Clock4, text: 'Upcoming', badgeClass: 'bg-primary' };
     }
   };
 
-  if (loading) {
+  /* ── Reusable Pagination Bar ── */
+  const PaginationBar = () =>
+    totalPages > 1 ? (
+      <div className="flex flex-col items-center gap-3 mb-8">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+            className="w-10 h-10 rounded-xl border border-gray-200 bg-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <button
+              key={page}
+              onClick={() => setCurrentPage(page)}
+              className={`w-10 h-10 rounded-xl font-semibold text-sm transition-all duration-200 ${
+                currentPage === page
+                  ? 'bg-primary text-white shadow-lg'
+                  : 'border border-gray-200 bg-white text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+            className="w-10 h-10 rounded-xl border border-gray-200 bg-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+
+        {filteredEvents.length > 0 && (
+          <p className="text-sm text-gray-500">
+            Showing {(currentPage - 1) * EVENTS_PER_PAGE + 1}–
+            {Math.min(currentPage * EVENTS_PER_PAGE, filteredEvents.length)} of {filteredEvents.length} events
+          </p>
+        )}
+      </div>
+    ) : null;
+
+  /* ── Loading skeleton ── */
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <div className="h-12 bg-gradient-to-r from-gray-300 to-gray-200 rounded-2xl w-64 mx-auto mb-4 animate-pulse" />
             <div className="h-6 bg-gradient-to-r from-gray-300 to-gray-200 rounded-lg w-96 mx-auto animate-pulse" />
-          </div>
-          <div className="flex justify-center mb-12">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-2 shadow-lg border border-white/20 flex gap-2">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="w-32 h-12 bg-gray-300 rounded-xl animate-pulse" />
-              ))}
-            </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[...Array(6)].map((_, i) => (
@@ -292,9 +182,10 @@ const NewUpcomingEvent: React.FC = () => {
     );
   }
 
+  /* ── Main render ── */
   return (
     <>
-      <div id='events' className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-12">
+      <div id="events" className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Header */}
@@ -308,14 +199,14 @@ const NewUpcomingEvent: React.FC = () => {
           </div>
 
           {/* Filter Tabs */}
-          <div className="flex justify-center mb-12">
+          <div className="flex justify-center mb-10">
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-2 shadow-lg border border-white/20 flex flex-wrap gap-1 justify-center">
               {([
                 { key: 'all', label: 'All Events', count: categorizedEvents.length },
-                { key: 'upcoming', label: 'Upcoming', count: categorizedEvents.filter(e => e.status === 'upcoming').length },
-                { key: 'happening', label: 'Live Now', count: categorizedEvents.filter(e => e.status === 'happening').length },
-                { key: 'ended', label: 'Past Events', count: categorizedEvents.filter(e => e.status === 'ended').length },
-              ] as { key: FilterType; label: string; count: number }[]).map(f => (
+                { key: 'upcoming', label: 'Upcoming', count: categorizedEvents.filter((e) => e.status === 'upcoming').length },
+                { key: 'happening', label: 'Live Now', count: categorizedEvents.filter((e) => e.status === 'happening').length },
+                { key: 'ended', label: 'Past Events', count: categorizedEvents.filter((e) => e.status === 'ended').length },
+              ] as { key: FilterType; label: string; count: number }[]).map((f) => (
                 <button
                   key={f.key}
                   onClick={() => handleFilterChange(f.key)}
@@ -331,6 +222,9 @@ const NewUpcomingEvent: React.FC = () => {
             </div>
           </div>
 
+          {/* ── Pagination TOP ── */}
+          <PaginationBar />
+
           {/* Events Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {paginatedEvents.length === 0 ? (
@@ -341,7 +235,7 @@ const NewUpcomingEvent: React.FC = () => {
                 <h3 className="text-2xl font-bold text-gray-700 mb-2">No Events Found</h3>
                 <p className="text-gray-500 max-w-md mx-auto">
                   {activeFilter === 'all'
-                    ? "There are no events scheduled at the moment."
+                    ? 'There are no events scheduled at the moment.'
                     : `No ${activeFilter} events found.`}
                 </p>
               </div>
@@ -358,39 +252,28 @@ const NewUpcomingEvent: React.FC = () => {
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
                     <Link href={`/events/${event.eventId}`}>
-                      {/* Image */}
                       <div className="relative h-60 overflow-hidden">
                         <img
-                          src={event.coverimage || "/aboutus.jpg"}
+                          src={event.coverimage || '/aboutus.jpg'}
                           alt={event.eventTitle}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-300" />
-
-                        {/* Status Badge */}
                         <div className={`absolute top-4 right-4 px-4 py-2 rounded-full text-white text-sm font-semibold flex items-center gap-2 shadow-lg ${statusConfig.badgeClass}`}>
                           <StatusIcon className="w-4 h-4" />
                           {statusConfig.text}
                         </div>
-
-                        {/* Date Badge */}
                         <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl shadow-lg text-center">
-                          <div className="text-sm font-bold text-gray-900">
-                            {format(new Date(event.eventDate), "MMM")}
-                          </div>
-                          <div className="text-lg font-bold text-blue-600">
-                            {format(new Date(event.eventDate), "dd")}
-                          </div>
+                          <div className="text-sm font-bold text-gray-900">{format(new Date(event.eventDate), 'MMM')}</div>
+                          <div className="text-lg font-bold text-blue-600">{format(new Date(event.eventDate), 'dd')}</div>
                         </div>
                       </div>
                     </Link>
 
-                    {/* Content */}
                     <div className="p-6">
                       <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-primary transition-colors">
                         {event.eventTitle}
                       </h3>
-
                       <div className="space-y-3 mb-4">
                         <div className="flex items-center text-gray-600">
                           <Calendar className="w-4 h-4 mr-3 text-blue-500" />
@@ -407,20 +290,16 @@ const NewUpcomingEvent: React.FC = () => {
                           </div>
                         )}
                       </div>
-
-                      {/* Buttons */}
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => setSelectedEvent(event)}
-                          className="flex-1 inline-flex items-center justify-center py-3 px-4 rounded-xl font-semibold transition-all duration-300 bg-primary text-white hover:opacity-90 shadow-lg text-sm"
-                        >
-                          {event.status === 'ended' ? (
-                            <>View Details <ArrowRight className="w-4 h-4 ml-2" /></>
-                          ) : (
-                            <><Ticket className="w-4 h-4 mr-2" /> Book Your Seat</>
-                          )}
-                        </button>
-                      </div>
+                      <button
+                        onClick={() => setSelectedEvent(event)}
+                        className="w-full inline-flex items-center justify-center py-3 px-4 rounded-xl font-semibold transition-all duration-300 bg-primary text-white hover:opacity-90 shadow-lg text-sm"
+                      >
+                        {event.status === 'ended' ? (
+                          <>View Details <ArrowRight className="w-4 h-4 ml-2" /></>
+                        ) : (
+                          <><Ticket className="w-4 h-4 mr-2" /> Book Your Seat</>
+                        )}
+                      </button>
                     </div>
                   </div>
                 );
@@ -428,50 +307,8 @@ const NewUpcomingEvent: React.FC = () => {
             )}
           </div>
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center items-center gap-2 mt-12">
-              <button
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className="w-10 h-10 rounded-xl border border-gray-200 bg-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                <button
-                  key={page}
-                  onClick={() => setCurrentPage(page)}
-                  className={`w-10 h-10 rounded-xl font-semibold text-sm transition-all duration-200 ${
-                    currentPage === page
-                      ? 'bg-primary text-white shadow-lg'
-                      : 'border border-gray-200 bg-white text-gray-600 hover:bg-gray-50'
-                  }`}
-                >
-                  {page}
-                </button>
-              ))}
-
-              <button
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-                className="w-10 h-10 rounded-xl border border-gray-200 bg-white flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          )}
-
-          {/* Pagination info */}
-          {filteredEvents.length > 0 && (
-            <p className="text-center text-sm text-gray-500 mt-4">
-              Showing {(currentPage - 1) * EVENTS_PER_PAGE + 1}–{Math.min(currentPage * EVENTS_PER_PAGE, filteredEvents.length)} of {filteredEvents.length} events
-            </p>
-          )}
-
           {/* Error */}
-          {awardsError && (
+          {error && (
             <div className="mt-8 text-center">
               <div className="bg-red-50 border border-red-200 rounded-2xl p-6 inline-flex items-center shadow-lg">
                 <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
@@ -479,7 +316,7 @@ const NewUpcomingEvent: React.FC = () => {
                 </div>
                 <div className="text-left">
                   <h4 className="font-semibold text-red-800">Unable to Load Events</h4>
-                  <p className="text-red-600 text-sm mt-1">{awardsError}</p>
+                  <p className="text-red-600 text-sm mt-1">{isError}</p>
                 </div>
               </div>
             </div>
@@ -487,75 +324,106 @@ const NewUpcomingEvent: React.FC = () => {
         </div>
       </div>
 
-      {/* Modal Overlay */}
-      {selectedEvent && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-          onClick={(e) => { if (e.target === e.currentTarget) setSelectedEvent(null); }}
-        >
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            {/* Modal Image */}
-            <div className="relative h-56 overflow-hidden">
-              <img
-                src={selectedEvent.coverimage}
-                alt={selectedEvent.eventTitle}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+      {/* ══════════════════════════════════════════
+          MAIN EVENT MODAL
+          Closes ONLY via the Close / X button.
+          Backdrop click is intentionally disabled.
+      ══════════════════════════════════════════ */}
+      {selectedEvent && (() => {
+        const cfg = getStatusConfig(selectedEvent.status);
+        const Icon = cfg.icon;
+        const plainDesc = selectedEvent.description ? stripHtml(selectedEvent.description) : '';
+        const isLong = plainDesc.length > DESCRIPTION_CHAR_LIMIT;
 
-              {/* Close button */}
-              <button
-                onClick={() => setSelectedEvent(null)}
-                className="absolute top-4 right-4 w-9 h-9 bg-black/40 hover:bg-black/60 rounded-full flex items-center justify-center text-white transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+        /* Build a safe short preview by cutting at the nearest space */
+        const shortPreview = isLong
+          ? (() => {
+              const cutAt = selectedEvent.description!.indexOf(' ', DESCRIPTION_CHAR_LIMIT);
+              return (cutAt === -1 ? selectedEvent.description!.substring(0, DESCRIPTION_CHAR_LIMIT) : selectedEvent.description!.substring(0, cutAt)) + '…';
+            })()
+          : selectedEvent.description;
 
-              {/* Status badge */}
-              {(() => {
-                const cfg = getStatusConfig(selectedEvent.status);
-                const Icon = cfg.icon;
-                return (
-                  <div className={`absolute bottom-4 left-4 px-4 py-2 rounded-full text-white text-sm font-semibold flex items-center gap-2 ${cfg.badgeClass}`}>
-                    <Icon className="w-4 h-4" />
-                    {cfg.text}
-                  </div>
-                );
-              })()}
-            </div>
+        return (
+          /* No onClick handler on backdrop — intentional */
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
 
-            {/* Modal Body */}
-            <div className="p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{selectedEvent.eventTitle}</h2>
+            {/* Modal card: flex column, capped height, image fixed + body scrolls + footer fixed */}
+            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg flex flex-col max-h-[90vh] overflow-hidden">
 
-              {selectedEvent.description && (
-                <p className="text-gray-600 text-sm leading-relaxed mb-5">{selectedEvent.description}</p>
-              )}
+              {/* ── Fixed image header ── */}
+              <div className="relative h-52 shrink-0 overflow-hidden rounded-t-3xl">
+                <img
+                  src={selectedEvent.coverimage || '/aboutus.jpg'}
+                  alt={selectedEvent.eventTitle}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center text-gray-700">
-                  <Calendar className="w-4 h-4 mr-3 text-blue-500 shrink-0" />
-                  <span className="text-sm">{format(new Date(selectedEvent.eventDate), "do MMMM yyyy")}</span>
+                {/* X close button */}
+                <button
+                  onClick={() => setSelectedEvent(null)}
+                  className="absolute top-4 right-4 w-9 h-9 bg-black/40 hover:bg-black/70 rounded-full flex items-center justify-center text-white transition-colors"
+                  aria-label="Close modal"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+
+                {/* Status badge */}
+                <div className={`absolute bottom-4 left-4 px-4 py-2 rounded-full text-white text-sm font-semibold flex items-center gap-2 ${cfg.badgeClass}`}>
+                  <Icon className="w-4 h-4" />
+                  {cfg.text}
                 </div>
-                <div className="flex items-center text-gray-700">
-                  <Clock className="w-4 h-4 mr-3 text-orange-500 shrink-0" />
-                  <span className="text-sm">{selectedEvent.hourstart} – {selectedEvent.hourend}</span>
-                </div>
-                {selectedEvent.eventLocation && (
-                  <div className="flex items-center text-gray-700">
-                    <MapPin className="w-4 h-4 mr-3 text-green-500 shrink-0" />
-                    <span className="text-sm">{selectedEvent.eventLocation}</span>
-                  </div>
-                )}
-                {selectedEvent.attendees && (
-                  <div className="flex items-center text-gray-700">
-                    <Users className="w-4 h-4 mr-3 text-purple-500 shrink-0" />
-                    <span className="text-sm">{selectedEvent.attendees}</span>
-                  </div>
-                )}
               </div>
 
-              <div className="flex gap-3">
+              {/* ── Scrollable middle body ── */}
+              <div className="overflow-y-auto flex-1 px-6 pt-5 pb-2">
+                <h2 className="text-2xl font-bold text-gray-900 mb-3">{selectedEvent.eventTitle}</h2>
+
+                {/* Description preview + View More */}
+                {selectedEvent.description && (
+                  <div className="mb-5">
+                    <div
+                      className="text-gray-600 text-sm leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: shortPreview! }}
+                    />
+                    {isLong && (
+                      <button
+                        onClick={() => setShowFullDesc(true)}
+                        className="mt-2 text-primary text-sm font-semibold hover:underline inline-flex items-center gap-1"
+                      >
+                        View More <ChevronRight className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {/* Event meta details */}
+                <div className="space-y-3 mb-4">
+                  <div className="flex items-center text-gray-700">
+                    <Calendar className="w-4 h-4 mr-3 text-blue-500 shrink-0" />
+                    <span className="text-sm">{format(new Date(selectedEvent.eventDate), "do MMMM yyyy")}</span>
+                  </div>
+                  <div className="flex items-center text-gray-700">
+                    <Clock className="w-4 h-4 mr-3 text-orange-500 shrink-0" />
+                    <span className="text-sm">{selectedEvent.hourstart} – {selectedEvent.hourend}</span>
+                  </div>
+                  {selectedEvent.eventLocation && (
+                    <div className="flex items-center text-gray-700">
+                      <MapPin className="w-4 h-4 mr-3 text-green-500 shrink-0" />
+                      <span className="text-sm">{selectedEvent.eventLocation}</span>
+                    </div>
+                  )}
+                  {selectedEvent.attendees && (
+                    <div className="flex items-center text-gray-700">
+                      <Users className="w-4 h-4 mr-3 text-purple-500 shrink-0" />
+                      <span className="text-sm">{selectedEvent.attendees}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* ── Fixed footer with action buttons ── */}
+              <div className="px-6 py-4 border-t border-gray-100 bg-white shrink-0 flex gap-3 rounded-b-3xl">
                 <Link
                   href={`/events/${selectedEvent.eventId}`}
                   className="flex-1 inline-flex items-center justify-center py-3 px-6 rounded-xl font-semibold bg-primary text-white hover:opacity-90 transition-opacity shadow-lg"
@@ -574,9 +442,52 @@ const NewUpcomingEvent: React.FC = () => {
                 </button>
               </div>
             </div>
+
+            {/* ══════════════════════════════════════════
+                INNER "FULL DESCRIPTION" MODAL
+                Sits on top of the main modal.
+                Also closes ONLY via its own Close / X button.
+            ══════════════════════════════════════════ */}
+            {showFullDesc && (
+              /* No onClick handler on backdrop — intentional */
+              <div className="absolute inset-0 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm z-10">
+                <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg flex flex-col max-h-[85vh] overflow-hidden">
+
+                  {/* Inner header */}
+                  <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
+                    <h3 className="text-lg font-bold text-gray-900">Full Description</h3>
+                    <button
+                      onClick={() => setShowFullDesc(false)}
+                      className="w-9 h-9 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600 transition-colors"
+                      aria-label="Close description"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {/* Scrollable full description */}
+                  <div className="overflow-y-auto flex-1 px-6 py-5">
+                    <div
+                      className="text-gray-700 text-sm leading-relaxed prose prose-sm max-w-none"
+                      dangerouslySetInnerHTML={{ __html: selectedEvent.description! }}
+                    />
+                  </div>
+
+                  {/* Inner footer */}
+                  <div className="px-6 py-4 border-t border-gray-100 shrink-0">
+                    <button
+                      onClick={() => setShowFullDesc(false)}
+                      className="w-full py-3 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 font-semibold transition-colors text-sm"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
-      )}
+        );
+      })()}
     </>
   );
 };

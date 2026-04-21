@@ -10,37 +10,20 @@ export async function GET() {
 
 export async function POST(request: Request) {
     try {
-        const API_URL = process.env.API_JOBS_URL;
+        const API_URL = process.env.API_URL;
         const API_KEY = process.env.API_KEY;
+        const operationKey = process.env.API_OPERATION_KEY;
         
-        // Check authentication
-       
-        
-        // Get form data from request (multipart/form-data)
-        const formData = await request.formData();
-        
-        // Extract fields
-        const jobId = formData.get('jobId');
+        const body = await request.json();
       
-        const firstName = formData.get('firstName');
-        const lastName = formData.get('lastName');
-        const email = formData.get('email');
-        const phone = formData.get('phone');
-        const location = formData.get('location');
-        const currentTitle = formData.get('currentTitle');
-        const currentCompany = formData.get('currentCompany');
-        const yearsExperience = formData.get('yearsExperience');
-        const education = formData.get('education');
-        const linkedin = formData.get('linkedin');
-        const coverLetter = formData.get('coverLetter');
-        const availableFrom = formData.get('availableFrom');
-        const expectedSalary = formData.get('expectedSalary');
-        const cvFile = formData.get('cv') as File;
+        const { name , email, organization, collabType, message, type } = body;
+       
+     
         
         // Validate required fields
-        const requiredFields = ['jobId', 'firstName', 'lastName', 'email', 'phone', 'coverLetter'];
+        const requiredFields = ['name', 'email', 'organization', 'collabType', 'message' ,'type'];
         for (const field of requiredFields) {
-            if (!formData.get(field)) {
+            if (!body[field]) {
                 return NextResponse.json({
                     success: false,
                     message: `Missing required field: ${field}`
@@ -57,30 +40,8 @@ export async function POST(request: Request) {
             }, { status: 400 });
         }
         
-        // Validate CV file
-        if (!cvFile || !(cvFile instanceof File)) {
-            return NextResponse.json({
-                success: false,
-                message: "CV file is required"
-            }, { status: 400 });
-        }
-        
-        // Validate file type
-        const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/jpeg', 'image/png'];
-        if (!allowedTypes.includes(cvFile.type)) {
-            return NextResponse.json({
-                success: false,
-                message: "Invalid file type. Allowed: PDF, DOC, DOCX, JPG, PNG"
-            }, { status: 400 });
-        }
-        
-        // Validate file size (max 10MB)
-        if (cvFile.size > 10 * 1024 * 1024) {
-            return NextResponse.json({
-                success: false,
-                message: "File too large. Maximum size is 10MB"
-            }, { status: 400 });
-        }
+     
+   
         
         const origin = process.env.URL_INFO || '';
         
@@ -102,31 +63,15 @@ export async function POST(request: Request) {
         };
         
         // Prepare data for PHP backend
-        const apiFormData = new FormData();
        
-        apiFormData.append('jobId', jobId as string);
-        apiFormData.append('firstName', firstName as string);
-        apiFormData.append('lastName', lastName as string);
-        apiFormData.append('email', email as string);
-        apiFormData.append('phone', phone as string);
-        apiFormData.append('location', location as string || '');
-        apiFormData.append('currentTitle', currentTitle as string || '');
-        apiFormData.append('currentCompany', currentCompany as string || '');
-        apiFormData.append('yearsExperience', yearsExperience as string || '');
-        apiFormData.append('education', education as string || '');
-        apiFormData.append('linkedin', linkedin as string || '');
-        apiFormData.append('coverLetter', coverLetter as string);
-        apiFormData.append('availableFrom', availableFrom as string || '');
-        apiFormData.append('expectedSalary', expectedSalary as string || '');
-        apiFormData.append('cv', cvFile);
         
-        const response = await fetchWithTimeout(`${API_URL}/v2/jobs/create.application`, {
+        const response = await fetchWithTimeout(`${API_URL}/v1/work-with-us/create.request`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${API_KEY}`,
                 'X-Origin-Check': origin,
             },
-            body: apiFormData,
+            body:JSON.stringify({ name, email, organization, collabType, message, type, operationkey:operationKey }),
         });
         
         // Read response as text first
