@@ -265,54 +265,7 @@ const MediaInsights: React.FC = () => {
           </>
         )}
 
-        {/* CTA Button */}
-        {filteredInsights.length > 0 && (
-          <div className="text-center mt-12">
-            <a
-              href="/podcasts"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-bold rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-300 group"
-            >
-              View All Podcasts
-              <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
-          </div>
-        )}
-
-        {/* Featured Podcast Section (Breaking Banks Europe) */}
-        {activeTab === 'podcasts' && filteredInsights.length > 0 && (
-          <div className="mt-16 bg-gradient-to-r from-primary/10 to-indigo-500/10 rounded-3xl p-8 border border-primary/20">
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="flex-1">
-                <div className="inline-flex items-center gap-2 bg-primary/20 px-3 py-1 rounded-full mb-4">
-                  <Headphones className="w-4 h-4 text-primary" />
-                  <span className="text-sm font-semibold text-primary">Featured Series</span>
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                  Breaking Banks Europe
-                </h3>
-                <p className="text-gray-600 leading-relaxed mb-6">
-                  The #1 fintech podcast in Europe. Matteo Rizzi hosts conversations with founders, 
-                  regulators, and investors shaping the future of financial services.
-                </p>
-                <a
-                  href="#"
-                  className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
-                >
-                  Subscribe Now
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-              </div>
-              <div className="flex gap-4">
-                <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg">
-                  <PodcastIcon className="w-8 h-8 text-primary" />
-                </div>
-                <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg">
-                  <Play className="w-8 h-8 text-primary" />
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+    
       </div>
     </section>
   );

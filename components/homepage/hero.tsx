@@ -31,7 +31,7 @@ const HeroPage = () => {
         style={{ opacity: 0, transition: "opacity 0.5s ease-in" }}
         onCanPlayThrough={(e:any) => (e.target.style.opacity = 1)} // Show video when ready
       >
-     <source src="https://res.cloudinary.com/dholzaaws/video/upload/v1736345628/y2mate.com_-_PEOPLE_MATTERS_AWARDS_2024_HIGHLIGHT_v720P_ebbjw1.mp4" type="video/mp4" />
+     <source src="https://res.cloudinary.com/dnotkysy1/video/upload/v1776801878/IMG_6876_o1pzpy.mov" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
       

@@ -183,7 +183,7 @@ export default function VideoPlayerNow() {
             >
               <video
                 ref={videoRef}
-                src="https://res.cloudinary.com/dxtjjbk95/video/upload/v1708851646/Authentic%20Events/CrossOver2023_xsledz.mp4"
+                src="https://res.cloudinary.com/dnotkysy1/video/upload/v1776801878/IMG_6876_o1pzpy.mov"
                 className="w-full aspect-video object-cover cursor-pointer"
                 onClick={togglePlay}
               />
