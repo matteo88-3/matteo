@@ -1,4 +1,5 @@
-import { Linkedin , Podcast , Twitter , ArrowRight } from "lucide-react"
+import { Linkedin , Podcast  , ArrowRight, Youtube , Instagram,  } from "lucide-react"
+import { FaTiktok, FaTwitter } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -9,9 +10,13 @@ const Footer = () => {
                 <span className="font-bold text-2xl tracking-tighter text-white mb-4 block">MATTEO<span className="text-primary">RIZZI</span></span>
                 <p className="mb-6 max-w-sm">Building the future of finance, talent, and innovation ecosystems across the globe.</p>
                 <div className="flex gap-4">
-                    <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-colors"><Linkedin /></a>
-                    <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-colors"><Twitter /></a>
-                    <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-colors"><Podcast /></a>
+                    <a href="#" target="_blank" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-colors"><Linkedin /></a>
+                    <a href="#" target="_blank" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-colors"><FaTwitter /></a>
+                    <a href="#" target="_blank" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-colors"><Podcast /></a>
+                     <a href="#" target="_blank" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-colors"><FaTiktok /></a>
+                     <a href="https://www.instagram.com/matteorizziofficial?igsh=MWhxOXZic2pvNWUxbA==" target="_blank" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-colors"><Instagram /></a>
+                    <a href="https://youtube.com/@timepledgeorg?si=zt6u96HWM7geFK7x" target="_blank" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-colors"><Youtube /></a>
+                   
                 </div>
             </div>
             <div>

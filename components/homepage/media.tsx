@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   Mail, Linkedin, Send, User, Building, AtSign, FileText, HelpCircle,
   BookOpen, FileText as FileTextIcon, Video, Podcast as PodcastIcon, ArrowRight, 
-  Play, Headphones, ExternalLink, Clock, Calendar, User as UserIcon
+  Play, Headphones, ExternalLink, Clock, Calendar, User as UserIcon, Filter
 } from 'lucide-react';
 import { usePodcasts, Podcast } from '@/lib/api/fetch.podcasts';
 
@@ -13,13 +13,28 @@ type InsightType = 'podcasts';
 const MediaInsights: React.FC = () => {
   const { data, isLoading, isError, error } = usePodcasts();
   const [activeTab, setActiveTab] = useState<InsightType>('podcasts');
+  const [selectedCategory, setSelectedCategory] = useState<number | 'all'>('all');
   const [isTabLoading, setIsTabLoading] = useState(false);
 
   // Get podcasts from API response
   const podcasts = data?.podcastsdata || [];
-  
-  // Filter insights based on active tab (only podcasts for now)
-  const filteredInsights = podcasts;
+
+  // Extract unique categories from podcasts
+  const categories = useMemo(() => {
+    const catMap = new Map<number, string>();
+    podcasts.forEach(pod => {
+      if (pod.podCat && !catMap.has(pod.podCat)) {
+        catMap.set(pod.podCat, pod.category_name);
+      }
+    });
+    return Array.from(catMap.entries()).map(([id, name]) => ({ id, name }));
+  }, [podcasts]);
+
+  // Filter podcasts by selected category
+  const filteredPodcasts = useMemo(() => {
+    if (selectedCategory === 'all') return podcasts;
+    return podcasts.filter(pod => pod.podCat === selectedCategory);
+  }, [podcasts, selectedCategory]);
 
   const getIcon = (type: InsightType) => {
     switch (type) {
@@ -38,6 +53,7 @@ const MediaInsights: React.FC = () => {
   const handleTabChange = (type: InsightType) => {
     setIsTabLoading(true);
     setActiveTab(type);
+    setSelectedCategory('all'); // reset category filter on tab change
     setTimeout(() => setIsTabLoading(false), 300);
   };
 
@@ -135,7 +151,7 @@ const MediaInsights: React.FC = () => {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex justify-center mb-12">
+        <div className="flex justify-center mb-8">
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-2 shadow-lg border border-white/20 flex flex-wrap gap-1 justify-center">
             {(['podcasts'] as InsightType[]).map((type) => {
               const config = getTabConfig(type);
@@ -160,6 +176,38 @@ const MediaInsights: React.FC = () => {
           </div>
         </div>
 
+        {/* Category Filter Bar */}
+        {categories.length > 0 && (
+          <div className="flex justify-center mb-10">
+            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-2 shadow-md border border-white/30 flex flex-wrap gap-2 justify-center">
+              <button
+                onClick={() => setSelectedCategory('all')}
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-1.5 ${
+                  selectedCategory === 'all'
+                    ? 'bg-primary text-white shadow-md'
+                    : 'bg-white text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <Filter className="w-3.5 h-3.5" />
+                All Categories ({podcasts.length})
+              </button>
+              {categories.map(cat => (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                    selectedCategory === cat.id
+                      ? 'bg-primary text-white shadow-md'
+                      : 'bg-white text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  {cat.name} ({podcasts.filter(p => p.podCat === cat.id).length})
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Insights Grid */}
         {isTabLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -179,17 +227,17 @@ const MediaInsights: React.FC = () => {
           </div>
         ) : (
           <>
-            {filteredInsights.length === 0 ? (
+            {filteredPodcasts.length === 0 ? (
               <div className="text-center py-12">
                 <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <PodcastIcon className="w-12 h-12 text-gray-400" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-700 mb-2">No Podcasts Available</h3>
-                <p className="text-gray-500">Check back soon for new episodes and insights.</p>
+                <h3 className="text-xl font-semibold text-gray-700 mb-2">No Podcasts in this Category</h3>
+                <p className="text-gray-500">Try selecting a different category or check back later.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredInsights.map((podcast, index) => {
+                {filteredPodcasts.map((podcast, index) => {
                   const Icon = PodcastIcon;
                   
                   return (
@@ -211,11 +259,16 @@ const MediaInsights: React.FC = () => {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-300" />
                         
-                        {/* Type Badge */}
+                        {/* Type Badge + Category */}
                         <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-white text-xs font-semibold flex items-center gap-1 shadow-lg bg-gradient-to-r from-green-500 to-emerald-600">
                           <Icon className="w-3 h-3" />
                           Podcast
                         </div>
+                        {podcast.category_name && (
+                          <div className="absolute bottom-4 left-4 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-sm text-white text-xs font-medium">
+                            {podcast.category_name}
+                          </div>
+                        )}
                       </div>
 
                       {/* Content */}
@@ -243,8 +296,10 @@ const MediaInsights: React.FC = () => {
                           {podcast.podTitle}
                         </h3>
                         
-                        <p className="text-gray-600 text-sm mb-4 line-clamp-3" dangerouslySetInnerHTML={{ __html: podcast.podDescription }}/>
-                        
+                        <p 
+                          className="text-gray-600 text-sm mb-4 line-clamp-3"
+                          dangerouslySetInnerHTML={{ __html: podcast.podDescription }}
+                        />
 
                         <a
                           href={podcast.podLink}
@@ -264,8 +319,6 @@ const MediaInsights: React.FC = () => {
             )}
           </>
         )}
-
-    
       </div>
     </section>
   );

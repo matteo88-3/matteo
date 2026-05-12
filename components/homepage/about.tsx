@@ -183,7 +183,7 @@ export default function VideoPlayerNow() {
             >
               <video
                 ref={videoRef}
-                src="https://res.cloudinary.com/dnotkysy1/video/upload/v1776801878/IMG_6876_o1pzpy.mov"
+                src="https://res.cloudinary.com/dnotkysy1/video/upload/v1778568466/IMG_7046_aoafay.mp4"
                 className="w-full aspect-video object-cover cursor-pointer"
                 onClick={togglePlay}
               />
