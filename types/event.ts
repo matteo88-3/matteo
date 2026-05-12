@@ -6,6 +6,7 @@ export interface Event {
   coverimage: string;
   eventDate: string;
   eventTime: string;
+  eventLink: string;
   hourstart: string;
   hourend: string;
   eventLocation: string;

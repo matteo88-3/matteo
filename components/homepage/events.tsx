@@ -251,7 +251,7 @@ const NewUpcomingEvent: React.FC = () => {
                     className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden transform hover:-translate-y-2"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <Link href={`/events/${event.eventId}`}>
+                    <Link href={`${event.eventLink}`} target='_blank'>
                       <div className="relative h-60 overflow-hidden">
                         <img
                           src={event.coverimage || '/aboutus.jpg'}
@@ -425,7 +425,8 @@ const NewUpcomingEvent: React.FC = () => {
               {/* ── Fixed footer with action buttons ── */}
               <div className="px-6 py-4 border-t border-gray-100 bg-white shrink-0 flex gap-3 rounded-b-3xl">
                 <Link
-                  href={`/events/${selectedEvent.eventId}`}
+                  href={`${selectedEvent.eventLink}`}
+                  target='_blank'
                   className="flex-1 inline-flex items-center justify-center py-3 px-6 rounded-xl font-semibold bg-primary text-white hover:opacity-90 transition-opacity shadow-lg"
                 >
                   {selectedEvent.status === 'ended' ? (
