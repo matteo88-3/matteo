@@ -30,7 +30,7 @@ const Footer = () => {
             <div>
                 <h4 className="text-white font-bold mb-4 uppercase text-sm tracking-wider">Newsletter</h4>
                 <p className="text-sm mb-4">Get the latest insights on fintech and ecosystems.</p>
-               <li><a href="#https://www.linkedin.com/newsletters/news-from-the-rebel-s-front-6978747108887531520/" target="_blank" className="hover:text-primary transition-colors">Newsletter</a></li>
+                <a href="https://www.linkedin.com/newsletters/news-from-the-rebel-s-front-6978747108887531520/" target="_blank" className="hover:text-primary transition-colors">Newsletter</a>
             </div>
         </div>
     </footer>
