@@ -116,10 +116,10 @@ const handleSubmit = async (e: React.FormEvent) => {
                   <div>
                     <p className="text-sm font-medium text-gray-500 mb-1">Email</p>
                     <a 
-                      href="mailto:matteo.rizzi@gmail.com" 
+                      href="mailto:renata@fintechstage.com" 
                       className="font-semibold text-gray-900 hover:text-primary transition-colors text-lg"
                     >
-                      matteo.rizzi@gmail.com
+                     renata@fintechstage.com
                     </a>
                   </div>
                 </div>
@@ -132,7 +132,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   <div>
                     <p className="text-sm font-medium text-gray-500 mb-1">LinkedIn</p>
                     <a 
-                      href="#" 
+                      href="https://www.linkedin.com/in/matteorizzi/" target='_blank'
                       className="font-semibold text-gray-900 hover:text-primary transition-colors text-lg"
                     >
                       /in/matteorizzi
