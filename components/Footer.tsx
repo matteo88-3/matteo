@@ -23,7 +23,7 @@ const Footer = () => {
                 <h4 className="text-white font-bold mb-4 uppercase text-sm tracking-wider">Resources</h4>
                 <ul className="space-y-2 text-sm">
                     <li><a href="https://drive.google.com/file/d/1f09aBhihS1mHklf1zBU23hqeyT_haQJp/view?usp=sharing" target="_blank" className="hover:text-primary transition-colors">Download Media Kit</a></li>
-                    <li><a href="https://provoke.fm/author/matteo/" target="_blank" className="hover:text-primary transition-colors">CXO Conversations Podcast</a></li>
+                    <li><a href="https://www.youtube.com/watch?v=HjN4TTsM58I&list=PLVKkZ7o9TBmecfYxTRWDSAEsT0vW9fu-A" target="_blank" className="hover:text-primary transition-colors">CXO Conversations Podcast</a></li>
                     <li><a href="https://www.fintechfutures.com/job-cuts-new-hires/talents-rebels-dealing-with-corporate-misfits" target="_blank" className="hover:text-primary transition-colors">Books</a></li>
                 </ul>
             </div>

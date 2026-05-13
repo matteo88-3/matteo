@@ -2,7 +2,7 @@ import React from 'react'
 import { BarChart2Icon , Network  , Mic} from 'lucide-react'
 const Expertise = () => {
   return (
-    <section id='speaking' className="py-24 bg-slate-50">
+    <section id='themes' className="py-24 bg-slate-50">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl font-bold text-secondary mb-4">Areas of Expertise</h2>
