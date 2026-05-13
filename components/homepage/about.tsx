@@ -28,7 +28,7 @@ const PROFILE = {
 };
 
 // Generate image paths from 1.jpeg to 14.jpeg
-const TOTAL_IMAGES = 14;
+const TOTAL_IMAGES = 9;
 const imagePaths = Array.from(
   { length: TOTAL_IMAGES },
   (_, i) => `/images/${i + 1}.jpeg`
