@@ -15,7 +15,7 @@ const HeroPage = () => {
    <section 
       className="relative overflow-hidden h-screen  bg-no-repeat bg-cover bg-center flex items-center justify-center"
       id="home" 
-      style={{ backgroundImage: "url(https://t4.ftcdn.net/jpg/06/24/26/51/360_F_624265121_NMx9P0hbcwbJqjhUeHE2XXYw84j2WD3D.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80)" }} // Fallback image
+      style={{ backgroundImage: "url(/images/13.jpeg)" }} // Fallback image
     >
     
 
