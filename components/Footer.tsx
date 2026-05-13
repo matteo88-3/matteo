@@ -103,7 +103,7 @@ const Footer = () => {
 
       {/* Designer credit */}
       <div className="max-w-7xl mx-auto px-4 mt-12 pt-6 border-t border-slate-800/50 text-center text-sm text-slate-500">
-        Designed by <span className="text-slate-400 hover:text-primary transition-colors">Tricky Solutions</span>
+        Designed by <a href="mailto:vainqueurhirwa@gmail.com" className="text-slate-400 hover:text-primary transition-colors">Tricky Solutions</a>
       </div>
     </footer>
   );
