@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-type CollabType = "" | "speaking" | "partnership" | "investment" | "media" | "mentorship" | "other";
+type CollabType = "" | "speaking" | "partnership" | "investment" | "media" | "mentorship" | "events" |"other";
 
 interface FormState {
   name: string;
@@ -64,7 +64,7 @@ const CTA_OPTIONS: {
     accent: "bg-pink-500/20 text-pink-300",
   },
   {
-    value: "other",
+    value: "events",
     label: "Host an Event",
     sub: "FinTech gatherings",
     icon: Calendar,
