@@ -45,7 +45,7 @@ const NewUpcomingEvent: React.FC = () => {
   const events: Event[] = data?.eventsdata || [];
 
   const sortedEvents = [...events].sort(
-    (a, b) => new Date(b.eventDate).getTime() - new Date(a.eventDate).getTime()
+    (a, b) => new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime()
   );
 
   /* Lock scroll when modal is open */
