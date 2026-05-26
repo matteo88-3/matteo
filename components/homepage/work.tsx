@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import {
   X, Send, Users, Mic2, BookOpen, Globe, ChevronDown, CheckCircle2,
+  Handshake, TrendingUp, Calendar, ArrowRight,
 } from "lucide-react";
-
 import { toast } from "sonner";
 
 type CollabType = "" | "speaking" | "partnership" | "investment" | "media" | "mentorship" | "other";
@@ -14,7 +14,7 @@ interface FormState {
   email: string;
   organization: string;
   collabType: CollabType;
-  type:string;
+  type: string;
   message: string;
 }
 
@@ -27,11 +27,49 @@ const COLLAB_TYPES: { value: CollabType; label: string }[] = [
   { value: "other", label: "Other" },
 ];
 
-const HIGHLIGHTS = [
-  { icon: Mic2, text: "Speaking & keynotes" },
-  { icon: Users, text: "Strategic partnerships" },
-  { icon: Globe, text: "Global FinTech network" },
-  { icon: BookOpen, text: "Media & thought leadership" },
+/* ── CTA option cards ── */
+const CTA_OPTIONS: {
+  value: CollabType;
+  label: string;
+  sub: string;
+  icon: React.FC<{ className?: string }>;
+  accent: string; // Tailwind bg for icon bubble
+}[] = [
+  {
+    value: "speaking",
+    label: "Book a Keynote",
+    sub: "Conferences & panels",
+    icon: Mic2,
+    accent: "bg-blue-500/20 text-blue-300",
+  },
+  {
+    value: "partnership",
+    label: "Strategic Partnership",
+    sub: "Co-build & collaborate",
+    icon: Handshake,
+    accent: "bg-emerald-500/20 text-emerald-300",
+  },
+  {
+    value: "mentorship",
+    label: "Advisory Role",
+    sub: "Guidance & mentorship",
+    icon: TrendingUp,
+    accent: "bg-amber-500/20 text-amber-300",
+  },
+  {
+    value: "media",
+    label: "Media Interview",
+    sub: "Podcasts & press",
+    icon: BookOpen,
+    accent: "bg-pink-500/20 text-pink-300",
+  },
+  {
+    value: "other",
+    label: "Host an Event",
+    sub: "FinTech gatherings",
+    icon: Calendar,
+    accent: "bg-violet-500/20 text-violet-300",
+  },
 ];
 
 const EMPTY_FORM: FormState = {
@@ -39,7 +77,7 @@ const EMPTY_FORM: FormState = {
   email: "",
   organization: "",
   collabType: "",
-  type:'collaboration',
+  type: "collaboration",
   message: "",
 };
 
@@ -50,18 +88,19 @@ export default function CollaborateSection() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Lock body scroll when modal is open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
-  // Close on Escape
-
-  const handleClose = () => {
-    setOpen(false);
-   
+  const openWith = (collabType: CollabType) => {
+    setForm({ ...EMPTY_FORM, collabType });
+    setErrors({});
+    setSubmitted(false);
+    setOpen(true);
   };
+
+  const handleClose = () => setOpen(false);
 
   const validate = (): boolean => {
     const e: Partial<FormState> = {};
@@ -74,33 +113,21 @@ export default function CollaborateSection() {
     return Object.keys(e).length === 0;
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-
     setLoading(true);
-
     try {
       const res = await fetch("/api/create/create.request", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-
       const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data?.message || "Something went wrong");
-      }
-
-      // ✅ SUCCESS
+      if (!res.ok) throw new Error(data?.message || "Something went wrong");
       setSubmitted(true);
       toast.success("Request sent successfully!");
-
     } catch (err: any) {
-      // ❌ ERROR
       toast.error(err.message || "Failed to send request");
     } finally {
       setLoading(false);
@@ -117,47 +144,67 @@ const handleSubmit = async (e: React.FormEvent) => {
   return (
     <>
       {/* ── SECTION ── */}
-      <section id="collaborate" className="py-20 bg-primary text-white text-center px-4">
-        <div className="max-w-3xl mx-auto">
-          <p className="text-sm font-semibold tracking-widest uppercase text-white/60 mb-3">
-            Let's Build Together
-          </p>
-          <h2 className="text-4xl font-bold mb-4 leading-tight">
-            Want to collaborate or host an event?
-          </h2>
-          <p className="text-white/70 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-            Matteo is open to speaking engagements, strategic partnerships, advisory roles, and media collaborations worldwide.
-          </p>
+      <section id="collaborate" className="py-20 bg-primary text-white px-4 overflow-hidden relative">
 
-          {/* Highlight pills */}
-          <div className="flex flex-wrap justify-center gap-3 mb-10">
-            {HIGHLIGHTS.map(({ icon: Icon, text }) => (
-              <div
-                key={text}
-                className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-2 text-sm font-medium"
+        {/* Subtle decorative rings */}
+        <div className="pointer-events-none absolute -top-32 -right-32 w-96 h-96 rounded-full border border-white/10" />
+        <div className="pointer-events-none absolute -bottom-24 -left-24 w-72 h-72 rounded-full border border-white/10" />
+
+        <div className="max-w-4xl mx-auto relative z-10">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <p className="text-sm font-semibold tracking-widest uppercase text-white/50 mb-3">
+              Let's Build Together
+            </p>
+            <h2 className="text-4xl font-bold mb-3 leading-tight">
+              How would you like to collaborate?
+            </h2>
+            <p className="text-white/60 text-base max-w-md mx-auto">
+              Pick what fits — Matteo's team will follow up within 48 hours.
+            </p>
+          </div>
+
+          {/* ── Option Cards Grid ── */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            {CTA_OPTIONS.map(({ value, label, sub, icon: Icon, accent }) => (
+              <button
+                key={value}
+                onClick={() => openWith(value)}
+                className="group flex flex-col items-start gap-3 bg-white/10 hover:bg-white/20 border border-white/15 hover:border-white/40 rounded-2xl p-4 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
-                <Icon className="w-4 h-4 text-white/80" />
-                {text}
-              </div>
+                {/* Icon bubble */}
+                <span className={`w-10 h-10 rounded-xl flex items-center justify-center ${accent} transition-transform duration-300 group-hover:scale-110`}>
+                  <Icon className="w-5 h-5" />
+                </span>
+
+                {/* Labels */}
+                <span className="flex flex-col gap-0.5">
+                  <span className="text-sm font-bold text-white leading-snug">{label}</span>
+                  <span className="text-xs text-white/50">{sub}</span>
+                </span>
+
+                {/* Arrow hint */}
+                <ArrowRight className="w-3.5 h-3.5 text-white/30 group-hover:text-white/70 group-hover:translate-x-0.5 transition-all mt-auto self-end" />
+              </button>
             ))}
           </div>
 
-          <button
-            onClick={() => setOpen(true)}
-            className="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all shadow-xl"
-          >
-            <Users className="w-5 h-5" />
-            Partner With Matteo
-          </button>
+          {/* Secondary CTA */}
+          <p className="text-center text-white/40 text-sm mt-8">
+            Not sure?{" "}
+            <button
+              onClick={() => openWith("other")}
+              className="text-white/70 underline underline-offset-2 hover:text-white transition-colors"
+            >
+              Send a general inquiry
+            </button>
+          </p>
         </div>
       </section>
 
       {/* ── MODAL ── */}
       {open && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-       
-        >
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
 
             {/* Modal header */}
@@ -192,11 +239,8 @@ const handleSubmit = async (e: React.FormEvent) => {
                 </button>
               </div>
             ) : (
-              /* Form */
               <form onSubmit={handleSubmit} noValidate className="p-6 space-y-5">
-                <input type="hidden"    value={`collaboration`}
-                    onChange={set("type")}
-                    />
+                <input type="hidden" value="collaboration" onChange={set("type")} />
 
                 {/* Name */}
                 <div>
@@ -305,7 +349,6 @@ const handleSubmit = async (e: React.FormEvent) => {
                     Cancel
                   </button>
                 </div>
-
               </form>
             )}
           </div>

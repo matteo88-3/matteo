@@ -17,7 +17,7 @@ import {
 const PROFILE = {
   name: "Matteo Rizzi",
   tagline: "Senior Partner · Author · Investor",
-  bio: "Matteo is an unconventional entrepreneur, author, and seasoned executive with 20+ years in FinTech. With deep connections across global banks, startups, and investors, he bridges the gap between traditional banking and disruptive technologies.",
+  bio: "Matteo is an unconventional entrepreneur, author, and seasoned executive with over 20 years in FinTech. Leveraging deep connections across global banks, startups, and investors, he seamlessly bridges the gap between traditional banking and disruptive technologies.",
   roles: [
     { icon: Briefcase, label: "Senior Partner, GFTN" },
     { icon: Globe, label: "Founder, Timepledge.org" },

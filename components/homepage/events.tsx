@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import React, { useEffect, useState } from "react";
-import { format, isAfter, isBefore } from "date-fns";
+import { format, isAfter, isBefore, isWithinInterval, startOfDay, endOfDay } from "date-fns";
 import {
   Calendar,
   Clock,
@@ -16,6 +16,8 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  Filter,
+  CalendarRange,
 } from 'lucide-react';
 import { useEvents, Event } from '@/lib/api/fetch.events';
 
@@ -33,6 +35,11 @@ const NewUpcomingEvent: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedEvent, setSelectedEvent] = useState<EventWithStatus | null>(null);
   const [showFullDesc, setShowFullDesc] = useState(false);
+
+  // Date range filter state
+  const [dateFrom, setDateFrom] = useState<string>('');
+  const [dateTo, setDateTo] = useState<string>('');
+  const [showDateFilter, setShowDateFilter] = useState(false);
 
   const { data, isLoading, error, isError } = useEvents();
   const events: Event[] = data?.eventsdata || [];
@@ -81,9 +88,36 @@ const NewUpcomingEvent: React.FC = () => {
     return { ...event, status };
   });
 
-  const filteredEvents = categorizedEvents.filter(
+  /* Apply status filter */
+  const statusFiltered = categorizedEvents.filter(
     (e) => activeFilter === 'all' || e.status === activeFilter
   );
+
+  /* Apply date range filter */
+  const filteredEvents = statusFiltered.filter((e) => {
+    const eventDate = new Date(e.eventDate);
+    if (dateFrom && dateTo) {
+      return isWithinInterval(eventDate, {
+        start: startOfDay(new Date(dateFrom)),
+        end: endOfDay(new Date(dateTo)),
+      });
+    }
+    if (dateFrom) {
+      return !isBefore(eventDate, startOfDay(new Date(dateFrom)));
+    }
+    if (dateTo) {
+      return !isAfter(eventDate, endOfDay(new Date(dateTo)));
+    }
+    return true;
+  });
+
+  const isDateFilterActive = !!dateFrom || !!dateTo;
+
+  const clearDateFilter = () => {
+    setDateFrom('');
+    setDateTo('');
+    setCurrentPage(1);
+  };
 
   const totalPages = Math.ceil(filteredEvents.length / EVENTS_PER_PAGE);
 
@@ -94,6 +128,10 @@ const NewUpcomingEvent: React.FC = () => {
 
   const handleFilterChange = (filter: FilterType) => {
     setActiveFilter(filter);
+    setCurrentPage(1);
+  };
+
+  const handleDateChange = () => {
     setCurrentPage(1);
   };
 
@@ -199,7 +237,7 @@ const NewUpcomingEvent: React.FC = () => {
           </div>
 
           {/* Filter Tabs */}
-          <div className="flex justify-center mb-10">
+          <div className="flex justify-center mb-4">
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-2 shadow-lg border border-white/20 flex flex-wrap gap-1 justify-center">
               {([
                 { key: 'all', label: 'All Events', count: categorizedEvents.length },
@@ -222,6 +260,100 @@ const NewUpcomingEvent: React.FC = () => {
             </div>
           </div>
 
+          {/* ── Date Range Filter ── */}
+          <div className="flex justify-center mb-8">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 w-full max-w-2xl overflow-hidden">
+
+              {/* Toggle header */}
+              <button
+                onClick={() => setShowDateFilter((v) => !v)}
+                className={`w-full flex items-center justify-between px-5 py-3 font-semibold text-sm transition-colors ${
+                  isDateFilterActive
+                    ? 'text-primary bg-blue-50'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <CalendarRange className="w-4 h-4" />
+                  Filter by Date Range
+                  {isDateFilterActive && (
+                    <span className="bg-primary text-white text-xs px-2 py-0.5 rounded-full">
+                      Active
+                    </span>
+                  )}
+                </span>
+                <ChevronRight
+                  className={`w-4 h-4 transition-transform duration-200 ${showDateFilter ? 'rotate-90' : ''}`}
+                />
+              </button>
+
+              {/* Collapsible body */}
+              {showDateFilter && (
+                <div className="px-5 pb-4 pt-1 border-t border-gray-100">
+                  <div className="flex flex-col sm:flex-row gap-3 items-end">
+
+                    {/* From */}
+                    <div className="flex-1">
+                      <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">
+                        From
+                      </label>
+                      <div className="relative">
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                        <input
+                          type="date"
+                          value={dateFrom}
+                          max={dateTo || undefined}
+                          onChange={(e) => { setDateFrom(e.target.value); handleDateChange(); }}
+                          className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+                        />
+                      </div>
+                    </div>
+
+                    {/* To */}
+                    <div className="flex-1">
+                      <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">
+                        To
+                      </label>
+                      <div className="relative">
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                        <input
+                          type="date"
+                          value={dateTo}
+                          min={dateFrom || undefined}
+                          onChange={(e) => { setDateTo(e.target.value); handleDateChange(); }}
+                          className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Clear button — shown only when filter is active */}
+                    {isDateFilterActive && (
+                      <button
+                        onClick={clearDateFilter}
+                        className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 text-sm font-semibold transition-colors shrink-0"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                        Clear
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Active filter summary */}
+                  {isDateFilterActive && (
+                    <p className="mt-2.5 text-xs text-gray-500">
+                      {dateFrom && dateTo
+                        ? `Showing events from ${format(new Date(dateFrom), 'MMM d, yyyy')} to ${format(new Date(dateTo), 'MMM d, yyyy')}`
+                        : dateFrom
+                        ? `Showing events from ${format(new Date(dateFrom), 'MMM d, yyyy')} onwards`
+                        : `Showing events up to ${format(new Date(dateTo), 'MMM d, yyyy')}`}
+                      {' '}· <span className="font-semibold text-primary">{filteredEvents.length} result{filteredEvents.length !== 1 ? 's' : ''}</span>
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* ── Pagination TOP ── */}
           <PaginationBar />
 
@@ -234,10 +366,20 @@ const NewUpcomingEvent: React.FC = () => {
                 </div>
                 <h3 className="text-2xl font-bold text-gray-700 mb-2">No Events Found</h3>
                 <p className="text-gray-500 max-w-md mx-auto">
-                  {activeFilter === 'all'
+                  {isDateFilterActive
+                    ? 'No events match the selected date range. Try adjusting or clearing the date filter.'
+                    : activeFilter === 'all'
                     ? 'There are no events scheduled at the moment.'
                     : `No ${activeFilter} events found.`}
                 </p>
+                {isDateFilterActive && (
+                  <button
+                    onClick={clearDateFilter}
+                    className="mt-4 px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+                  >
+                    Clear Date Filter
+                  </button>
+                )}
               </div>
             ) : (
               paginatedEvents.map((event, index) => {
@@ -307,6 +449,11 @@ const NewUpcomingEvent: React.FC = () => {
             )}
           </div>
 
+          {/* ── Pagination BOTTOM ── */}
+          <div className="mt-10">
+            <PaginationBar />
+          </div>
+
           {/* Error */}
           {error && (
             <div className="mt-8 text-center">
@@ -326,8 +473,6 @@ const NewUpcomingEvent: React.FC = () => {
 
       {/* ══════════════════════════════════════════
           MAIN EVENT MODAL
-          Closes ONLY via the Close / X button.
-          Backdrop click is intentionally disabled.
       ══════════════════════════════════════════ */}
       {selectedEvent && (() => {
         const cfg = getStatusConfig(selectedEvent.status);
@@ -335,7 +480,6 @@ const NewUpcomingEvent: React.FC = () => {
         const plainDesc = selectedEvent.description ? stripHtml(selectedEvent.description) : '';
         const isLong = plainDesc.length > DESCRIPTION_CHAR_LIMIT;
 
-        /* Build a safe short preview by cutting at the nearest space */
         const shortPreview = isLong
           ? (() => {
               const cutAt = selectedEvent.description!.indexOf(' ', DESCRIPTION_CHAR_LIMIT);
@@ -344,13 +488,9 @@ const NewUpcomingEvent: React.FC = () => {
           : selectedEvent.description;
 
         return (
-          /* No onClick handler on backdrop — intentional */
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-
-            {/* Modal card: flex column, capped height, image fixed + body scrolls + footer fixed */}
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg flex flex-col max-h-[90vh] overflow-hidden">
 
-              {/* ── Fixed image header ── */}
               <div className="relative h-52 shrink-0 overflow-hidden rounded-t-3xl">
                 <img
                   src={selectedEvent.coverimage || '/aboutus.jpg'}
@@ -358,8 +498,6 @@ const NewUpcomingEvent: React.FC = () => {
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-
-                {/* X close button */}
                 <button
                   onClick={() => setSelectedEvent(null)}
                   className="absolute top-4 right-4 w-9 h-9 bg-black/40 hover:bg-black/70 rounded-full flex items-center justify-center text-white transition-colors"
@@ -367,19 +505,15 @@ const NewUpcomingEvent: React.FC = () => {
                 >
                   <X className="w-5 h-5" />
                 </button>
-
-                {/* Status badge */}
                 <div className={`absolute bottom-4 left-4 px-4 py-2 rounded-full text-white text-sm font-semibold flex items-center gap-2 ${cfg.badgeClass}`}>
                   <Icon className="w-4 h-4" />
                   {cfg.text}
                 </div>
               </div>
 
-              {/* ── Scrollable middle body ── */}
               <div className="overflow-y-auto flex-1 px-6 pt-5 pb-2">
                 <h2 className="text-2xl font-bold text-gray-900 mb-3">{selectedEvent.eventTitle}</h2>
 
-                {/* Description preview + View More */}
                 {selectedEvent.description && (
                   <div className="mb-5">
                     <div
@@ -397,7 +531,6 @@ const NewUpcomingEvent: React.FC = () => {
                   </div>
                 )}
 
-                {/* Event meta details */}
                 <div className="space-y-3 mb-4">
                   <div className="flex items-center text-gray-700">
                     <Calendar className="w-4 h-4 mr-3 text-blue-500 shrink-0" />
@@ -422,7 +555,6 @@ const NewUpcomingEvent: React.FC = () => {
                 </div>
               </div>
 
-              {/* ── Fixed footer with action buttons ── */}
               <div className="px-6 py-4 border-t border-gray-100 bg-white shrink-0 flex gap-3 rounded-b-3xl">
                 <Link
                   href={`${selectedEvent.eventLink}`}
@@ -444,17 +576,9 @@ const NewUpcomingEvent: React.FC = () => {
               </div>
             </div>
 
-            {/* ══════════════════════════════════════════
-                INNER "FULL DESCRIPTION" MODAL
-                Sits on top of the main modal.
-                Also closes ONLY via its own Close / X button.
-            ══════════════════════════════════════════ */}
             {showFullDesc && (
-              /* No onClick handler on backdrop — intentional */
               <div className="absolute inset-0 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm z-10">
                 <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg flex flex-col max-h-[85vh] overflow-hidden">
-
-                  {/* Inner header */}
                   <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
                     <h3 className="text-lg font-bold text-gray-900">Full Description</h3>
                     <button
@@ -465,16 +589,12 @@ const NewUpcomingEvent: React.FC = () => {
                       <X className="w-5 h-5" />
                     </button>
                   </div>
-
-                  {/* Scrollable full description */}
                   <div className="overflow-y-auto flex-1 px-6 py-5">
                     <div
                       className="text-gray-700 text-sm leading-relaxed prose prose-sm max-w-none"
                       dangerouslySetInnerHTML={{ __html: selectedEvent.description! }}
                     />
                   </div>
-
-                  {/* Inner footer */}
                   <div className="px-6 py-4 border-t border-gray-100 shrink-0">
                     <button
                       onClick={() => setShowFullDesc(false)}

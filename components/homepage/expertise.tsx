@@ -15,7 +15,7 @@ const Expertise = () => {
                                 <Mic />
                             </div>
                             <h3 className="text-2xl font-bold mb-4 text-secondary">Speaking & Keynotes</h3>
-                            <p className="text-slate-600 mb-6 leading-relaxed">Delivering high-impact talks globally, focused on fintech innovation, talent transformation, and ecosystem building across Europe, Africa, and beyond.</p>
+                            <p className="text-slate-600 mb-6 leading-relaxed">He delivers high-impact global keynotes focused on fintech innovation, talent transformation, and ecosystem building across Europe, Africa, and beyond.</p>
                             <a href='#collaborate' className="text-primary font-semibold hover:text-secondary flex items-center gap-2">Book Matteo <i className="fa-solid fa-arrow-right"></i></a>
                         </div>
                         <div className="bg-secondary text-white p-10 rounded-3xl shadow-xl shadow-slate-900/20 hover:-translate-y-2 transition-transform duration-300 relative overflow-hidden">
