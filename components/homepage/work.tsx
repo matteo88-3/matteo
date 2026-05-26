@@ -24,6 +24,7 @@ const COLLAB_TYPES: { value: CollabType; label: string }[] = [
   { value: "investment", label: "Investment / VC" },
   { value: "media", label: "Media & Podcast" },
   { value: "mentorship", label: "Mentorship / Advisory" },
+  {value: "events" , label: "Host an event"},
   { value: "other", label: "Other" },
 ];
 
