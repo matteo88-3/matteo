@@ -31,7 +31,7 @@ const PROFILE = {
 const TOTAL_IMAGES = 19;
 const imagePaths = Array.from(
   { length: TOTAL_IMAGES },
-  (_, i) => `/images/${i + 1}.jpeg`
+  (_, i) => `/images/${TOTAL_IMAGES - i}.jpeg`
 );
 
 export default function ProfileWithSlideshow() {
