@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import React, { useEffect, useState } from "react";
-import { format, isAfter, isBefore, isWithinInterval, startOfDay, endOfDay } from "date-fns";
+import { format, isAfter, isBefore } from "date-fns";
 import {
   Calendar,
   Clock,
@@ -93,20 +93,19 @@ const NewUpcomingEvent: React.FC = () => {
     (e) => activeFilter === 'all' || e.status === activeFilter
   );
 
-  /* Apply date range filter */
+  /* Apply date range filter using plain JS comparisons */
   const filteredEvents = statusFiltered.filter((e) => {
     const eventDate = new Date(e.eventDate);
-    if (dateFrom && dateTo) {
-      return isWithinInterval(eventDate, {
-        start: startOfDay(new Date(dateFrom)),
-        end: endOfDay(new Date(dateTo)),
-      });
-    }
+    eventDate.setHours(0, 0, 0, 0);
     if (dateFrom) {
-      return !isBefore(eventDate, startOfDay(new Date(dateFrom)));
+      const from = new Date(dateFrom);
+      from.setHours(0, 0, 0, 0);
+      if (eventDate < from) return false;
     }
     if (dateTo) {
-      return !isAfter(eventDate, endOfDay(new Date(dateTo)));
+      const to = new Date(dateTo);
+      to.setHours(23, 59, 59, 999);
+      if (eventDate > to) return false;
     }
     return true;
   });
