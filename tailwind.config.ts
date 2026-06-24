@@ -35,7 +35,7 @@ const config = {
   			ring: 'hsl(var(--ring))',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
-					 primary: '#b62036',   // deep blue
+					 primary: '#b62036',   // deep blue 0ea5e9
             secondary: '#0f172a',  // warm gold accent
             accent: '#b62036',  
   			destructive: {
