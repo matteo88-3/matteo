@@ -6,6 +6,7 @@ import About from "@/components/homepage/about";
 import ContactPage from "@/components/homepage/contact";
 import CollaborateSection from "@/components/homepage/work";
 import MediaInsights from "@/components/homepage/media";
+import Testimonials from "@/components/homepage/testmonior";
 
 
 export default function Home() {
@@ -19,7 +20,7 @@ export default function Home() {
 <Events />
 <MediaInsights />
 <CollaborateSection />
-
+<Testimonials />
 <ContactPage />
       </main>
     </>
