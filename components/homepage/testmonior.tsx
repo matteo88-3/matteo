@@ -6,7 +6,7 @@ import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
 const testimonials = [
   {
     quote:
-      "Matteo is one of those rare people who can hold a room of 500 banking executives and a table of three founders with equal conviction. His keynote at our global summit reframed the entire conversation on ecosystem strategy — we still reference it internally.",
+      "Matteo is one of those rare people who can hold a room of 500 banking executives and a table of three founders with equal conviction. His keynote reframed the entire conversation on ecosystem strategy — we still reference it internally.",
     name: "Brett King",
     title: "Founder, Breaking Banks · Author of Bank 4.0",
     initials: "BK",
@@ -38,7 +38,7 @@ const testimonials = [
   },
   {
     quote:
-      "Matteo doesn't give you a slide deck. He gives you a perspective you can't unsee. His advisory work with our team reshaped how we think about talent and disruption — and more importantly, what we do about it.",
+      "Matteo doesn't give you a slide deck. He gives you a perspective you can't unsee. His advisory work reshaped how we think about talent and disruption — and more importantly, what we do about it.",
     name: "Susanne Chishti",
     title: "CEO, FINTECH Circle · Co-editor, The FINTECH Book",
     initials: "SC",
@@ -52,11 +52,9 @@ export default function Testimonials() {
   const prev = () => setActive((i) => (i === 0 ? testimonials.length - 1 : i - 1));
   const next = () => setActive((i) => (i === testimonials.length - 1 ? 0 : i + 1));
 
-  const t = testimonials[active];
-
   return (
     <section id="testimonials" className="bg-secondary py-24 px-4">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-7xl mx-auto">
 
         {/* Header */}
         <div className="text-center mb-16">
@@ -68,62 +66,93 @@ export default function Testimonials() {
           </h2>
         </div>
 
-        {/* Card */}
-        <div className="relative bg-white/5 border border-white/10 rounded-2xl px-8 py-12 md:px-14 md:py-14 text-center">
+        {/* ── DESKTOP: 5-card grid ── */}
+        <div className="hidden md:grid md:grid-cols-5 gap-4">
+          {testimonials.map((t, i) => (
+            <div
+              key={i}
+              className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-white/20 hover:bg-white/8 transition-colors duration-300"
+            >
+              {/* Quote icon */}
+              <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                <Quote className="w-4 h-4 text-primary" />
+              </div>
 
-          {/* Quote icon */}
-          <div className="flex justify-center mb-8">
-            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-              <Quote className="w-5 h-5 text-primary" />
+              {/* Quote */}
+              <blockquote className="text-slate-300 text-sm leading-relaxed flex-1">
+                "{t.quote}"
+              </blockquote>
+
+              {/* Author */}
+              <div className="flex items-center gap-3 pt-2 border-t border-white/10">
+                <div className={`w-9 h-9 rounded-full ${t.color} flex items-center justify-center text-white text-xs font-bold shrink-0`}>
+                  {t.initials}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-white font-semibold text-xs truncate">{t.name}</p>
+                  <p className="text-slate-500 text-xs leading-tight mt-0.5 line-clamp-2">{t.title}</p>
+                </div>
+              </div>
             </div>
-          </div>
-
-          {/* Quote text */}
-          <blockquote className="text-slate-300 text-lg md:text-xl leading-relaxed mb-10 max-w-3xl mx-auto">
-            "{t.quote}"
-          </blockquote>
-
-          {/* Author */}
-          <div className="flex flex-col items-center gap-2">
-            <div className={`w-11 h-11 rounded-full ${t.color} flex items-center justify-center text-white text-sm font-bold`}>
-              {t.initials}
-            </div>
-            <p className="text-white font-semibold text-base">{t.name}</p>
-            <p className="text-slate-400 text-sm">{t.title}</p>
-          </div>
+          ))}
         </div>
 
-        {/* Controls */}
-        <div className="flex items-center justify-center gap-6 mt-8">
-          <button
-            onClick={prev}
-            className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-slate-400 hover:border-primary hover:text-primary transition-colors"
-            aria-label="Previous"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
+        {/* ── MOBILE: slideshow ── */}
+        <div className="md:hidden">
+          <div className="bg-white/5 border border-white/10 rounded-2xl px-7 py-10 text-center">
+            {/* Quote icon */}
+            <div className="flex justify-center mb-6">
+              <div className="w-11 h-11 rounded-full bg-primary/20 flex items-center justify-center">
+                <Quote className="w-5 h-5 text-primary" />
+              </div>
+            </div>
 
-          {/* Dots */}
-          <div className="flex gap-2">
-            {testimonials.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setActive(i)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === active ? 'w-6 bg-primary' : 'w-1.5 bg-white/20 hover:bg-white/40'
-                }`}
-                aria-label={`Go to testimonial ${i + 1}`}
-              />
-            ))}
+            {/* Quote text */}
+            <blockquote className="text-slate-300 text-base leading-relaxed mb-8">
+              "{testimonials[active].quote}"
+            </blockquote>
+
+            {/* Author */}
+            <div className="flex flex-col items-center gap-2">
+              <div className={`w-10 h-10 rounded-full ${testimonials[active].color} flex items-center justify-center text-white text-sm font-bold`}>
+                {testimonials[active].initials}
+              </div>
+              <p className="text-white font-semibold text-sm">{testimonials[active].name}</p>
+              <p className="text-slate-400 text-xs">{testimonials[active].title}</p>
+            </div>
           </div>
 
-          <button
-            onClick={next}
-            className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-slate-400 hover:border-primary hover:text-primary transition-colors"
-            aria-label="Next"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
+          {/* Controls */}
+          <div className="flex items-center justify-center gap-5 mt-6">
+            <button
+              onClick={prev}
+              className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-slate-400 hover:border-primary hover:text-primary transition-colors"
+              aria-label="Previous"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            <div className="flex gap-2">
+              {testimonials.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActive(i)}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    i === active ? 'w-6 bg-primary' : 'w-1.5 bg-white/20'
+                  }`}
+                  aria-label={`Testimonial ${i + 1}`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={next}
+              className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-slate-400 hover:border-primary hover:text-primary transition-colors"
+              aria-label="Next"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* LinkedIn CTA */}
