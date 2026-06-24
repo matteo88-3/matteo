@@ -36,8 +36,8 @@ const config = {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
 					 primary: '#c30010',   // deep blue
-        secondary: '#0f172a',  // warm gold accent
-        accent: '#c30010',  
+            secondary: '#0f172a',  // warm gold accent
+            accent: '#c30010',  
   			destructive: {
   				DEFAULT: 'hsl(var(--destructive))',
   				foreground: 'hsl(var(--destructive-foreground))'
