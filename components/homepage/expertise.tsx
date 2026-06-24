@@ -14,7 +14,7 @@ const Expertise = () => {
                             <div className="w-16 h-16 bg-blue-50 text-primary rounded-2xl flex items-center justify-center text-2xl mb-6">
                                 <Mic />
                             </div>
-                            <h3 className="text-2xl font-bold mb-4 text-secondary">Speaking & Keynotes</h3>
+                            <h3 className="text-2xl font-bold mb-4 text-secondary">Thought Leadership</h3>
                             <p className="text-slate-600 mb-6 leading-relaxed">He delivers high-impact global keynotes focused on fintech innovation, talent transformation, and ecosystem building across Europe, Africa, and beyond.</p>
                             <a href='#collaborate' className="text-primary font-semibold hover:text-secondary flex items-center gap-2">Book Matteo <i className="fa-solid fa-arrow-right"></i></a>
                         </div>

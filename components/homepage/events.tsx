@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { useEvents, Event } from '@/lib/api/fetch.events';
 
-type FilterType = 'all' | 'upcoming' | 'happening' | 'ended';
+type FilterType =  'upcoming' | 'happening' | 'ended' |  'all';
 type EventWithStatus = Event & { status: 'upcoming' | 'happening' | 'ended' };
 
 const EVENTS_PER_PAGE = 6;
@@ -31,7 +31,7 @@ const DESCRIPTION_CHAR_LIMIT = 220;
 const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '');
 
 const NewUpcomingEvent: React.FC = () => {
-  const [activeFilter, setActiveFilter] = useState<FilterType>('all');
+  const [activeFilter, setActiveFilter] = useState<FilterType>('upcoming');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedEvent, setSelectedEvent] = useState<EventWithStatus | null>(null);
   const [showFullDesc, setShowFullDesc] = useState(false);
@@ -239,10 +239,10 @@ const NewUpcomingEvent: React.FC = () => {
           <div className="flex justify-center mb-4">
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-2 shadow-lg border border-white/20 flex flex-wrap gap-1 justify-center">
               {([
-                { key: 'all', label: 'All Events', count: categorizedEvents.length },
-                { key: 'upcoming', label: 'Upcoming', count: categorizedEvents.filter((e) => e.status === 'upcoming').length },
-                { key: 'happening', label: 'Live Now', count: categorizedEvents.filter((e) => e.status === 'happening').length },
-                { key: 'ended', label: 'Past Events', count: categorizedEvents.filter((e) => e.status === 'ended').length },
+              { key: 'upcoming', label: 'Upcoming', count: categorizedEvents.filter((e) => e.status === 'upcoming').length },
+              { key: 'happening', label: 'Live Now', count: categorizedEvents.filter((e) => e.status === 'happening').length },
+              { key: 'ended', label: 'Past Events', count: categorizedEvents.filter((e) => e.status === 'ended').length },
+              { key: 'all', label: 'All Events', count: categorizedEvents.length },
               ] as { key: FilterType; label: string; count: number }[]).map((f) => (
                 <button
                   key={f.key}
