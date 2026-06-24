@@ -41,9 +41,9 @@ export default function Navbar() {
             {/* Logo */}
           <div className="flex-shrink-0 cursor-pointer flex items-center gap-3" onClick={() => navigate('home')}>
   <img src="/logomr.png" alt="Matteo Rizzi" className="w-12 h-12 rounded-full object-cover" />
-  <span className="font-bold text-2xl tracking-tighter text-secondary">
+ {/** <span className="font-bold text-2xl tracking-tighter text-secondary">
     MATTEO<span className="text-primary">RIZZI</span>
-  </span>
+  </span>*/} 
 </div>
 
             {/* Desktop Navigation */}
