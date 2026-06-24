@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="col-span-1 md:col-span-2">
            <div className="flex-shrink-0 cursor-pointer flex items-center gap-3">
-  <img src="/logomr.png" alt="Matteo Rizzi" className="w-[240px] h-[100px] rounded-full object-cover" />
+  <img src="/logomr2.png" alt="Matteo Rizzi" className="w-[240px] h-[100px] rounded-full object-cover" />
  {/** <span className="font-bold text-2xl tracking-tighter text-secondary">
     MATTEO<span className="text-primary">RIZZI</span>
   </span>*/} 
