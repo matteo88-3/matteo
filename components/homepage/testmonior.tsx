@@ -22,9 +22,7 @@ const testimonials = [
   },
   {
     quote:
-      "When pitching your startup, you want to have a clear story and focused message, that's where Matteo comes in with his vast experience and understanding of not just what makes a great pitch, but also the nuances of storytelling in the Fintech space. 
-
-Matteo served as my coach for Fintech Islands 2025 and his feedback was critical in refining our story and landing dataffluent in the top 3 startups at the event. ",
+      "When pitching your startup, you want to have a clear story and focused message, that's where Matteo comes in with his vast experience and understanding of not just what makes a great pitch, but also the nuances of storytelling in the Fintech space. Matteo served as my coach for Fintech Islands 2025 and his feedback was critical in refining our story and landing dataffluent in the top 3 startups at the event. ",
     name: "Raquel Seville",
     title: "CEO and Founder @ Dataffluent | Techstars ’24",
     initials: "RS",
@@ -32,11 +30,7 @@ Matteo served as my coach for Fintech Islands 2025 and his feedback was critical
   },
   {
     quote:
-      "When Matteo says he is unconventional, he is correct, but not only that, he is authentic.
-
-His coaching for Fix25 (Fintech Island)  was instrumental, and his feedback was invaluable.
-
-He helped me refine my deck and pitch, which gave me the winning edge and helped me find my focus, flow, and rhythm",
+      "When Matteo says he is unconventional, he is correct, but not only that, he is authentic. His coaching for Fix25 (Fintech Island)  was instrumental, and his feedback was invaluable. He helped me refine my deck and pitch, which gave me the winning edge and helped me find my focus, flow, and rhythm",
     name: "Khary Sharpe",
     title: "Founder @ HeadOffice Inc. | Techstars & JP Morgan",
     initials: "KS",
@@ -44,9 +38,7 @@ He helped me refine my deck and pitch, which gave me the winning edge and helped
   },
   {
     quote:
-      "Matteo is a world-class coach of Founders for Pitch Contests. I had the pleasure of being coached by Matteo at Fintech Islands 2024 in Barbados and I believe his advice and direction contributed greatly towards myself and company, Sunshine ☀️ winning 1st Place at the contest.
-
-Matteo is very clear in his advice and does a great job of helping Founders understand the format of a Pitch Contests vs other forms of pitches. I’d highly recommend working with Matteo to any Founder.",
+      "Matteo is a world-class coach of Founders for Pitch Contests. I had the pleasure of being coached by Matteo at Fintech Islands 2024 in Barbados and I believe his advice and direction contributed greatly towards myself and company, Sunshine ☀️ winning 1st Place at the contest. Matteo is very clear in his advice and does a great job of helping Founders understand the format of a Pitch Contests vs other forms of pitches. I’d highly recommend working with Matteo to any Founder.",
     name: "Jarryon Paul",
     title: "Founder of Sunshine®️ ☀️ Creating FINANCIAL FREEDOM FOR ALL",
     initials: "JP",
