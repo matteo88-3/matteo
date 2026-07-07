@@ -6,46 +6,53 @@ import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
 const testimonials = [
   {
     quote:
-      "Matteo is one of those rare people who can hold a room of 500 banking executives and a table of three founders with equal conviction. His keynote reframed the entire conversation on ecosystem strategy — we still reference it internally.",
-    name: "Brett King",
-    title: "Founder, Breaking Banks · Author of Bank 4.0",
-    initials: "BK",
+      "Working with Matteo during the 3iAfrica Fintech Innovation Challenge was a valuable experience for our team. His mentorship helped us sharpen our fintech solution, improve our strategic thinking, and present our ideas with greater clarity and confidence. Matteo combines strong industry expertise with a practical approach to innovation, making him highly impactful to founders and startup teams navigating fast-paced environments.",
+    name: "Yaw Awuku Adu",
+    title: "UGBS | Banking & Finance Student  Certified Data Protection Officer",
+    initials: "YA",
     color: "bg-blue-600",
   },
   {
     quote:
-      "Working with Matteo on our innovation agenda was transformative. He doesn't just advise — he connects, challenges, and pushes you to think 18 months ahead of the market. Few people carry that combination of depth and global network.",
-    name: "Ghela Boskovich",
-    title: "Head of Fintech & RegTech Partnerships, FemTechGlobal",
-    initials: "GB",
+      "i had the privilege of working with Matteo during the 3iAfrica Fintech Innovation Challenge. As a coach, he provided invaluable insights that helped us sharpen our fintech solution on very short notice. His deep understanding of the industry and his ability to challenge our assumptions were instrumental to our progress. I highly recommend Matteo to anyone looking for a high-impact mentor in the fintech space",
+    name: "Favour Betta",
+    title: "President University of Ghana Finance Students and Associate’s (FINSA) ",
+    initials: "FB",
     color: "bg-violet-600",
   },
   {
     quote:
-      "Matteo helped us navigate a complex market entry into Europe with the kind of nuance that only comes from decades on the ground. He opened doors we didn't know existed and gave us a framework that held up under real pressure.",
-    name: "Paulo Rodrigues",
-    title: "CEO, SG Ventures",
-    initials: "PR",
+      "When pitching your startup, you want to have a clear story and focused message, that's where Matteo comes in with his vast experience and understanding of not just what makes a great pitch, but also the nuances of storytelling in the Fintech space. 
+
+Matteo served as my coach for Fintech Islands 2025 and his feedback was critical in refining our story and landing dataffluent in the top 3 startups at the event. ",
+    name: "Raquel Seville",
+    title: "CEO and Founder @ Dataffluent | Techstars ’24",
+    initials: "RS",
     color: "bg-emerald-600",
   },
   {
     quote:
-      "I've seen many ecosystem builders come and go. Matteo is the real thing — he built Innotribe from zero to one of the most respected innovation programs in financial services. His instinct for when to convene and when to step back is unmatched.",
-    name: "Chris Skinner",
-    title: "Author, The Finanser · Independent Financial Futurist",
-    initials: "CS",
+      "When Matteo says he is unconventional, he is correct, but not only that, he is authentic.
+
+His coaching for Fix25 (Fintech Island)  was instrumental, and his feedback was invaluable.
+
+He helped me refine my deck and pitch, which gave me the winning edge and helped me find my focus, flow, and rhythm",
+    name: "Khary Sharpe",
+    title: "Founder @ HeadOffice Inc. | Techstars & JP Morgan",
+    initials: "KS",
     color: "bg-amber-600",
   },
   {
     quote:
-      "Matteo doesn't give you a slide deck. He gives you a perspective you can't unsee. His advisory work reshaped how we think about talent and disruption — and more importantly, what we do about it.",
-    name: "Susanne Chishti",
-    title: "CEO, FINTECH Circle · Co-editor, The FINTECH Book",
-    initials: "SC",
+      "Matteo is a world-class coach of Founders for Pitch Contests. I had the pleasure of being coached by Matteo at Fintech Islands 2024 in Barbados and I believe his advice and direction contributed greatly towards myself and company, Sunshine ☀️ winning 1st Place at the contest.
+
+Matteo is very clear in his advice and does a great job of helping Founders understand the format of a Pitch Contests vs other forms of pitches. I’d highly recommend working with Matteo to any Founder.",
+    name: "Jarryon Paul",
+    title: "Founder of Sunshine®️ ☀️ Creating FINANCIAL FREEDOM FOR ALL",
+    initials: "JP",
     color: "bg-rose-600",
   },
 ];
-
 export default function Testimonials() {
   const [active, setActive] = useState(0);
 
