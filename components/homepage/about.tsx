@@ -22,7 +22,7 @@ const PROFILE = {
     { icon: Globe, label: "Founder, Timepledge.org" },
     { icon: BookOpen, label: 'Author — "The FinTech Revolution" & "Talents & Rebels"' },
     { icon: Mic2, label: "Executive Producer, Breaking Banks Europe and Africa" },
-    { icon: Mic2, label: " CXO Conversations" },
+    { icon: Mic2, label: "Executive Producer, CXO Conversations" },
   ],
   location: "Lisbon, Portugal",
 };
