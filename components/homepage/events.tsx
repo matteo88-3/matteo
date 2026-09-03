@@ -17,6 +17,7 @@ import {
   ChevronRight,
   Filter,
   CalendarRange,
+  Search,
 } from 'lucide-react';
 import { useEvents, Event } from '@/lib/api/fetch.events';
 
@@ -39,6 +40,9 @@ const NewUpcomingEvent: React.FC = () => {
   const [dateFrom, setDateFrom] = useState<string>('');
   const [dateTo, setDateTo] = useState<string>('');
   const [showDateFilter, setShowDateFilter] = useState(false);
+
+  // Search state
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const { data, isLoading, error, isError } = useEvents();
   const events: Event[] = data?.eventsdata || [];
@@ -124,9 +128,22 @@ const NewUpcomingEvent: React.FC = () => {
     setCurrentPage(1);
   };
 
-  const totalPages = Math.ceil(filteredEvents.length / EVENTS_PER_PAGE);
+  /* Apply search filter by event title */
+  const searchedEvents = filteredEvents.filter((e) =>
+    !searchQuery.trim() ||
+    e.eventTitle.toLowerCase().includes(searchQuery.trim().toLowerCase())
+  );
 
-  const paginatedEvents = filteredEvents.slice(
+  const isSearchActive = !!searchQuery.trim();
+
+  const clearSearch = () => {
+    setSearchQuery('');
+    setCurrentPage(1);
+  };
+
+  const totalPages = Math.ceil(searchedEvents.length / EVENTS_PER_PAGE);
+
+  const paginatedEvents = searchedEvents.slice(
     (currentPage - 1) * EVENTS_PER_PAGE,
     currentPage * EVENTS_PER_PAGE
   );
@@ -204,10 +221,10 @@ const NewUpcomingEvent: React.FC = () => {
           </button>
         </div>
 
-        {filteredEvents.length > 0 && (
+        {searchedEvents.length > 0 && (
           <p className="text-sm text-gray-500">
             Showing {(currentPage - 1) * EVENTS_PER_PAGE + 1}–
-            {Math.min(currentPage * EVENTS_PER_PAGE, filteredEvents.length)} of {filteredEvents.length} events
+            {Math.min(currentPage * EVENTS_PER_PAGE, searchedEvents.length)} of {searchedEvents.length} events
           </p>
         )}
       </div>
@@ -279,6 +296,29 @@ const NewUpcomingEvent: React.FC = () => {
                   {f.label} ({f.count})
                 </button>
               ))}
+            </div>
+          </div>
+
+          {/* ── Search Bar ── */}
+          <div className="flex justify-center mb-4">
+            <div className="relative w-full max-w-md">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
+                placeholder="Search events by name..."
+                className="w-full pl-11 pr-10 py-3 rounded-2xl border border-white/20 bg-white/80 backdrop-blur-sm shadow-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+              />
+              {isSearchActive && (
+                <button
+                  onClick={clearSearch}
+                  aria-label="Clear search"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                >
+                  <X className="w-3.5 h-3.5 text-gray-500" />
+                </button>
+              )}
             </div>
           </div>
 
@@ -388,19 +428,33 @@ const NewUpcomingEvent: React.FC = () => {
                 </div>
                 <h3 className="text-2xl font-bold text-gray-700 mb-2">No Events Found</h3>
                 <p className="text-gray-500 max-w-md mx-auto">
-                  {isDateFilterActive
+                  {isSearchActive
+                    ? `No events match "${searchQuery}". Try a different search term.`
+                    : isDateFilterActive
                     ? 'No events match the selected date range. Try adjusting or clearing the date filter.'
                     : activeFilter === 'all'
                     ? 'There are no events scheduled at the moment.'
                     : `No ${activeFilter} events found.`}
                 </p>
-                {isDateFilterActive && (
-                  <button
-                    onClick={clearDateFilter}
-                    className="mt-4 px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold hover:opacity-90 transition-opacity"
-                  >
-                    Clear Date Filter
-                  </button>
+                {(isSearchActive || isDateFilterActive) && (
+                  <div className="flex gap-3 justify-center mt-4">
+                    {isSearchActive && (
+                      <button
+                        onClick={clearSearch}
+                        className="px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+                      >
+                        Clear Search
+                      </button>
+                    )}
+                    {isDateFilterActive && (
+                      <button
+                        onClick={clearDateFilter}
+                        className="px-5 py-2.5 rounded-xl border border-gray-200 text-gray-600 text-sm font-semibold hover:bg-gray-50 transition-colors"
+                      >
+                        Clear Date Filter
+                      </button>
+                    )}
+                  </div>
                 )}
               </div>
             ) : (
