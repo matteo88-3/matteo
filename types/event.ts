@@ -5,10 +5,8 @@ export interface Event {
   description: string;
   coverimage: string;
   eventDate: string;
-  eventTime: string;
+  eventenddate: string;
   eventLink: string;
-  hourstart: string;
-  hourend: string;
   eventLocation: string;
   attendees: string;
 }
