@@ -4,25 +4,17 @@ export interface Event {
   description: string;
   coverimage: string;
   eventDate: string;
-  eventTime: string;
-  hourstart: string;
+  eventenddate: string;
   eventLink: string;
-  hourend: string;
   eventLocation: string;
   attendees: string;
 }
 
- 
 import { useQuery } from "@tanstack/react-query";
-
 interface EventResponse {
   success: boolean;
   eventsdata: Event[];
 }
-
-
-
-
 // Fetch main career jobs
 const fetchEvents = async (): Promise<EventResponse> => {
   const response = await fetch("/api/fetch/fetch.events", {
@@ -33,17 +25,12 @@ const fetchEvents = async (): Promise<EventResponse> => {
     },
    
   });
-
   const data = await response.json();
-
   if (!response.ok) {
     throw new Error(data.message || "Failed to fetch Services");
   }
-
   return data;
 };
-
-
 // Hook for fetching all events
 export const useEvents = () => {
   return useQuery<EventResponse, Error>({
