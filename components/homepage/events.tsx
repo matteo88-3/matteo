@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { format, isAfter, isBefore } from "date-fns";
 import {
   Calendar,
+  Clock,
   MapPin,
   ArrowRight,
   Ticket,
@@ -20,7 +21,7 @@ import {
 } from 'lucide-react';
 import { useEvents, Event } from '@/lib/api/fetch.events';
 
-type FilterType = 'upcoming' | 'happening' | 'ended' | 'all';
+type FilterType =  'upcoming' | 'happening' | 'ended' |  'all';
 type EventWithStatus = Event & { status: 'upcoming' | 'happening' | 'ended' };
 
 const EVENTS_PER_PAGE = 6;
@@ -69,23 +70,16 @@ const NewUpcomingEvent: React.FC = () => {
 
   const now = new Date();
 
-  /*
-    STATUS LOGIC (updated)
-    -----------------------
-    Previously this used hourstart/hourend on the same day to know if an
-    event was "happening" right now. Since hours are removed, status is
-    now based on full calendar days:
-      - upcoming: now < start of eventDate
-      - happening: eventDate <= now <= end of eventEndDate (or eventDate if no end date)
-      - ended: now > end of eventEndDate (or eventDate if no end date)
-  */
   const categorizedEvents: EventWithStatus[] = sortedEvents.map((event) => {
-    const startDT = new Date(event.eventDate);
-    startDT.setHours(0, 0, 0, 0);
+    const base = new Date(event.eventDate);
 
-    const endSource = event.eventenddate || event.eventDate;
-    const endDT = new Date(endSource);
-    endDT.setHours(23, 59, 59, 999);
+    const startDT = new Date(base);
+    const [sh, sm] = (event.hourstart || '00:00').split(':').map(Number);
+    startDT.setHours(sh, sm, 0, 0);
+
+    const endDT = new Date(base);
+    const [eh, em] = (event.hourend || '00:00').split(':').map(Number);
+    endDT.setHours(eh, em, 0, 0);
 
     let status: 'upcoming' | 'happening' | 'ended' = 'upcoming';
     if (isAfter(now, startDT) && isBefore(now, endDT)) status = 'happening';
@@ -149,23 +143,6 @@ const NewUpcomingEvent: React.FC = () => {
       default:
         return { icon: Clock4, text: 'Upcoming', badgeClass: 'bg-primary' };
     }
-  };
-
-  /*
-    Renders "12th March 2026" for single-day events, or
-    "12th March 2026 – 15th March 2026" when an end date exists
-    and differs from the start date.
-  */
-  const formatEventDateRange = (event: Event) => {
-    const start = format(new Date(event.eventDate), "do MMMM yyyy");
-    if (!event.eventenddate) return start;
-
-    const startDay = new Date(event.eventDate).toDateString();
-    const endDay = new Date(event.eventenddate).toDateString();
-    if (startDay === endDay) return start;
-
-    const end = format(new Date(event.eventenddate), "do MMMM yyyy");
-    return `${start} – ${end}`;
   };
 
   /* ── Reusable Pagination Bar ── */
@@ -405,6 +382,7 @@ const NewUpcomingEvent: React.FC = () => {
               </div>
             ) : (
               paginatedEvents.map((event, index) => {
+                const formattedDate = format(new Date(event.eventDate), "do MMMM yyyy");
                 const statusConfig = getStatusConfig(event.status);
                 const StatusIcon = statusConfig.icon;
 
@@ -440,7 +418,11 @@ const NewUpcomingEvent: React.FC = () => {
                       <div className="space-y-3 mb-4">
                         <div className="flex items-center text-gray-600">
                           <Calendar className="w-4 h-4 mr-3 text-blue-500" />
-                          <span className="text-sm">{formatEventDateRange(event)}</span>
+                          <span className="text-sm">{formattedDate}</span>
+                        </div>
+                        <div className="flex items-center text-gray-600">
+                          <Clock className="w-4 h-4 mr-3 text-orange-500" />
+                          <span className="text-sm">{event.hourstart} - {event.hourend}</span>
                         </div>
                         {event.eventLocation && (
                           <div className="flex items-center text-gray-600">
@@ -551,7 +533,11 @@ const NewUpcomingEvent: React.FC = () => {
                 <div className="space-y-3 mb-4">
                   <div className="flex items-center text-gray-700">
                     <Calendar className="w-4 h-4 mr-3 text-blue-500 shrink-0" />
-                    <span className="text-sm">{formatEventDateRange(selectedEvent)}</span>
+                    <span className="text-sm">{format(new Date(selectedEvent.eventDate), "do MMMM yyyy")}</span>
+                  </div>
+                  <div className="flex items-center text-gray-700">
+                    <Clock className="w-4 h-4 mr-3 text-orange-500 shrink-0" />
+                    <span className="text-sm">{selectedEvent.hourstart} – {selectedEvent.hourend}</span>
                   </div>
                   {selectedEvent.eventLocation && (
                     <div className="flex items-center text-gray-700">
