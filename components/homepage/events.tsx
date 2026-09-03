@@ -168,23 +168,6 @@ const NewUpcomingEvent: React.FC = () => {
     }
   };
 
-  /*
-    Renders "12th March 2026" for single-day events, or
-    "12th March 2026 – 15th March 2026" when an end date exists
-    and differs from the start date.
-  */
-  const formatEventDateRange = (event: Event) => {
-    const start = format(new Date(event.eventDate), "do MMMM yyyy");
-    if (!event.eventenddate) return start;
-
-    const startDay = new Date(event.eventDate).toDateString();
-    const endDay = new Date(event.eventenddate).toDateString();
-    if (startDay === endDay) return start;
-
-    const end = format(new Date(event.eventenddate), "do MMMM yyyy");
-    return `${start} – ${end}`;
-  };
-
   /* ── Reusable Pagination Bar ── */
   const PaginationBar = () =>
     totalPages > 1 ? (
@@ -301,7 +284,7 @@ const NewUpcomingEvent: React.FC = () => {
 
           {/* ── Search Bar ── */}
           <div className="flex justify-center mb-4">
-            <div className="relative w-full max-w-md">
+            <div className="relative w-full max-w-2xl">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               <input
                 type="text"
@@ -492,9 +475,14 @@ const NewUpcomingEvent: React.FC = () => {
                         {event.eventTitle}
                       </h3>
                       <div className="space-y-3 mb-4">
-                        <div className="flex items-center text-gray-600">
-                          <Calendar className="w-4 h-4 mr-3 text-blue-500" />
-                          <span className="text-sm">{formatEventDateRange(event)}</span>
+                        <div className="flex items-start text-gray-600">
+                          <Calendar className="w-4 h-4 mr-3 mt-0.5 text-blue-500" />
+                          <div className="flex flex-col text-sm">
+                            <span>{format(new Date(event.eventDate), "do MMMM yyyy")}</span>
+                            {event.eventenddate && (
+                              <span className="text-xs text-gray-400">to {format(new Date(event.eventenddate), "do MMMM yyyy")}</span>
+                            )}
+                          </div>
                         </div>
                         {event.eventLocation && (
                           <div className="flex items-center text-gray-600">
@@ -603,9 +591,14 @@ const NewUpcomingEvent: React.FC = () => {
                 )}
 
                 <div className="space-y-3 mb-4">
-                  <div className="flex items-center text-gray-700">
-                    <Calendar className="w-4 h-4 mr-3 text-blue-500 shrink-0" />
-                    <span className="text-sm">{formatEventDateRange(selectedEvent)}</span>
+                  <div className="flex items-start text-gray-700">
+                    <Calendar className="w-4 h-4 mr-3 mt-0.5 text-blue-500 shrink-0" />
+                    <div className="flex flex-col text-sm">
+                      <span>{format(new Date(selectedEvent.eventDate), "do MMMM yyyy")}</span>
+                      {selectedEvent.eventenddate && (
+                        <span className="text-xs text-gray-400">to {format(new Date(selectedEvent.eventenddate), "do MMMM yyyy")}</span>
+                      )}
+                    </div>
                   </div>
                   {selectedEvent.eventLocation && (
                     <div className="flex items-center text-gray-700">
