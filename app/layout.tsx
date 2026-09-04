@@ -4,9 +4,9 @@ import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
-import Providers from "@/lib/queryProvider"
-import { Toaster } from "sonner"
-import NextTopLoader from "nextjs-toploader"
+import Providers from "@/lib/queryProvider";
+import { Toaster } from "sonner";
+import NextTopLoader from "nextjs-toploader";
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -26,952 +26,57 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={poppins.variable}>
-      <body className="font-poppins antialiased">
 
-        <Providers>
+      <Providers>
 
-          {/* ================================
-              MATTEO RIZZI PREMIUM LOADER
-          ================================= */}
+        <body className="font-poppins antialiased">
 
-          <div className="mr-loader">
+          {/* =========================
+              MATTEO RIZZI PAGE LOADER
+          ========================== */}
 
-            {/* Background grid */}
-            <div className="mr-grid" />
+          <div className="matteo-loader">
 
-            {/* Ambient lights */}
-            <div className="mr-ambient mr-ambient-1" />
-            <div className="mr-ambient mr-ambient-2" />
+            <div className="matteo-loader-glow matteo-glow-one"></div>
+            <div className="matteo-loader-glow matteo-glow-two"></div>
 
-            {/* Top branding */}
-            <div className="mr-loader-top">
+            <div className="matteo-loader-content">
 
-              <div className="mr-loader-brand">
-                MATTEO RIZZI
+              <div className="matteo-loader-label">
+                <span></span>
+                PERSONAL WEBSITE
               </div>
 
-              <div className="mr-loader-status">
-                <span className="mr-status-dot" />
-                LOADING EXPERIENCE
+              <div className="matteo-loader-name">
+                <div>MATTEO</div>
+                <div>RIZZI</div>
               </div>
 
-            </div>
-
-
-            {/* Center animation */}
-            <div className="mr-loader-center">
-
-              {/* Orbit rings */}
-              <div className="mr-orbit mr-orbit-1" />
-              <div className="mr-orbit mr-orbit-2" />
-              <div className="mr-orbit mr-orbit-3" />
-
-              {/* Orbiting dot */}
-              <div className="mr-orbit-dot" />
-
-              {/* MR logo */}
-              <div className="mr-monogram">
-                MR
+              <div className="matteo-loader-progress">
+                <div className="matteo-loader-progress-bar"></div>
               </div>
 
-              {/* Name */}
-              <div className="mr-loader-name">
-                MATTEO RIZZI
-              </div>
-
-              {/* Position */}
-              <div className="mr-loader-role">
-                GLOBAL FINTECH LEADER
-              </div>
-
-            </div>
-
-
-            {/* Bottom progress */}
-            <div className="mr-loader-bottom">
-
-              <div className="mr-loader-line-container">
-                <div className="mr-loader-line" />
-              </div>
-
-              <div className="mr-loader-info">
+              <div className="matteo-loader-bottom">
 
                 <span>
-                  INNOVATION&nbsp;&nbsp;/&nbsp;&nbsp;
-                  FINTECH&nbsp;&nbsp;/&nbsp;&nbsp;
+                  INNOVATION&nbsp;&nbsp;•&nbsp;&nbsp;
+                  FINTECH&nbsp;&nbsp;•&nbsp;&nbsp;
                   ECOSYSTEMS
                 </span>
 
-                <span className="mr-loader-counter">
-                  <span className="mr-counter-number">
-                    0
-                  </span>
-                  %
+                <span className="matteo-loader-percent">
+                  100%
                 </span>
 
               </div>
 
             </div>
-
-
-            {/* ================================
-                LOADER STYLES
-            ================================= */}
-
-            <style>{`
-
-              /* =====================================
-                 MAIN LOADER
-              ====================================== */
-
-              .mr-loader {
-                position: fixed;
-                inset: 0;
-
-                width: 100%;
-                height: 100%;
-
-                background: #050505;
-
-                color: #ffffff;
-
-                z-index: 999999;
-
-                overflow: hidden;
-
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                animation:
-                  mrLoaderExit
-                  1.2s
-                  cubic-bezier(.77,0,.18,1)
-                  3.4s
-                  forwards;
-              }
-
-
-              /* =====================================
-                 GRID
-              ====================================== */
-
-              .mr-grid {
-                position: absolute;
-                inset: -50%;
-
-                background-image:
-                  linear-gradient(
-                    rgba(255,255,255,.035) 1px,
-                    transparent 1px
-                  ),
-                  linear-gradient(
-                    90deg,
-                    rgba(255,255,255,.035) 1px,
-                    transparent 1px
-                  );
-
-                background-size: 80px 80px;
-
-                transform:
-                  perspective(700px)
-                  rotateX(65deg)
-                  scale(1.5);
-
-                transform-origin: center;
-
-                opacity: .35;
-
-                animation:
-                  mrGridMove
-                  12s
-                  linear
-                  infinite;
-              }
-
-
-              /* =====================================
-                 AMBIENT LIGHT
-              ====================================== */
-
-              .mr-ambient {
-                position: absolute;
-
-                width: 500px;
-                height: 500px;
-
-                border-radius: 50%;
-
-                filter: blur(140px);
-
-                opacity: .08;
-
-                pointer-events: none;
-              }
-
-              .mr-ambient-1 {
-                top: -250px;
-                left: -200px;
-
-                background: #1b7fa8;
-
-                animation:
-                  mrAmbientMove
-                  8s
-                  ease-in-out
-                  infinite;
-              }
-
-              .mr-ambient-2 {
-                right: -250px;
-                bottom: -250px;
-
-                background: #ffffff;
-
-                animation:
-                  mrAmbientMove
-                  10s
-                  ease-in-out
-                  infinite
-                  reverse;
-              }
-
-
-              /* =====================================
-                 TOP
-              ====================================== */
-
-              .mr-loader-top {
-                position: absolute;
-
-                top: 35px;
-                left: 45px;
-                right: 45px;
-
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-
-                font-family: Arial, sans-serif;
-
-                animation:
-                  mrFadeUp
-                  .9s
-                  ease
-                  .2s
-                  both;
-              }
-
-              .mr-loader-brand {
-                font-size: 11px;
-
-                font-weight: 600;
-
-                letter-spacing: .18em;
-
-                color:
-                  rgba(255,255,255,.85);
-              }
-
-              .mr-loader-status {
-                display: flex;
-
-                align-items: center;
-
-                gap: 9px;
-
-                font-size: 8px;
-
-                letter-spacing: .18em;
-
-                color:
-                  rgba(255,255,255,.4);
-              }
-
-              .mr-status-dot {
-                width: 5px;
-                height: 5px;
-
-                border-radius: 50%;
-
-                background: #1b7fa8;
-
-                box-shadow:
-                  0 0 12px
-                  rgba(27,127,168,.8);
-
-                animation:
-                  mrStatusPulse
-                  1.2s
-                  ease-in-out
-                  infinite;
-              }
-
-
-              /* =====================================
-                 CENTER
-              ====================================== */
-
-              .mr-loader-center {
-                position: relative;
-
-                width: 430px;
-                height: 430px;
-
-                display: flex;
-
-                flex-direction: column;
-
-                align-items: center;
-
-                justify-content: center;
-
-                animation:
-                  mrCenterIn
-                  1.2s
-                  cubic-bezier(.16,1,.3,1)
-                  .15s
-                  both;
-              }
-
-
-              /* =====================================
-                 ORBITS
-              ====================================== */
-
-              .mr-orbit {
-                position: absolute;
-
-                border-radius: 50%;
-
-                left: 50%;
-                top: 50%;
-
-                transform:
-                  translate(-50%,-50%);
-
-                border: 1px solid
-                  rgba(255,255,255,.12);
-              }
-
-              .mr-orbit-1 {
-                width: 190px;
-                height: 190px;
-
-                border-color:
-                  rgba(255,255,255,.18);
-
-                animation:
-                  mrRotate
-                  8s
-                  linear
-                  infinite;
-              }
-
-              .mr-orbit-2 {
-                width: 270px;
-                height: 270px;
-
-                border-color:
-                  rgba(27,127,168,.28);
-
-                border-left-color:
-                  transparent;
-
-                animation:
-                  mrRotateReverse
-                  11s
-                  linear
-                  infinite;
-              }
-
-              .mr-orbit-3 {
-                width: 350px;
-                height: 350px;
-
-                border-color:
-                  rgba(255,255,255,.06);
-
-                animation:
-                  mrRotate
-                  18s
-                  linear
-                  infinite;
-              }
-
-
-              /* =====================================
-                 ORBIT DOT
-              ====================================== */
-
-              .mr-orbit-dot {
-                position: absolute;
-
-                width: 9px;
-                height: 9px;
-
-                border-radius: 50%;
-
-                background: #1b7fa8;
-
-                box-shadow:
-                  0 0 20px
-                  rgba(27,127,168,.8);
-
-                top: 50%;
-                left: 50%;
-
-                margin-left: -135px;
-
-                transform-origin:
-                  135px 0;
-
-                animation:
-                  mrDotRotate
-                  5s
-                  linear
-                  infinite;
-              }
-
-
-              /* =====================================
-                 MR MONOGRAM
-              ====================================== */
-
-              .mr-monogram {
-                position: relative;
-
-                z-index: 5;
-
-                font-family:
-                  Arial,
-                  Helvetica,
-                  sans-serif;
-
-                font-size: 72px;
-
-                font-weight: 700;
-
-                letter-spacing: -.09em;
-
-                line-height: 1;
-
-                color: #ffffff;
-
-                text-shadow:
-                  0 0 40px
-                  rgba(255,255,255,.08);
-
-                animation:
-                  mrMonogramPulse
-                  3s
-                  ease-in-out
-                  infinite;
-              }
-
-
-              /* =====================================
-                 NAME
-              ====================================== */
-
-              .mr-loader-name {
-                margin-top: 25px;
-
-                font-family: Arial, sans-serif;
-
-                font-size: 12px;
-
-                font-weight: 600;
-
-                letter-spacing: .35em;
-
-                padding-left: .35em;
-
-                color:
-                  rgba(255,255,255,.9);
-
-                animation:
-                  mrFadeUp
-                  1s
-                  ease
-                  .7s
-                  both;
-              }
-
-
-              /* =====================================
-                 ROLE
-              ====================================== */
-
-              .mr-loader-role {
-                margin-top: 12px;
-
-                font-family: Arial, sans-serif;
-
-                font-size: 7px;
-
-                letter-spacing: .25em;
-
-                padding-left: .25em;
-
-                color:
-                  rgba(255,255,255,.35);
-
-                animation:
-                  mrFadeUp
-                  1s
-                  ease
-                  .9s
-                  both;
-              }
-
-
-              /* =====================================
-                 BOTTOM
-              ====================================== */
-
-              .mr-loader-bottom {
-                position: absolute;
-
-                left: 45px;
-                right: 45px;
-
-                bottom: 38px;
-
-                animation:
-                  mrFadeUp
-                  .9s
-                  ease
-                  .5s
-                  both;
-              }
-
-
-              /* =====================================
-                 PROGRESS BAR
-              ====================================== */
-
-              .mr-loader-line-container {
-                width: 100%;
-
-                height: 1px;
-
-                background:
-                  rgba(255,255,255,.1);
-
-                overflow: hidden;
-              }
-
-              .mr-loader-line {
-                width: 0%;
-
-                height: 100%;
-
-                background:
-                  linear-gradient(
-                    90deg,
-                    transparent,
-                    #1b7fa8,
-                    #ffffff
-                  );
-
-                box-shadow:
-                  0 0 12px
-                  rgba(27,127,168,.5);
-
-                animation:
-                  mrProgress
-                  3s
-                  cubic-bezier(.65,0,.35,1)
-                  forwards;
-              }
-
-
-              /* =====================================
-                 BOTTOM INFORMATION
-              ====================================== */
-
-              .mr-loader-info {
-                display: flex;
-
-                align-items: center;
-
-                justify-content: space-between;
-
-                margin-top: 13px;
-
-                font-family: Arial, sans-serif;
-
-                font-size: 8px;
-
-                letter-spacing: .18em;
-
-                color:
-                  rgba(255,255,255,.3);
-              }
-
-              .mr-loader-counter {
-                color:
-                  rgba(255,255,255,.85);
-
-                font-variant-numeric:
-                  tabular-nums;
-              }
-
-              .mr-counter-number {
-                display: inline-block;
-
-                min-width: 30px;
-
-                text-align: right;
-
-                animation:
-                  mrCounter 3s
-                  steps(100)
-                  forwards;
-              }
-
-
-              /* =====================================
-                 ANIMATIONS
-              ====================================== */
-
-              @keyframes mrLoaderExit {
-
-                0% {
-                  opacity: 1;
-                  visibility: visible;
-                  transform: scale(1);
-                  filter: blur(0);
-                }
-
-                65% {
-                  opacity: 1;
-                  transform: scale(1);
-                  filter: blur(0);
-                }
-
-                100% {
-                  opacity: 0;
-                  visibility: hidden;
-                  pointer-events: none;
-                  transform: scale(1.04);
-                  filter: blur(8px);
-                }
-
-              }
-
-
-              @keyframes mrCenterIn {
-
-                from {
-                  opacity: 0;
-
-                  transform: scale(.75);
-
-                  filter: blur(10px);
-                }
-
-                to {
-                  opacity: 1;
-
-                  transform: scale(1);
-
-                  filter: blur(0);
-                }
-
-              }
-
-
-              @keyframes mrFadeUp {
-
-                from {
-                  opacity: 0;
-
-                  transform:
-                    translateY(18px);
-                }
-
-                to {
-                  opacity: 1;
-
-                  transform:
-                    translateY(0);
-                }
-
-              }
-
-
-              @keyframes mrRotate {
-
-                from {
-                  transform:
-                    translate(-50%,-50%)
-                    rotate(0deg);
-                }
-
-                to {
-                  transform:
-                    translate(-50%,-50%)
-                    rotate(360deg);
-                }
-
-              }
-
-
-              @keyframes mrRotateReverse {
-
-                from {
-                  transform:
-                    translate(-50%,-50%)
-                    rotate(360deg);
-                }
-
-                to {
-                  transform:
-                    translate(-50%,-50%)
-                    rotate(0deg);
-                }
-
-              }
-
-
-              @keyframes mrDotRotate {
-
-                from {
-                  transform:
-                    rotate(0deg);
-                }
-
-                to {
-                  transform:
-                    rotate(360deg);
-                }
-
-              }
-
-
-              @keyframes mrMonogramPulse {
-
-                0%,
-                100% {
-                  transform: scale(1);
-                  opacity: .9;
-                }
-
-                50% {
-                  transform: scale(1.04);
-                  opacity: 1;
-                }
-
-              }
-
-
-              @keyframes mrProgress {
-
-                0% {
-                  width: 0%;
-                }
-
-                15% {
-                  width: 18%;
-                }
-
-                40% {
-                  width: 43%;
-                }
-
-                65% {
-                  width: 68%;
-                }
-
-                82% {
-                  width: 84%;
-                }
-
-                94% {
-                  width: 94%;
-                }
-
-                100% {
-                  width: 100%;
-                }
-
-              }
-
-
-              @keyframes mrCounter {
-
-                from {
-                  width: 0;
-                }
-
-                to {
-                  width: 30px;
-                }
-
-              }
-
-
-              @keyframes mrStatusPulse {
-
-                0%,
-                100% {
-                  opacity: .3;
-                  transform: scale(.7);
-                }
-
-                50% {
-                  opacity: 1;
-                  transform: scale(1.2);
-                }
-
-              }
-
-
-              @keyframes mrGridMove {
-
-                from {
-                  transform:
-                    perspective(700px)
-                    rotateX(65deg)
-                    scale(1.5)
-                    translateY(0);
-                }
-
-                to {
-                  transform:
-                    perspective(700px)
-                    rotateX(65deg)
-                    scale(1.5)
-                    translateY(80px);
-                }
-
-              }
-
-
-              @keyframes mrAmbientMove {
-
-                0%,
-                100% {
-                  transform:
-                    translate(0,0)
-                    scale(1);
-                }
-
-                50% {
-                  transform:
-                    translate(80px,50px)
-                    scale(1.2);
-                }
-
-              }
-
-
-              /* =====================================
-                 MOBILE
-              ====================================== */
-
-              @media (max-width: 600px) {
-
-                .mr-loader-top {
-                  top: 25px;
-                  left: 22px;
-                  right: 22px;
-                }
-
-                .mr-loader-status {
-                  font-size: 6px;
-                  letter-spacing: .12em;
-                }
-
-                .mr-loader-brand {
-                  font-size: 9px;
-                }
-
-                .mr-loader-center {
-                  width: 330px;
-                  height: 330px;
-                }
-
-                .mr-orbit-1 {
-                  width: 150px;
-                  height: 150px;
-                }
-
-                .mr-orbit-2 {
-                  width: 220px;
-                  height: 220px;
-                }
-
-                .mr-orbit-3 {
-                  width: 285px;
-                  height: 285px;
-                }
-
-                .mr-monogram {
-                  font-size: 58px;
-                }
-
-                .mr-loader-name {
-                  font-size: 9px;
-                  letter-spacing: .25em;
-                }
-
-                .mr-loader-role {
-                  font-size: 6px;
-                }
-
-                .mr-loader-bottom {
-                  left: 22px;
-                  right: 22px;
-                  bottom: 25px;
-                }
-
-                .mr-loader-info {
-                  font-size: 6px;
-                  letter-spacing: .1em;
-                }
-
-              }
-
-
-              /* =====================================
-                 REDUCED MOTION
-              ====================================== */
-
-              @media (prefers-reduced-motion: reduce) {
-
-                .mr-loader,
-                .mr-grid,
-                .mr-ambient,
-                .mr-loader-center,
-                .mr-loader-label,
-                .mr-loader-name,
-                .mr-loader-role,
-                .mr-loader-bottom,
-                .mr-orbit,
-                .mr-orbit-dot,
-                .mr-monogram,
-                .mr-loader-line,
-                .mr-counter-number {
-                  animation: none !important;
-                }
-
-                .mr-loader {
-                  display: none;
-                }
-
-              }
-
-            `}</style>
-
           </div>
 
 
-          {/* ==========================================
+          {/* =========================
               EXISTING WEBSITE
-          =========================================== */}
+          ========================== */}
 
           <Toaster
             richColors
@@ -991,16 +96,382 @@ export default function RootLayout({
           <Header />
 
           <main>
+
             {children}
+
           </main>
 
           <Footer />
 
           <LanguageSwitcher />
 
-        </Providers>
 
-      </body>
+          {/* =========================
+              LOADER CSS
+          ========================== */}
+
+          <style>{`
+
+            /* =====================================
+               FULL SCREEN LOADER
+            ====================================== */
+
+            .matteo-loader {
+              position: fixed;
+              inset: 0;
+              width: 100%;
+              height: 100%;
+              background: #080808;
+              color: #ffffff;
+              z-index: 999999;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              overflow: hidden;
+
+              animation: matteoLoaderExit 0.8s
+                cubic-bezier(0.77, 0, 0.18, 1)
+                2.4s forwards;
+            }
+
+
+            /* =====================================
+               CONTENT
+            ====================================== */
+
+            .matteo-loader-content {
+              position: relative;
+              z-index: 5;
+              width: min(850px, 82vw);
+            }
+
+
+            /* =====================================
+               SMALL LABEL
+            ====================================== */
+
+            .matteo-loader-label {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+
+              font-family: Arial, sans-serif;
+              font-size: 10px;
+              letter-spacing: 0.22em;
+
+              color: rgba(255,255,255,0.55);
+
+              margin-bottom: 32px;
+
+              opacity: 0;
+
+              animation: matteoFadeUp 0.8s ease
+                0.2s forwards;
+            }
+
+            .matteo-loader-label span {
+              width: 6px;
+              height: 6px;
+
+              border-radius: 50%;
+
+              background: #ffffff;
+
+              animation: matteoPulse 1.2s
+                ease-in-out infinite;
+            }
+
+
+            /* =====================================
+               MATTEO RIZZI
+            ====================================== */
+
+            .matteo-loader-name {
+              font-family: Arial, Helvetica, sans-serif;
+
+              font-size: clamp(
+                60px,
+                11vw,
+                150px
+              );
+
+              font-weight: 800;
+
+              line-height: 0.78;
+
+              letter-spacing: -0.075em;
+
+              overflow: hidden;
+            }
+
+            .matteo-loader-name div {
+              transform: translateY(110%);
+
+              animation:
+                matteoRevealText 1s
+                cubic-bezier(0.77, 0, 0.18, 1)
+                forwards;
+            }
+
+            .matteo-loader-name div:nth-child(2) {
+              animation-delay: 0.08s;
+            }
+
+
+            /* =====================================
+               PROGRESS BAR
+            ====================================== */
+
+            .matteo-loader-progress {
+              width: 100%;
+              height: 1px;
+
+              margin-top: 55px;
+
+              background:
+                rgba(255,255,255,0.16);
+
+              overflow: hidden;
+            }
+
+            .matteo-loader-progress-bar {
+              height: 100%;
+              width: 0%;
+
+              background: #ffffff;
+
+              animation:
+                matteoProgress 2.2s
+                cubic-bezier(0.65,0,0.35,1)
+                forwards;
+            }
+
+
+            /* =====================================
+               BOTTOM TEXT
+            ====================================== */
+
+            .matteo-loader-bottom {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+
+              margin-top: 15px;
+
+              font-family: Arial, sans-serif;
+
+              font-size: 9px;
+
+              letter-spacing: 0.16em;
+
+              color:
+                rgba(255,255,255,0.45);
+            }
+
+            .matteo-loader-percent {
+              color: #ffffff;
+
+              font-variant-numeric:
+                tabular-nums;
+            }
+
+
+            /* =====================================
+               BACKGROUND GLOW
+            ====================================== */
+
+            .matteo-loader-glow {
+              position: absolute;
+
+              width: 500px;
+              height: 500px;
+
+              border-radius: 50%;
+
+              filter: blur(120px);
+
+              opacity: 0.07;
+
+              pointer-events: none;
+            }
+
+            .matteo-glow-one {
+              background: #ffffff;
+
+              top: -300px;
+              right: -200px;
+
+              animation:
+                matteoGlow 7s
+                ease-in-out infinite;
+            }
+
+            .matteo-glow-two {
+              background: #ffffff;
+
+              bottom: -350px;
+              left: -250px;
+
+              animation:
+                matteoGlow 9s
+                ease-in-out infinite reverse;
+            }
+
+
+            /* =====================================
+               ANIMATIONS
+            ====================================== */
+
+            @keyframes matteoRevealText {
+
+              0% {
+                transform: translateY(110%);
+              }
+
+              100% {
+                transform: translateY(0);
+              }
+
+            }
+
+
+            @keyframes matteoFadeUp {
+
+              0% {
+                opacity: 0;
+                transform: translateY(15px);
+              }
+
+              100% {
+                opacity: 1;
+                transform: translateY(0);
+              }
+
+            }
+
+
+            @keyframes matteoProgress {
+
+              0% {
+                width: 0%;
+              }
+
+              80% {
+                width: 82%;
+              }
+
+              94% {
+                width: 94%;
+              }
+
+              100% {
+                width: 100%;
+              }
+
+            }
+
+
+            @keyframes matteoPulse {
+
+              0%,
+              100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+              }
+
+              50% {
+                opacity: 1;
+                transform: scale(1.2);
+              }
+
+            }
+
+
+            @keyframes matteoGlow {
+
+              0%,
+              100% {
+                transform:
+                  translate(0, 0);
+              }
+
+              50% {
+                transform:
+                  translate(60px, 40px);
+              }
+
+            }
+
+
+            @keyframes matteoLoaderExit {
+
+              0% {
+                opacity: 1;
+                visibility: visible;
+              }
+
+              100% {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+              }
+
+            }
+
+
+            /* =====================================
+               MOBILE
+            ====================================== */
+
+            @media (max-width: 600px) {
+
+              .matteo-loader-content {
+                width: 86vw;
+              }
+
+              .matteo-loader-name {
+                font-size: 17vw;
+              }
+
+              .matteo-loader-progress {
+                margin-top: 40px;
+              }
+
+              .matteo-loader-bottom span:first-child {
+                font-size: 7px;
+              }
+
+            }
+
+
+            /* =====================================
+               REDUCED MOTION
+            ====================================== */
+
+            @media (prefers-reduced-motion: reduce) {
+
+              .matteo-loader,
+              .matteo-loader-name div,
+              .matteo-loader-progress-bar,
+              .matteo-loader-label,
+              .matteo-loader-glow {
+                animation: none;
+              }
+
+              .matteo-loader {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+              }
+
+            }
+
+          `}</style>
+
+        </body>
+
+      </Providers>
+
     </html>
   )
 }
