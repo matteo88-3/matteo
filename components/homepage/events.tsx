@@ -596,7 +596,7 @@ const NewUpcomingEvent: React.FC = () => {
                     <div className="flex flex-col text-sm">
                       <span>{format(new Date(selectedEvent.eventDate), "do MMMM yyyy")}</span>
                       {selectedEvent.eventenddate && (
-                        <span className="text-xs text-gray-400" style="font-weight: bold;" to {format(new Date(selectedEvent.eventenddate), "do MMMM yyyy")}</span>
+                        <span className="text-xs text-gray-400">to {format(new Date(selectedEvent.eventenddate), "do MMMM yyyy")}</span>
                       )}
                     </div>
                   </div>
