@@ -478,7 +478,7 @@ const NewUpcomingEvent: React.FC = () => {
                         <div className="flex items-start text-gray-600">
                           <Calendar className="w-4 h-4 mr-3 mt-0.5 text-blue-500" />
                           <div className="flex flex-col text-sm">
-                            <span>{format(new Date(event.eventDate), "do MMMM yyyy")}</span>
+                            <span className="text-sm font-semibold text-gray-700">{format(new Date(event.eventDate), "do MMMM yyyy")}</span>
                             {event.eventenddate && (
                               <span className="text-sm font-semibold text-gray-700">to {format(new Date(event.eventenddate), "do MMMM yyyy")}</span>
                             )}
@@ -594,7 +594,7 @@ const NewUpcomingEvent: React.FC = () => {
                   <div className="flex items-start text-gray-700">
                     <Calendar className="w-4 h-4 mr-3 mt-0.5 text-blue-500 shrink-0" />
                     <div className="flex flex-col text-sm">
-                      <span>{format(new Date(selectedEvent.eventDate), "do MMMM yyyy")}</span>
+                      <span className="text-sm font-semibold text-gray-700">{format(new Date(selectedEvent.eventDate), "do MMMM yyyy")}</span>
                       {selectedEvent.eventenddate && (
                         <span className="text-sm font-semibold text-gray-700">to {format(new Date(selectedEvent.eventenddate), "do MMMM yyyy")}</span>
                       )}
