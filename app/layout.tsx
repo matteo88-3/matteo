@@ -3,6 +3,7 @@ import { Poppins } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 import Providers from "@/lib/queryProvider";
 import { Toaster } from "sonner";
 import NextTopLoader from "nextjs-toploader";
@@ -11,12 +12,10 @@ const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-poppins',
 })
-
 export const metadata: Metadata = {
   title: 'Matteo Rizzi || Global Fintech Leader',
   description: 'Global Fintech Leader.',
 }
-
 export default function RootLayout({
   children,
 }: {
@@ -42,11 +41,11 @@ export default function RootLayout({
         <main>
          
           {children}
-
           
           </main>
          
    <Footer /> 
+      <LanguageSwitcher />
       </body>
       </Providers>
     </html>
