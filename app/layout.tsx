@@ -4,9 +4,9 @@ import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
-import Providers from "@/lib/queryProvider";
-import { Toaster } from "sonner";
-import NextTopLoader from "nextjs-toploader";
+import Providers from "@/lib/queryProvider"
+import { Toaster } from "sonner"
+import NextTopLoader from "nextjs-toploader"
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -26,24 +26,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={poppins.variable}>
+      <body className="font-poppins antialiased">
 
-      <Providers>
+        <Providers>
 
-        <body className="font-poppins antialiased">
-
-          {/* ==================================================
-              PREMIUM MATTEO RIZZI LOADER
-          ================================================== */}
+          {/* ================================
+              MATTEO RIZZI PREMIUM LOADER
+          ================================= */}
 
           <div className="mr-loader">
 
             {/* Background grid */}
-            <div className="mr-grid"></div>
+            <div className="mr-grid" />
 
-            {/* Ambient glow */}
-            <div className="mr-ambient mr-ambient-1"></div>
-            <div className="mr-ambient mr-ambient-2"></div>
-
+            {/* Ambient lights */}
+            <div className="mr-ambient mr-ambient-1" />
+            <div className="mr-ambient mr-ambient-2" />
 
             {/* Top branding */}
             <div className="mr-loader-top">
@@ -53,37 +51,35 @@ export default function RootLayout({
               </div>
 
               <div className="mr-loader-status">
-                <span className="mr-status-dot"></span>
+                <span className="mr-status-dot" />
                 LOADING EXPERIENCE
               </div>
 
             </div>
 
 
-            {/* Center */}
+            {/* Center animation */}
             <div className="mr-loader-center">
 
-              {/* Orbit system */}
-              <div className="mr-orbit mr-orbit-1"></div>
-              <div className="mr-orbit mr-orbit-2"></div>
-              <div className="mr-orbit mr-orbit-3"></div>
+              {/* Orbit rings */}
+              <div className="mr-orbit mr-orbit-1" />
+              <div className="mr-orbit mr-orbit-2" />
+              <div className="mr-orbit mr-orbit-3" />
 
+              {/* Orbiting dot */}
+              <div className="mr-orbit-dot" />
 
-              {/* Rotating accent */}
-              <div className="mr-orbit-dot"></div>
-
-
-              {/* Monogram */}
+              {/* MR logo */}
               <div className="mr-monogram">
                 MR
               </div>
-
 
               {/* Name */}
               <div className="mr-loader-name">
                 MATTEO RIZZI
               </div>
 
+              {/* Position */}
               <div className="mr-loader-role">
                 GLOBAL FINTECH LEADER
               </div>
@@ -91,17 +87,19 @@ export default function RootLayout({
             </div>
 
 
-            {/* Bottom */}
+            {/* Bottom progress */}
             <div className="mr-loader-bottom">
 
               <div className="mr-loader-line-container">
-                <div className="mr-loader-line"></div>
+                <div className="mr-loader-line" />
               </div>
 
               <div className="mr-loader-info">
 
                 <span>
-                  INNOVATION / FINTECH / ECOSYSTEMS
+                  INNOVATION&nbsp;&nbsp;/&nbsp;&nbsp;
+                  FINTECH&nbsp;&nbsp;/&nbsp;&nbsp;
+                  ECOSYSTEMS
                 </span>
 
                 <span className="mr-loader-counter">
@@ -116,15 +114,15 @@ export default function RootLayout({
             </div>
 
 
-            {/* ==================================================
+            {/* ================================
                 LOADER STYLES
-            ================================================== */}
+            ================================= */}
 
             <style>{`
 
-              /* =================================================
+              /* =====================================
                  MAIN LOADER
-              ================================================= */
+              ====================================== */
 
               .mr-loader {
                 position: fixed;
@@ -154,9 +152,9 @@ export default function RootLayout({
               }
 
 
-              /* =================================================
-                 BACKGROUND GRID
-              ================================================= */
+              /* =====================================
+                 GRID
+              ====================================== */
 
               .mr-grid {
                 position: absolute;
@@ -173,8 +171,7 @@ export default function RootLayout({
                     transparent 1px
                   );
 
-                background-size:
-                  80px 80px;
+                background-size: 80px 80px;
 
                 transform:
                   perspective(700px)
@@ -193,9 +190,9 @@ export default function RootLayout({
               }
 
 
-              /* =================================================
+              /* =====================================
                  AMBIENT LIGHT
-              ================================================= */
+              ====================================== */
 
               .mr-ambient {
                 position: absolute;
@@ -240,9 +237,9 @@ export default function RootLayout({
               }
 
 
-              /* =================================================
+              /* =====================================
                  TOP
-              ================================================= */
+              ====================================== */
 
               .mr-loader-top {
                 position: absolute;
@@ -272,7 +269,8 @@ export default function RootLayout({
 
                 letter-spacing: .18em;
 
-                color: rgba(255,255,255,.85);
+                color:
+                  rgba(255,255,255,.85);
               }
 
               .mr-loader-status {
@@ -286,7 +284,8 @@ export default function RootLayout({
 
                 letter-spacing: .18em;
 
-                color: rgba(255,255,255,.4);
+                color:
+                  rgba(255,255,255,.4);
               }
 
               .mr-status-dot {
@@ -309,12 +308,11 @@ export default function RootLayout({
               }
 
 
-              /* =================================================
+              /* =====================================
                  CENTER
-              ================================================= */
+              ====================================== */
 
               .mr-loader-center {
-
                 position: relative;
 
                 width: 430px;
@@ -337,24 +335,23 @@ export default function RootLayout({
               }
 
 
-              /* =================================================
+              /* =====================================
                  ORBITS
-              ================================================= */
+              ====================================== */
 
               .mr-orbit {
-
                 position: absolute;
 
                 border-radius: 50%;
-
-                border: 1px solid
-                  rgba(255,255,255,.12);
 
                 left: 50%;
                 top: 50%;
 
                 transform:
                   translate(-50%,-50%);
+
+                border: 1px solid
+                  rgba(255,255,255,.12);
               }
 
               .mr-orbit-1 {
@@ -403,12 +400,11 @@ export default function RootLayout({
               }
 
 
-              /* =================================================
+              /* =====================================
                  ORBIT DOT
-              ================================================= */
+              ====================================== */
 
               .mr-orbit-dot {
-
                 position: absolute;
 
                 width: 9px;
@@ -423,7 +419,6 @@ export default function RootLayout({
                   rgba(27,127,168,.8);
 
                 top: 50%;
-
                 left: 50%;
 
                 margin-left: -135px;
@@ -439,12 +434,11 @@ export default function RootLayout({
               }
 
 
-              /* =================================================
-                 MONOGRAM
-              ================================================= */
+              /* =====================================
+                 MR MONOGRAM
+              ====================================== */
 
               .mr-monogram {
-
                 position: relative;
 
                 z-index: 5;
@@ -476,12 +470,11 @@ export default function RootLayout({
               }
 
 
-              /* =================================================
+              /* =====================================
                  NAME
-              ================================================= */
+              ====================================== */
 
               .mr-loader-name {
-
                 margin-top: 25px;
 
                 font-family: Arial, sans-serif;
@@ -506,12 +499,11 @@ export default function RootLayout({
               }
 
 
-              /* =================================================
+              /* =====================================
                  ROLE
-              ================================================= */
+              ====================================== */
 
               .mr-loader-role {
-
                 margin-top: 12px;
 
                 font-family: Arial, sans-serif;
@@ -520,10 +512,10 @@ export default function RootLayout({
 
                 letter-spacing: .25em;
 
+                padding-left: .25em;
+
                 color:
                   rgba(255,255,255,.35);
-
-                padding-left: .25em;
 
                 animation:
                   mrFadeUp
@@ -534,12 +526,11 @@ export default function RootLayout({
               }
 
 
-              /* =================================================
+              /* =====================================
                  BOTTOM
-              ================================================= */
+              ====================================== */
 
               .mr-loader-bottom {
-
                 position: absolute;
 
                 left: 45px;
@@ -556,12 +547,11 @@ export default function RootLayout({
               }
 
 
-              /* =================================================
-                 PROGRESS LINE
-              ================================================= */
+              /* =====================================
+                 PROGRESS BAR
+              ====================================== */
 
               .mr-loader-line-container {
-
                 width: 100%;
 
                 height: 1px;
@@ -573,7 +563,6 @@ export default function RootLayout({
               }
 
               .mr-loader-line {
-
                 width: 0%;
 
                 height: 100%;
@@ -598,12 +587,11 @@ export default function RootLayout({
               }
 
 
-              /* =================================================
-                 BOTTOM INFO
-              ================================================= */
+              /* =====================================
+                 BOTTOM INFORMATION
+              ====================================== */
 
               .mr-loader-info {
-
                 display: flex;
 
                 align-items: center;
@@ -623,7 +611,6 @@ export default function RootLayout({
               }
 
               .mr-loader-counter {
-
                 color:
                   rgba(255,255,255,.85);
 
@@ -632,53 +619,44 @@ export default function RootLayout({
               }
 
               .mr-counter-number {
-
                 display: inline-block;
 
                 min-width: 30px;
 
                 text-align: right;
+
+                animation:
+                  mrCounter 3s
+                  steps(100)
+                  forwards;
               }
 
 
-              /* =================================================
+              /* =====================================
                  ANIMATIONS
-              ================================================= */
+              ====================================== */
 
               @keyframes mrLoaderExit {
 
                 0% {
                   opacity: 1;
-
-                  transform:
-                    scale(1);
-
-                  filter:
-                    blur(0);
+                  visibility: visible;
+                  transform: scale(1);
+                  filter: blur(0);
                 }
 
                 65% {
                   opacity: 1;
-
-                  transform:
-                    scale(1);
-
-                  filter:
-                    blur(0);
+                  transform: scale(1);
+                  filter: blur(0);
                 }
 
                 100% {
                   opacity: 0;
-
                   visibility: hidden;
-
                   pointer-events: none;
-
-                  transform:
-                    scale(1.04);
-
-                  filter:
-                    blur(8px);
+                  transform: scale(1.04);
+                  filter: blur(8px);
                 }
 
               }
@@ -689,19 +667,17 @@ export default function RootLayout({
                 from {
                   opacity: 0;
 
-                  transform:
-                    scale(.75);
-                  filter:
-                    blur(10px);
+                  transform: scale(.75);
+
+                  filter: blur(10px);
                 }
 
                 to {
                   opacity: 1;
 
-                  transform:
-                    scale(1);
-                  filter:
-                    blur(0);
+                  transform: scale(1);
+
+                  filter: blur(0);
                 }
 
               }
@@ -779,16 +755,12 @@ export default function RootLayout({
 
                 0%,
                 100% {
-                  transform:
-                    scale(1);
-
+                  transform: scale(1);
                   opacity: .9;
                 }
 
                 50% {
-                  transform:
-                    scale(1.04);
-
+                  transform: scale(1.04);
                   opacity: 1;
                 }
 
@@ -828,21 +800,30 @@ export default function RootLayout({
               }
 
 
+              @keyframes mrCounter {
+
+                from {
+                  width: 0;
+                }
+
+                to {
+                  width: 30px;
+                }
+
+              }
+
+
               @keyframes mrStatusPulse {
 
                 0%,
                 100% {
                   opacity: .3;
-
-                  transform:
-                    scale(.7);
+                  transform: scale(.7);
                 }
 
                 50% {
                   opacity: 1;
-
-                  transform:
-                    scale(1.2);
+                  transform: scale(1.2);
                 }
 
               }
@@ -887,107 +868,77 @@ export default function RootLayout({
               }
 
 
-              /* =================================================
+              /* =====================================
                  MOBILE
-              ================================================= */
+              ====================================== */
 
               @media (max-width: 600px) {
 
                 .mr-loader-top {
-
                   top: 25px;
-
                   left: 22px;
                   right: 22px;
-
                 }
 
                 .mr-loader-status {
-
                   font-size: 6px;
-
                   letter-spacing: .12em;
-
                 }
 
                 .mr-loader-brand {
-
                   font-size: 9px;
-
                 }
 
                 .mr-loader-center {
-
                   width: 330px;
-
                   height: 330px;
-
                 }
 
                 .mr-orbit-1 {
-
                   width: 150px;
                   height: 150px;
-
                 }
 
                 .mr-orbit-2 {
-
                   width: 220px;
                   height: 220px;
-
                 }
 
                 .mr-orbit-3 {
-
                   width: 285px;
                   height: 285px;
-
                 }
 
                 .mr-monogram {
-
                   font-size: 58px;
-
                 }
 
                 .mr-loader-name {
-
                   font-size: 9px;
-
                   letter-spacing: .25em;
-
                 }
 
                 .mr-loader-role {
-
                   font-size: 6px;
-
                 }
 
                 .mr-loader-bottom {
-
                   left: 22px;
                   right: 22px;
-
                   bottom: 25px;
-
                 }
 
                 .mr-loader-info {
-
                   font-size: 6px;
-
                   letter-spacing: .1em;
-
                 }
 
               }
 
 
-              /* =================================================
-                 ACCESSIBILITY
-              ================================================= */
+              /* =====================================
+                 REDUCED MOTION
+              ====================================== */
 
               @media (prefers-reduced-motion: reduce) {
 
@@ -1002,26 +953,25 @@ export default function RootLayout({
                 .mr-orbit,
                 .mr-orbit-dot,
                 .mr-monogram,
-                .mr-loader-line {
-
+                .mr-loader-line,
+                .mr-counter-number {
                   animation: none !important;
-
                 }
 
                 .mr-loader {
-
                   display: none;
-
                 }
 
               }
 
             `}</style>
 
-          {/* ==================================================
-              END LOADER
-          ================================================== */}
+          </div>
 
+
+          {/* ==========================================
+              EXISTING WEBSITE
+          =========================================== */}
 
           <Toaster
             richColors
@@ -1048,10 +998,9 @@ export default function RootLayout({
 
           <LanguageSwitcher />
 
-        </body>
+        </Providers>
 
-      </Providers>
-
+      </body>
     </html>
   )
 }
