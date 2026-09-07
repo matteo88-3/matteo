@@ -45,15 +45,30 @@ const testimonials = [
     color: "bg-rose-600",
   },
 ];
-export default function Testimonials() {
-  const [active, setActive] = useState(0);
 
+const CARDS_PER_PAGE = 3;
+
+export default function Testimonials() {
+  // Desktop: pages of 3 cards
+  const [page, setPage] = useState(0);
+  const totalPages = Math.ceil(testimonials.length / CARDS_PER_PAGE);
+
+  const prevPage = () => setPage((p) => (p === 0 ? totalPages - 1 : p - 1));
+  const nextPage = () => setPage((p) => (p === totalPages - 1 ? 0 : p + 1));
+
+  const pagedTestimonials = testimonials.slice(
+    page * CARDS_PER_PAGE,
+    page * CARDS_PER_PAGE + CARDS_PER_PAGE
+  );
+
+  // Mobile: single-card slideshow (unchanged behavior, one at a time)
+  const [active, setActive] = useState(0);
   const prev = () => setActive((i) => (i === 0 ? testimonials.length - 1 : i - 1));
   const next = () => setActive((i) => (i === testimonials.length - 1 ? 0 : i + 1));
 
   return (
-    <section id="testimonials" className="bg-secondary py-24 px-4">
-      <div className="max-w-7xl mx-auto">
+    <section id="testimonials" className="bg-secondary py-24 px-2 sm:px-4">
+      <div className="max-w-[100rem] mx-auto">
 
         {/* Header */}
         <div className="text-center mb-16">
@@ -65,38 +80,72 @@ export default function Testimonials() {
           </h2>
         </div>
 
-        {/* ── DESKTOP: 5-card grid ── */}
-        <div className="hidden md:grid md:grid-cols-5 gap-4">
-          {testimonials.map((t, i) => (
-            <div
-              key={i}
-              className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col gap-5 hover:border-white/20 hover:bg-white/8 transition-colors duration-300"
-            >
-              {/* Quote icon */}
-              <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-                <Quote className="w-4 h-4 text-primary" />
-              </div>
+        {/* ── DESKTOP: 3-card page with arrows either side ── */}
+        <div className="hidden md:flex items-center gap-4">
+          <button
+            onClick={prevPage}
+            className="shrink-0 w-11 h-11 rounded-full border border-white/20 flex items-center justify-center text-slate-400 hover:border-primary hover:text-primary transition-colors"
+            aria-label="Previous page"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
 
-              {/* Quote */}
-              <blockquote className="text-slate-300 text-sm leading-relaxed flex-1">
-                "{t.quote}"
-              </blockquote>
-
-              {/* Author */}
-              <div className="flex items-center gap-3 pt-2 border-t border-white/10">
-                <div className={`w-9 h-9 rounded-full ${t.color} flex items-center justify-center text-white text-xs font-bold shrink-0`}>
-                  {t.initials}
+          <div className="flex-1 grid grid-cols-3 gap-5">
+            {pagedTestimonials.map((t, i) => (
+              <div
+                key={`${page}-${i}`}
+                className="bg-white/5 border border-white/10 rounded-2xl p-7 flex flex-col gap-5 hover:border-white/20 hover:bg-white/8 transition-colors duration-300"
+              >
+                {/* Quote icon */}
+                <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                  <Quote className="w-4 h-4 text-primary" />
                 </div>
-                <div className="min-w-0">
-                  <p className="text-white font-semibold text-xs truncate">{t.name}</p>
-                  <p className="text-slate-500 text-xs leading-tight mt-0.5 line-clamp-2">{t.title}</p>
+
+                {/* Quote */}
+                <blockquote className="text-slate-300 text-sm leading-relaxed flex-1">
+                  "{t.quote}"
+                </blockquote>
+
+                {/* Author */}
+                <div className="flex items-center gap-3 pt-2 border-t border-white/10">
+                  <div className={`w-9 h-9 rounded-full ${t.color} flex items-center justify-center text-white text-xs font-bold shrink-0`}>
+                    {t.initials}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-white font-semibold text-xs truncate">{t.name}</p>
+                    <p className="text-slate-500 text-xs leading-tight mt-0.5 line-clamp-2">{t.title}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          <button
+            onClick={nextPage}
+            className="shrink-0 w-11 h-11 rounded-full border border-white/20 flex items-center justify-center text-slate-400 hover:border-primary hover:text-primary transition-colors"
+            aria-label="Next page"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
         </div>
 
-        {/* ── MOBILE: slideshow ── */}
+        {/* Desktop page dots */}
+        {totalPages > 1 && (
+          <div className="hidden md:flex justify-center gap-2 mt-8">
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => setPage(i)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  i === page ? 'w-6 bg-primary' : 'w-1.5 bg-white/20'
+                }`}
+                aria-label={`Page ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* ── MOBILE: slideshow (unchanged, one card at a time) ── */}
         <div className="md:hidden">
           <div className="bg-white/5 border border-white/10 rounded-2xl px-7 py-10 text-center">
             {/* Quote icon */}
