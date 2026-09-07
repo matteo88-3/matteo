@@ -119,7 +119,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                       href="mailto:renata@fintechstage.com" 
                       className="font-semibold text-gray-900 hover:text-primary transition-colors text-lg"
                     >
-                     renata@fintechstage.com
+                     
                     </a>
                   </div>
                 </div>
@@ -135,7 +135,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                       href="https://www.linkedin.com/in/matteorizzi/" target='_blank'
                       className="font-semibold text-gray-900 hover:text-primary transition-colors text-lg"
                     >
-                      /in/matteorizzi
+                      
                     </a>
                   </div>
                 </div>
