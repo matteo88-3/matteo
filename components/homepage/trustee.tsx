@@ -9,6 +9,9 @@ const imagePaths = Array.from(
   (_, i) => `/companies/picture${i + 1}.png`
 );
 
+// Duplicated once for the seamless infinite-scroll loop.
+const duplicatedImages = [...imagePaths, ...imagePaths];
+
 export default function Trustee() {
   return (
     <>
@@ -18,6 +21,7 @@ export default function Trustee() {
             position: relative;
             width: 100%;
             overflow: hidden;
+
             -webkit-mask-image: linear-gradient(
               to right,
               transparent 0,
@@ -25,6 +29,7 @@ export default function Trustee() {
               #000 92%,
               transparent 100%
             );
+
             mask-image: linear-gradient(
               to right,
               transparent 0,
@@ -54,7 +59,7 @@ export default function Trustee() {
             border-radius: 14px;
           }
 
-          /* Full-color images — no grayscale, no opacity, no hover */
+          /* Full-color image inside fixed container */
           .marquee-tile img {
             width: 100%;
             height: 100%;
@@ -71,6 +76,7 @@ export default function Trustee() {
             }
           }
 
+          /* Respect users who've asked for less motion */
           @media (prefers-reduced-motion: reduce) {
             .marquee-track {
               animation: none;
@@ -121,7 +127,7 @@ export default function Trustee() {
                 </div>
               ))}
 
-              {/* Duplicate logos for seamless infinite scrolling */}
+              {/* Duplicate pass for seamless infinite loop */}
               {imagePaths.map((src, index) => (
                 <div
                   key={`logo-dup-${index}`}
