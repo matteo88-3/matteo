@@ -165,6 +165,25 @@ export default function ProfileWithSlideshow() {
   // --- Bio slider state ---
   const [bioIndex, setBioIndex] = useState(0);
 
+  // --- Right column height matching ---
+  // Measure the left column's rendered height and apply it to the right
+  // column, so the experience grid always stretches to fit exactly flush
+  // with the bottom of the bio panel — no CSS stretch/flex guesswork.
+  const leftColRef = useRef<HTMLDivElement>(null);
+  const [leftColHeight, setLeftColHeight] = useState<number | undefined>(
+    undefined
+  );
+
+  useEffect(() => {
+    const el = leftColRef.current;
+    if (!el) return;
+    const updateHeight = () => setLeftColHeight(el.offsetHeight);
+    updateHeight();
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   const resetAutoplay = useCallback(() => {
     if (autoPlayRef.current) clearInterval(autoPlayRef.current);
     if (isAutoPlaying && !isHovering) {
@@ -208,8 +227,8 @@ export default function ProfileWithSlideshow() {
   const visibleExperience = EXPERIENCE.slice(0, NUM_EXPERIENCE_CARDS);
 
   return (
-    <section id="about" className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="max-w-7xl mx-auto">
+    <section id="about" className="min-h-screen bg-gray-50 py-12 px-6 lg:px-10">
+      <div className="max-w-[1600px] mx-auto">
         {/* Header */}
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">
@@ -225,9 +244,9 @@ export default function ProfileWithSlideshow() {
             Left: carousel (top) + bio (bottom), stacked.
             Right: tapering experience grid.
         ══════════════════════════════════════════ */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6 items-start">
           {/* ---------------- LEFT COLUMN ---------------- */}
-          <div className="lg:col-span-2 flex flex-col gap-5">
+          <div ref={leftColRef} className="flex flex-col gap-5">
             {/* Panel 1: image carousel */}
             <div
               className="relative bg-gray-900 rounded-2xl overflow-hidden shadow-lg"
@@ -396,7 +415,10 @@ export default function ProfileWithSlideshow() {
           </div>
 
           {/* ---------------- RIGHT COLUMN ---------------- */}
-          <div className="lg:col-span-1 h-full flex flex-col">
+          <div
+            className="flex flex-col"
+            style={{ height: leftColHeight ? `${leftColHeight}px` : undefined }}
+          >
             <div className="flex items-center justify-between gap-2 mb-4">
               <div className="flex items-center gap-2">
                 <Briefcase className="w-5 h-5 text-primary" />
@@ -412,16 +434,16 @@ export default function ProfileWithSlideshow() {
             {/* auto-rows-fr + flex-1 makes every card the same height and
                 stretches the whole grid to fill the column, so the last
                 row's bottom edge lines up with the bio panel's bottom. */}
-            <div className="grid grid-cols-2 auto-rows-fr gap-3 flex-1">
+            <div className="grid grid-cols-3 auto-rows-fr gap-3 flex-1">
               {visibleExperience.map((exp, i) => (
                 <div
                   key={i}
                   className="bg-white border border-gray-200 rounded-xl p-3 shadow-sm hover:shadow-md hover:border-primary/30 transition-all flex flex-col justify-between overflow-hidden h-full"
                 >
-                  <p className="text-gray-900 font-semibold text-sm leading-snug line-clamp-2">
+                  <p className="text-primary font-semibold text-sm leading-snug line-clamp-2">
                     {exp.title}
                   </p>
-                  <p className="text-gray-500 text-xs leading-snug line-clamp-1">
+                  <p className="text-gray-900 font-bold text-xs leading-snug line-clamp-1">
                     {exp.company}
                   </p>
                   <p className="text-gray-400 text-xs flex items-center gap-1">
