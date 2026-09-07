@@ -13,6 +13,7 @@ import {
   Briefcase,
   MapPin,
   Calendar,
+  Building2,
 } from "lucide-react";
 
 const PROFILE = {
@@ -23,73 +24,126 @@ const PROFILE = {
 
 // ---------------------------------------------------------------------------
 // EXPERIENCE — full career history, copied from LinkedIn.
+// `logo` is left blank on purpose — drop a company logo path in there
+// (e.g. "/logos/gftn.png") and the card will use it automatically; until
+// then it falls back to a placeholder tile.
 // ---------------------------------------------------------------------------
 type ExperienceItem = {
   title: string;
   company: string;
   duration: string;
+  location?: string;
+  description?: string;
+  logo?: string;
 };
 
 const EXPERIENCE: ExperienceItem[] = [
   {
-    title: "Senior Partner - Africa & Middle East, Global Strategic Initiatives",
+    title:
+      "Senior Partner - Africa & Middle East, Global Strategic Initiatives",
     company: "Global Finance & Technology Network · Contract",
     duration: "Jan 2025 - Present · 1 yr 9 mos",
+    location: "Remote",
+    logo: "",
   },
   {
     title: "Founder",
     company: "Timepledge.org",
     duration: "Dec 2014 - Present · 11 yrs 10 mos",
+    location: "London Area, United Kingdom",
+    description:
+      "Our mission: build innovation ecosystems, engaging incumbents, entrepreneurs and investors to boost FinTech innovation globally (via FTSgroup.eu).",
+    logo: "",
   },
   {
     title: "Co-Host & Executive Producer",
     company: "Breaking Banks Africa",
     duration: "Oct 2019 - Present · 7 yrs",
+    description:
+      "Breaking Banks is the #1 radio show and podcast, with almost 7M audience across 117 countries. Breaking Banks Africa is the African edition dedicated to the continent's innovation scene.",
+    logo: "",
   },
   {
     title: "Founder & Startup Coach",
     company: "TimePledge · Full-time",
     duration: "Sep 2009 - Present · 17 yrs 1 mo",
+    location: "Worldwide, in 5 languages · Hybrid",
+    description:
+      "Startup coach and advisor — and occasionally angel investor — connecting founders with partners and ecosystems. Trusted by large Financial Services players in their collaboration journey with entrepreneurs and innovators.",
+    logo: "",
   },
   {
     title: "Venture Partner",
     company: "NEVA Finventures",
     duration: "Jun 2018 - Jun 2024 · 6 yrs 1 mo",
+    description:
+      "Intesa Sanpaolo's corporate venture capital arm. Strategic advisory and Venture Partner role.",
+    logo: "",
   },
   {
     title: "Strategic Advisor",
     company: "Finnovating · Contract",
     duration: "Sep 2022 - Jan 2023 · 5 mos",
+    location: "World",
+    logo: "",
   },
   {
     title: "Venture Partner",
     company: "Bamboo Capital Partners · Contract",
     duration: "Jan 2021 - Jun 2022 · 1 yr 6 mos",
+    description:
+      "Impact VC / Tech-for-Good fund investing mainly in post-seed and Series A, focused on the African market, in collaboration with SMART Africa.",
+    logo: "",
   },
   {
     title: "Venture Partner - SG Ventures",
     company: "Société Générale",
     duration: "May 2019 - Dec 2020 · 1 yr 8 mos",
+    description: "Venture arm of Société Générale, a strategic investment vehicle.",
+    logo: "",
   },
   {
     title: "Advisor",
     company: "Omidyar Network",
     duration: "Oct 2015 - Mar 2017 · 1 yr 6 mos",
+    location: "Redwood City",
+    description:
+      "Focused on financial inclusion — helping people in emerging markets, and underserved paycheck-to-paycheck families in the U.S., save, send and access credit and insurance safely through mobile and digital finance innovation.",
+    logo: "",
   },
   {
     title: "General Partner",
     company: "SBT Venture Capital",
     duration: "Sep 2013 - Dec 2015 · 2 yrs 4 mos",
+    location: "Brussels Metropolitan Area",
+    description:
+      "Management company of a $100M FinTech fund focused on Series A investments — the venture arm of Sberbank.",
+    logo: "",
   },
   {
     title: "Co-founder Innotribe @ SWIFT",
     company: "SWIFT",
     duration: "Jun 2009 - Sep 2013 · 4 yrs 4 mos",
+    location: "Brussels Metropolitan Area",
+    description:
+      "Co-founded Innotribe, SWIFT's infrastructure for collaborative innovation in the financial industry — building the skills, tools, processes, metrics and network needed to transform SWIFT into an agile, future-ready organization.",
+    logo: "",
   },
   {
-    title: "Head of Community Channels",
+    title: "Head of Community Channels - www.swiftcommunity.net",
     company: "SWIFT",
     duration: "Jan 2001 - Jun 2009 · 8 yrs 6 mos",
+    description:
+      "Created and led swiftcommunity.net, SWIFT's global financial network — moving from Sales to Corporate Communications to run the initiative.",
+    logo: "",
+  },
+  {
+    title: "Co-founder",
+    company: "www.italiansonline.net",
+    duration: "Feb 2003 - Jun 2009 · 6 yrs 5 mos",
+    description:
+      "A community portal for Italians living abroad — grew to 100,000+ members across 80 countries within its first eight months.",
+    logo: "",
   },
 ];
 
@@ -152,9 +206,6 @@ const imagePaths = Array.from(
   (_, i) => `/images/${TOTAL_IMAGES - i}.jpeg`
 );
 
-// Number of experience cards shown in the right-hand grid (2 columns × 6 rows).
-const NUM_EXPERIENCE_CARDS = 12;
-
 export default function ProfileWithSlideshow() {
   // --- Image slideshow state ---
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -164,25 +215,6 @@ export default function ProfileWithSlideshow() {
 
   // --- Bio slider state ---
   const [bioIndex, setBioIndex] = useState(0);
-
-  // --- Right column height matching ---
-  // Measure the left column's rendered height and apply it to the right
-  // column, so the experience grid always stretches to fit exactly flush
-  // with the bottom of the bio panel — no CSS stretch/flex guesswork.
-  const leftColRef = useRef<HTMLDivElement>(null);
-  const [leftColHeight, setLeftColHeight] = useState<number | undefined>(
-    undefined
-  );
-
-  useEffect(() => {
-    const el = leftColRef.current;
-    if (!el) return;
-    const updateHeight = () => setLeftColHeight(el.offsetHeight);
-    updateHeight();
-    const observer = new ResizeObserver(updateHeight);
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
 
   const resetAutoplay = useCallback(() => {
     if (autoPlayRef.current) clearInterval(autoPlayRef.current);
@@ -224,7 +256,6 @@ export default function ProfileWithSlideshow() {
   }, []);
 
   const activeBio = BIOS[bioIndex];
-  const visibleExperience = EXPERIENCE.slice(0, NUM_EXPERIENCE_CARDS);
 
   return (
     <section id="about" className="min-h-screen bg-gray-50 py-12 px-6 lg:px-10">
@@ -242,11 +273,11 @@ export default function ProfileWithSlideshow() {
         {/* ══════════════════════════════════════════
             TWO-COLUMN LAYOUT
             Left: carousel (top) + bio (bottom), stacked.
-            Right: tapering experience grid.
+            Right: full experience list, LinkedIn-style cards.
         ══════════════════════════════════════════ */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6 items-start">
           {/* ---------------- LEFT COLUMN ---------------- */}
-          <div ref={leftColRef} className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5">
             {/* Panel 1: image carousel */}
             <div
               className="relative bg-gray-900 rounded-2xl overflow-hidden shadow-lg"
@@ -363,7 +394,7 @@ export default function ProfileWithSlideshow() {
                   ))}
                 </div>
 
-                <div className="rounded-xl bg-gray-50 border border-gray-100 p-4 flex flex-col flex-1 overflow-y-auto">
+                <div className="rounded-xl bg-gray-50 border border-gray-100 p-4 flex flex-col flex-1">
                   <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-line">
                     {activeBio.text}
                   </p>
@@ -414,42 +445,59 @@ export default function ProfileWithSlideshow() {
             </div>
           </div>
 
-          {/* ---------------- RIGHT COLUMN ---------------- */}
-          <div
-            className="flex flex-col"
-            style={{ height: leftColHeight ? `${leftColHeight}px` : undefined }}
-          >
-            <div className="flex items-center justify-between gap-2 mb-4">
-              <div className="flex items-center gap-2">
-                <Briefcase className="w-5 h-5 text-primary" />
-                <h3 className="text-gray-900 font-bold text-lg">Experience</h3>
-              </div>
-              {EXPERIENCE.length > visibleExperience.length && (
-                <button className="text-xs font-semibold text-primary hover:underline underline-offset-2 shrink-0">
-                  View all →
-                </button>
-              )}
+          {/* ---------------- RIGHT COLUMN: EXPERIENCE ---------------- */}
+          <div className="flex flex-col">
+            <div className="flex items-center gap-2 mb-4">
+              <Briefcase className="w-5 h-5 text-primary" />
+              <h3 className="text-gray-900 font-bold text-lg">Experience</h3>
             </div>
 
-            {/* auto-rows-fr + flex-1 makes every card the same height and
-                stretches the whole grid to fill the column, so the last
-                row's bottom edge lines up with the bio panel's bottom. */}
-            <div className="grid grid-cols-3 auto-rows-fr gap-3 flex-1">
-              {visibleExperience.map((exp, i) => (
+            <div className="flex flex-col gap-3">
+              {EXPERIENCE.map((exp, i) => (
                 <div
                   key={i}
-                  className="bg-white border border-gray-200 rounded-xl p-3 shadow-sm hover:shadow-md hover:border-primary/30 transition-all flex flex-col justify-between overflow-hidden h-full"
+                  className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-primary/30 transition-all flex gap-3"
                 >
-                  <p className="text-primary font-semibold text-sm leading-snug line-clamp-2">
-                    {exp.title}
-                  </p>
-                  <p className="text-gray-900 font-bold text-xs leading-snug line-clamp-1">
-                    {exp.company}
-                  </p>
-                  <p className="text-gray-400 text-xs flex items-center gap-1">
-                    <Calendar className="w-3 h-3 shrink-0" />
-                    {exp.duration}
-                  </p>
+                  {/* Logo placeholder — drop exp.logo = "/logos/yourfile.png"
+                      in the data above and it renders here automatically. */}
+                  <div className="shrink-0 w-12 h-12 rounded-lg border border-gray-200 bg-gray-50 flex items-center justify-center overflow-hidden">
+                    {exp.logo ? (
+                      <img
+                        src={exp.logo}
+                        alt={`${exp.company} logo`}
+                        className="w-full h-full object-contain"
+                      />
+                    ) : (
+                      <Building2 className="w-5 h-5 text-gray-300" />
+                    )}
+                  </div>
+
+                  {/* Content — full text, nothing truncated or clipped */}
+                  <div className="min-w-0 flex-1">
+                    <p className="text-primary font-bold text-sm leading-snug">
+                      {exp.title}
+                    </p>
+                    <p className="text-gray-900 font-bold text-sm leading-snug mt-0.5">
+                      {exp.company}
+                    </p>
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-gray-500 text-xs mt-1.5">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3 shrink-0" />
+                        {exp.duration}
+                      </span>
+                      {exp.location && (
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-3 h-3 shrink-0" />
+                          {exp.location}
+                        </span>
+                      )}
+                    </div>
+                    {exp.description && (
+                      <p className="text-gray-600 text-sm leading-relaxed mt-2">
+                        {exp.description}
+                      </p>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
