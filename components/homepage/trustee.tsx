@@ -3,13 +3,13 @@
 import React from "react";
 
 const IMAGE_COUNT = 17;
-
 const imagePaths = Array.from(
   { length: IMAGE_COUNT },
   (_, i) => `/companies/picture${i + 1}.png`
 );
 
-// Duplicated once for the seamless infinite-scroll loop.
+// Duplicated once for the seamless infinite-scroll loop. The duplicate set
+// is marked aria-hidden so screen readers only announce each logo once.
 const duplicatedImages = [...imagePaths, ...imagePaths];
 
 export default function Trustee() {
@@ -21,7 +21,9 @@ export default function Trustee() {
             position: relative;
             width: 100%;
             overflow: hidden;
-
+            /* Fade the logos out at both edges instead of cutting them off
+               abruptly — the detail that makes an infinite marquee read as
+               polished rather than templated. */
             -webkit-mask-image: linear-gradient(
               to right,
               transparent 0,
@@ -29,7 +31,6 @@ export default function Trustee() {
               #000 92%,
               transparent 100%
             );
-
             mask-image: linear-gradient(
               to right,
               transparent 0,
@@ -46,6 +47,10 @@ export default function Trustee() {
             animation: marquee-scroll 36s linear infinite;
           }
 
+          .marquee-track:hover {
+            animation-play-state: paused;
+          }
+
           .marquee-tile {
             flex-shrink: 0;
             width: 152px;
@@ -57,31 +62,45 @@ export default function Trustee() {
             background: #ffffff;
             border: 1px solid #eef0f3;
             border-radius: 14px;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease,
+              transform 0.25s ease;
           }
 
-          /* Full-color image inside fixed container */
+          .marquee-tile:hover {
+            border-color: #e2e5eb;
+            box-shadow: 0 6px 16px -8px rgba(15, 23, 42, 0.12);
+            transform: translateY(-2px);
+          }
+
           .marquee-tile img {
-            width: 100%;
-            height: 100%;
+            width: auto;
+            height: 36px;
+            max-width: 108px;
             object-fit: contain;
+            filter: grayscale(100%) opacity(0.55);
+            transition: filter 0.3s ease;
+          }
+
+          .marquee-tile:hover img {
+            filter: grayscale(0%) opacity(1);
           }
 
           @keyframes marquee-scroll {
             from {
               transform: translateX(0);
             }
-
             to {
+              /* Exactly half the track width, since the list is duplicated
+                 once — this is what makes the loop seamless. */
               transform: translateX(-50%);
             }
           }
 
-          /* Respect users who've asked for less motion */
+          /* Respect users who've asked for less motion. */
           @media (prefers-reduced-motion: reduce) {
             .marquee-track {
               animation: none;
             }
-
             .marquee-container {
               overflow-x: auto;
             }
@@ -94,11 +113,9 @@ export default function Trustee() {
               margin: 0 0.4rem;
               border-radius: 12px;
             }
-
             .marquee-tile img {
-              width: 100%;
-              height: 100%;
-              object-fit: contain;
+              height: 28px;
+              max-width: 84px;
             }
           }
         `}
@@ -106,45 +123,30 @@ export default function Trustee() {
 
       <section className="bg-white py-14 border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4">
-
           <p className="text-center text-xs sm:text-sm font-semibold text-slate-400 uppercase tracking-[0.2em] mb-8">
             Trusted by industry leaders
           </p>
 
           <div className="marquee-container">
             <div className="marquee-track">
-
               {imagePaths.map((src, index) => (
-                <div
-                  key={`logo-${index}`}
-                  className="marquee-tile"
-                >
-                  <img
-                    src={src}
-                    alt={`Company logo ${index + 1}`}
-                    loading="lazy"
-                  />
+                <div key={`logo-${index}`} className="marquee-tile">
+                  <img src={src} alt={`Company logo ${index + 1}`} loading="lazy" />
                 </div>
               ))}
-
-              {/* Duplicate pass for seamless infinite loop */}
+              {/* Duplicate pass for the loop — hidden from assistive tech so
+                  each company is only announced once. */}
               {imagePaths.map((src, index) => (
                 <div
                   key={`logo-dup-${index}`}
                   className="marquee-tile"
                   aria-hidden="true"
                 >
-                  <img
-                    src={src}
-                    alt=""
-                    loading="lazy"
-                  />
+                  <img src={src} alt="" loading="lazy" />
                 </div>
               ))}
-
             </div>
           </div>
-
         </div>
       </section>
     </>
