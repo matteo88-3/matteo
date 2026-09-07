@@ -206,6 +206,8 @@ const imagePaths = Array.from(
   (_, i) => `/images/${TOTAL_IMAGES - i}.jpeg`
 );
 
+const EXPERIENCE_PER_PAGE = 6;
+
 export default function ProfileWithSlideshow() {
   // --- Image slideshow state ---
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -215,6 +217,18 @@ export default function ProfileWithSlideshow() {
 
   // --- Bio slider state ---
   const [bioIndex, setBioIndex] = useState(0);
+
+  // --- Experience pagination state ---
+  const [expPage, setExpPage] = useState(0);
+  const expTotalPages = Math.ceil(EXPERIENCE.length / EXPERIENCE_PER_PAGE);
+  const pagedExperience = EXPERIENCE.slice(
+    expPage * EXPERIENCE_PER_PAGE,
+    expPage * EXPERIENCE_PER_PAGE + EXPERIENCE_PER_PAGE
+  );
+  const expPrev = () =>
+    setExpPage((p) => (p === 0 ? expTotalPages - 1 : p - 1));
+  const expNext = () =>
+    setExpPage((p) => (p === expTotalPages - 1 ? 0 : p + 1));
 
   const resetAutoplay = useCallback(() => {
     if (autoPlayRef.current) clearInterval(autoPlayRef.current);
@@ -447,15 +461,22 @@ export default function ProfileWithSlideshow() {
 
           {/* ---------------- RIGHT COLUMN: EXPERIENCE ---------------- */}
           <div className="flex flex-col">
-            <div className="flex items-center gap-2 mb-4">
-              <Briefcase className="w-5 h-5 text-primary" />
-              <h3 className="text-gray-900 font-bold text-lg">Experience</h3>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Briefcase className="w-5 h-5 text-primary" />
+                <h3 className="text-gray-900 font-bold text-lg">Experience</h3>
+              </div>
+              {expTotalPages > 1 && (
+                <span className="text-xs text-gray-400">
+                  Page {expPage + 1} / {expTotalPages}
+                </span>
+              )}
             </div>
 
             <div className="flex flex-col gap-3">
-              {EXPERIENCE.map((exp, i) => (
+              {pagedExperience.map((exp, i) => (
                 <div
-                  key={i}
+                  key={`${expPage}-${i}`}
                   className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-primary/30 transition-all flex gap-3"
                 >
                   {/* Logo placeholder — drop exp.logo = "/logos/yourfile.png"
@@ -501,6 +522,40 @@ export default function ProfileWithSlideshow() {
                 </div>
               ))}
             </div>
+
+            {/* Pagination controls */}
+            {expTotalPages > 1 && (
+              <div className="flex items-center justify-center gap-4 mt-5">
+                <button
+                  onClick={expPrev}
+                  className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-colors"
+                  aria-label="Previous experience page"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+
+                <div className="flex gap-1.5">
+                  {Array.from({ length: expTotalPages }, (_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setExpPage(i)}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        i === expPage ? "w-6 bg-primary" : "w-1.5 bg-gray-300"
+                      }`}
+                      aria-label={`Experience page ${i + 1}`}
+                    />
+                  ))}
+                </div>
+
+                <button
+                  onClick={expNext}
+                  className="w-9 h-9 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-colors"
+                  aria-label="Next experience page"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
