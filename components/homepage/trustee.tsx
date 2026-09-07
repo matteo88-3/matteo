@@ -8,8 +8,7 @@ const imagePaths = Array.from(
   (_, i) => `/companies/picture${i + 1}.png`
 );
 
-// Duplicated once for the seamless infinite-scroll loop. The duplicate set
-// is marked aria-hidden so screen readers only announce each logo once.
+// Duplicated once for the seamless infinite-scroll loop.
 const duplicatedImages = [...imagePaths, ...imagePaths];
 
 export default function Trustee() {
@@ -21,9 +20,6 @@ export default function Trustee() {
             position: relative;
             width: 100%;
             overflow: hidden;
-            /* Fade the logos out at both edges instead of cutting them off
-               abruptly — the detail that makes an infinite marquee read as
-               polished rather than templated. */
             -webkit-mask-image: linear-gradient(
               to right,
               transparent 0,
@@ -72,11 +68,11 @@ export default function Trustee() {
             transform: translateY(-2px);
           }
 
+          /* Fixed container size + image fills the container */
           .marquee-tile img {
-            width: auto;
-            height: 36px;
-            max-width: 108px;
-            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             filter: grayscale(100%) opacity(0.55);
             transition: filter 0.3s ease;
           }
@@ -90,17 +86,15 @@ export default function Trustee() {
               transform: translateX(0);
             }
             to {
-              /* Exactly half the track width, since the list is duplicated
-                 once — this is what makes the loop seamless. */
               transform: translateX(-50%);
             }
           }
 
-          /* Respect users who've asked for less motion. */
           @media (prefers-reduced-motion: reduce) {
             .marquee-track {
               animation: none;
             }
+
             .marquee-container {
               overflow-x: auto;
             }
@@ -113,9 +107,11 @@ export default function Trustee() {
               margin: 0 0.4rem;
               border-radius: 12px;
             }
+
             .marquee-tile img {
-              height: 28px;
-              max-width: 84px;
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
             }
           }
         `}
@@ -131,11 +127,14 @@ export default function Trustee() {
             <div className="marquee-track">
               {imagePaths.map((src, index) => (
                 <div key={`logo-${index}`} className="marquee-tile">
-                  <img src={src} alt={`Company logo ${index + 1}`} loading="lazy" />
+                  <img
+                    src={src}
+                    alt={`Company logo ${index + 1}`}
+                    loading="lazy"
+                  />
                 </div>
               ))}
-              {/* Duplicate pass for the loop — hidden from assistive tech so
-                  each company is only announced once. */}
+
               {imagePaths.map((src, index) => (
                 <div
                   key={`logo-dup-${index}`}
