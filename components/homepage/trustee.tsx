@@ -62,6 +62,8 @@ export default function Trustee() {
             background: #ffffff;
             border: 1px solid #eef0f3;
             border-radius: 14px;
+            padding: 0.5rem;
+            box-sizing: border-box;
             transition: border-color 0.25s ease, box-shadow 0.25s ease,
               transform 0.25s ease;
           }
@@ -74,15 +76,10 @@ export default function Trustee() {
 
           .marquee-tile img {
             width: auto;
-            height: 36px;
-            max-width: 108px;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
-            filter: grayscale(100%) opacity(0.55);
-            transition: filter 0.3s ease;
-          }
-
-          .marquee-tile:hover img {
-            filter: grayscale(0%) opacity(1);
           }
 
           @keyframes marquee-scroll {
@@ -112,10 +109,7 @@ export default function Trustee() {
               height: 68px;
               margin: 0 0.4rem;
               border-radius: 12px;
-            }
-            .marquee-tile img {
-              height: 28px;
-              max-width: 84px;
+              padding: 0.4rem;
             }
           }
         `}
