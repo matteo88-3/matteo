@@ -18,7 +18,7 @@ import {
 
 const PROFILE = {
   name: "Matteo Rizzi",
-  tagline: "Senior Partner · Author · Investor",
+  tagline: "",
   location: "Lisbon, Portugal",
 };
 
