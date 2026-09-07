@@ -44,7 +44,7 @@ const EXPERIENCE: ExperienceItem[] = [
     company: "Global Finance & Technology Network · Contract",
     duration: "Jan 2025 - Present · 1 yr 9 mos",
     location: "Remote",
-    logo: "",
+    logo: "/logos/gftn.png",
   },
   {
     title: "Founder",
@@ -53,7 +53,7 @@ const EXPERIENCE: ExperienceItem[] = [
     location: "London Area, United Kingdom",
     description:
       "Our mission: build innovation ecosystems, engaging incumbents, entrepreneurs and investors to boost FinTech innovation globally (via FTSgroup.eu).",
-    logo: "",
+    logo: "/logos/timepledge.png",
   },
   {
     title: "Co-Host & Executive Producer",
@@ -61,7 +61,7 @@ const EXPERIENCE: ExperienceItem[] = [
     duration: "Oct 2019 - Present · 7 yrs",
     description:
       "Breaking Banks is the #1 radio show and podcast, with almost 7M audience across 117 countries. Breaking Banks Africa is the African edition dedicated to the continent's innovation scene.",
-    logo: "",
+    logo: "/logos/breaking-banks-africa.png",
   },
   {
     title: "Founder & Startup Coach",
@@ -70,7 +70,7 @@ const EXPERIENCE: ExperienceItem[] = [
     location: "Worldwide, in 5 languages · Hybrid",
     description:
       "Startup coach and advisor — and occasionally angel investor — connecting founders with partners and ecosystems. Trusted by large Financial Services players in their collaboration journey with entrepreneurs and innovators.",
-    logo: "",
+    logo: "/logos/timepledge.png",
   },
   {
     title: "Venture Partner",
@@ -85,7 +85,7 @@ const EXPERIENCE: ExperienceItem[] = [
     company: "Finnovating · Contract",
     duration: "Sep 2022 - Jan 2023 · 5 mos",
     location: "World",
-    logo: "",
+    logo: "/logos/finnovating.png",
   },
   {
     title: "Venture Partner",
@@ -93,7 +93,7 @@ const EXPERIENCE: ExperienceItem[] = [
     duration: "Jan 2021 - Jun 2022 · 1 yr 6 mos",
     description:
       "Impact VC / Tech-for-Good fund investing mainly in post-seed and Series A, focused on the African market, in collaboration with SMART Africa.",
-    logo: "",
+    logo: "/logos/bamboo-capital-partners.png",
   },
   {
     title: "Venture Partner - SG Ventures",
@@ -109,7 +109,7 @@ const EXPERIENCE: ExperienceItem[] = [
     location: "Redwood City",
     description:
       "Focused on financial inclusion — helping people in emerging markets, and underserved paycheck-to-paycheck families in the U.S., save, send and access credit and insurance safely through mobile and digital finance innovation.",
-    logo: "",
+    logo: "/logos/omidyar-network.png",
   },
   {
     title: "General Partner",
@@ -127,7 +127,7 @@ const EXPERIENCE: ExperienceItem[] = [
     location: "Brussels Metropolitan Area",
     description:
       "Co-founded Innotribe, SWIFT's infrastructure for collaborative innovation in the financial industry — building the skills, tools, processes, metrics and network needed to transform SWIFT into an agile, future-ready organization.",
-    logo: "",
+    logo: "/logos/swift.png",
   },
   {
     title: "Head of Community Channels - www.swiftcommunity.net",
@@ -135,7 +135,7 @@ const EXPERIENCE: ExperienceItem[] = [
     duration: "Jan 2001 - Jun 2009 · 8 yrs 6 mos",
     description:
       "Created and led swiftcommunity.net, SWIFT's global financial network — moving from Sales to Corporate Communications to run the initiative.",
-    logo: "",
+    logo: "/logos/swift.png",
   },
   {
     title: "Co-founder",
@@ -153,7 +153,7 @@ const EXPERIENCE: ExperienceItem[] = [
 type Bio = {
   code: string;
   language: string;
-  flag: string;
+  flagCode?: string; // ISO 3166-1 alpha-2 country code, lowercase — renders a real flag image. Omit for a globe icon (used for English/international).
   text: string;
 };
 
@@ -164,37 +164,37 @@ const BIOS: Bio[] = [
   {
     code: "en",
     language: "English",
-    flag: "🇬🇧",
+    flagCode: undefined,
     text: "Matteo Rizzi is an unconventional entrepreneur with two decades of experience in Financial Services, constantly referred amongst the top executives in the industry. He spent 13 years at SWIFT - where he co-founded Innotribe, the innovation arm of the cooperative, launching the first global startup challenge. Since 2013, he has had a FinTech Investor and/or Venture Partner role with global VCs and CVCs (20+ deals, 5 exits). In 2015, he co-founded FinTechStage (FTSGroup.eu). In 2019, Matteo founded Timepledge. In 2025, he founded the African Talent Academy. He is the author of \"The FinTech Revolution\" and \"Talents & Rebels\" and is fluent in 5 languages.",
   },
   {
     code: "it",
     language: "Italiano",
-    flag: "🇮🇹",
+    flagCode: "it",
     text: "Matteo Rizzi è un imprenditore non convenzionale con oltre vent'anni di esperienza nei Servizi Finanziari, costantemente considerato tra i top executive del settore. Ha trascorso 13 anni in SWIFT, dove ha co-fondato Innotribe. Dal 2013, ha ricoperto ruoli di investitore FinTech e/o venture partner con fondi VC e CVC a livello globale. Nel 2019, Matteo ha fondato Timepledge. Ha scritto e pubblicato due libri, \"The FinTech Revolution\" e \"Talents & Rebels\", e parla correntemente cinque lingue.",
   },
   {
     code: "pt",
     language: "Português",
-    flag: "🇵🇹",
+    flagCode: "pt",
     text: "Matteo Rizzi é um empreendedor não convencional com mais de duas décadas de experiência no setor dos Serviços Financeiros. Passou 13 anos na SWIFT, onde cofundou a Innotribe. Em 2019, fundou a Timepledge. É autor de \"The FinTech Revolution\" e \"Talents & Rebels\", e fala fluentemente cinco línguas.",
   },
   {
     code: "es",
     language: "Español",
-    flag: "🇪🇸",
+    flagCode: "es",
     text: "Matteo Rizzi es un emprendedor poco convencional con más de dos décadas de experiencia en el sector de los Servicios Financieros. Pasó 13 años en SWIFT, donde cofundó Innotribe. En 2019, fundó Timepledge. Es autor de \"The FinTech Revolution\" y \"Talents & Rebels\".",
   },
   {
     code: "fr",
     language: "Français",
-    flag: "🇫🇷",
+    flagCode: "fr",
     text: "Matteo Rizzi est un entrepreneur hors norme avec plus de vingt ans d'expérience dans les services financiers. Il a passé 13 ans chez SWIFT, où il a cofondé Innotribe. En 2019, il lance Timepledge. Il est l'auteur de \"The FinTech Revolution\" et de \"Talents & Rebels\".",
   },
   {
     code: "sv",
     language: "Svenska",
-    flag: "🇸🇪",
+    flagCode: "se",
     text: "Matteo Rizzi är en okonventionell entreprenör med över två decenniers erfarenhet inom finansiella tjänster. Han tillbringade 13 år på SWIFT, där han var med och grundade Innotribe. År 2019 grundade Matteo Timepledge. Han är författare till \"The FinTech Revolution\" och \"Talents & Rebels\".",
   },
 ];
@@ -402,7 +402,16 @@ export default function ProfileWithSlideshow() {
                           : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                       }`}
                     >
-                      <span className="text-sm leading-none">{bio.flag}</span>
+                      {bio.flagCode ? (
+                        <img
+                          src={`https://flagcdn.com/24x18/${bio.flagCode}.png`}
+                          srcSet={`https://flagcdn.com/48x36/${bio.flagCode}.png 2x`}
+                          alt={`${bio.language} flag`}
+                          className="w-4 h-3 rounded-[2px] object-cover shrink-0"
+                        />
+                      ) : (
+                        <Globe className="w-3.5 h-3.5 shrink-0" />
+                      )}
                       {bio.language}
                     </button>
                   ))}
