@@ -44,6 +44,14 @@ const testimonials = [
     initials: "JP",
     color: "bg-rose-600",
   },
+  {
+    quote:
+      "Matteo's mentorship during the Ecobank Fintech Challenge was nothing short of transformative. With his guidance I was able to refine my pitch to a level of excellence that was only possible because of his dedication. Matteo gave 1000% of himself in every session, offering more time and insight than expected. What sets Matteo apart is his remarkable depth of experience in the fintech space and his genuine investment in the success of those he mentors. His feedback was not only practical but also incredibly effective, aligning perfectly with what investors seek. Beyond his professional expertise, Matteo is chill, approachable, and kind, making the entire process enjoyable and inspiring. I highly recommend Matteo Rizzi as a mentor, coach, and industry expert.",
+    name: "Tav Denkey",
+    title: "Founder & CEO @ MiaPay",
+    initials: "TD",
+    color: "bg-cyan-600",
+  },
 ];
 
 const CARDS_PER_PAGE = 3;
