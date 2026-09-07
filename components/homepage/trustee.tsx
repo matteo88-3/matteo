@@ -3,6 +3,7 @@
 import React from "react";
 
 const IMAGE_COUNT = 17;
+
 const imagePaths = Array.from(
   { length: IMAGE_COUNT },
   (_, i) => `/companies/picture${i + 1}.png`
@@ -43,10 +44,6 @@ export default function Trustee() {
             animation: marquee-scroll 36s linear infinite;
           }
 
-          .marquee-track:hover {
-            animation-play-state: paused;
-          }
-
           .marquee-tile {
             flex-shrink: 0;
             width: 152px;
@@ -58,33 +55,20 @@ export default function Trustee() {
             background: #ffffff;
             border: 1px solid #eef0f3;
             border-radius: 14px;
-            transition: border-color 0.25s ease, box-shadow 0.25s ease,
-              transform 0.25s ease;
           }
 
-          .marquee-tile:hover {
-            border-color: #e2e5eb;
-            box-shadow: 0 6px 16px -8px rgba(15, 23, 42, 0.12);
-            transform: translateY(-2px);
-          }
-
-          /* Fixed container size + image fills the container */
+          /* Fixed container + full-color image */
           .marquee-tile img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            filter: grayscale(100%) opacity(0.55);
-            transition: filter 0.3s ease;
-          }
-
-          .marquee-tile:hover img {
-            filter: grayscale(0%) opacity(1);
+            object-fit: contain;
           }
 
           @keyframes marquee-scroll {
             from {
               transform: translateX(0);
             }
+
             to {
               transform: translateX(-50%);
             }
@@ -111,7 +95,7 @@ export default function Trustee() {
             .marquee-tile img {
               width: 100%;
               height: 100%;
-              object-fit: cover;
+              object-fit: contain;
             }
           }
         `}
@@ -125,8 +109,12 @@ export default function Trustee() {
 
           <div className="marquee-container">
             <div className="marquee-track">
+
               {imagePaths.map((src, index) => (
-                <div key={`logo-${index}`} className="marquee-tile">
+                <div
+                  key={`logo-${index}`}
+                  className="marquee-tile"
+                >
                   <img
                     src={src}
                     alt={`Company logo ${index + 1}`}
@@ -141,9 +129,14 @@ export default function Trustee() {
                   className="marquee-tile"
                   aria-hidden="true"
                 >
-                  <img src={src} alt="" loading="lazy" />
+                  <img
+                    src={src}
+                    alt=""
+                    loading="lazy"
+                  />
                 </div>
               ))}
+
             </div>
           </div>
         </div>
