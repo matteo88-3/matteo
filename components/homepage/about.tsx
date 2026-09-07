@@ -152,9 +152,8 @@ const imagePaths = Array.from(
   (_, i) => `/images/${TOTAL_IMAGES - i}.jpeg`
 );
 
-// Row heights for the right-hand experience grid, tapering from large to thin
-// to match the bento sketch (2 columns, sizes shrinking toward the bottom).
-const ROW_HEIGHTS = ["h-28", "h-28", "h-24", "h-24", "h-16", "h-16"];
+// Number of experience cards shown in the right-hand grid (2 columns × 6 rows).
+const NUM_EXPERIENCE_CARDS = 12;
 
 export default function ProfileWithSlideshow() {
   // --- Image slideshow state ---
@@ -206,7 +205,7 @@ export default function ProfileWithSlideshow() {
   }, []);
 
   const activeBio = BIOS[bioIndex];
-  const visibleExperience = EXPERIENCE.slice(0, ROW_HEIGHTS.length * 2);
+  const visibleExperience = EXPERIENCE.slice(0, NUM_EXPERIENCE_CARDS);
 
   return (
     <section id="about" className="min-h-screen bg-gray-50 py-12 px-4">
@@ -226,9 +225,9 @@ export default function ProfileWithSlideshow() {
             Left: carousel (top) + bio (bottom), stacked.
             Right: tapering experience grid.
         ══════════════════════════════════════════ */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch">
           {/* ---------------- LEFT COLUMN ---------------- */}
-          <div className="lg:col-span-2 flex flex-col gap-6">
+          <div className="lg:col-span-2 flex flex-col gap-5">
             {/* Panel 1: image carousel */}
             <div
               className="relative bg-gray-900 rounded-2xl overflow-hidden shadow-lg"
@@ -397,40 +396,41 @@ export default function ProfileWithSlideshow() {
           </div>
 
           {/* ---------------- RIGHT COLUMN ---------------- */}
-          <div className="lg:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <Briefcase className="w-5 h-5 text-primary" />
-              <h3 className="text-gray-900 font-bold text-lg">Experience</h3>
+          <div className="lg:col-span-1 h-full flex flex-col">
+            <div className="flex items-center justify-between gap-2 mb-4">
+              <div className="flex items-center gap-2">
+                <Briefcase className="w-5 h-5 text-primary" />
+                <h3 className="text-gray-900 font-bold text-lg">Experience</h3>
+              </div>
+              {EXPERIENCE.length > visibleExperience.length && (
+                <button className="text-xs font-semibold text-primary hover:underline underline-offset-2 shrink-0">
+                  View all →
+                </button>
+              )}
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              {visibleExperience.map((exp, i) => {
-                const rowHeight = ROW_HEIGHTS[Math.floor(i / 2)] || "h-16";
-                return (
-                  <div
-                    key={i}
-                    className={`bg-white border border-gray-200 rounded-xl p-3 shadow-sm hover:shadow-md hover:border-primary/30 transition-all flex flex-col justify-between overflow-hidden ${rowHeight}`}
-                  >
-                    <p className="text-gray-900 font-semibold text-xs leading-snug line-clamp-2">
-                      {exp.title}
-                    </p>
-                    <p className="text-gray-500 text-[11px] leading-snug line-clamp-1">
-                      {exp.company}
-                    </p>
-                    <p className="text-gray-400 text-[10px] flex items-center gap-1">
-                      <Calendar className="w-3 h-3 shrink-0" />
-                      {exp.duration}
-                    </p>
-                  </div>
-                );
-              })}
+            {/* auto-rows-fr + flex-1 makes every card the same height and
+                stretches the whole grid to fill the column, so the last
+                row's bottom edge lines up with the bio panel's bottom. */}
+            <div className="grid grid-cols-2 auto-rows-fr gap-3 flex-1">
+              {visibleExperience.map((exp, i) => (
+                <div
+                  key={i}
+                  className="bg-white border border-gray-200 rounded-xl p-3 shadow-sm hover:shadow-md hover:border-primary/30 transition-all flex flex-col justify-between overflow-hidden h-full"
+                >
+                  <p className="text-gray-900 font-semibold text-sm leading-snug line-clamp-2">
+                    {exp.title}
+                  </p>
+                  <p className="text-gray-500 text-xs leading-snug line-clamp-1">
+                    {exp.company}
+                  </p>
+                  <p className="text-gray-400 text-xs flex items-center gap-1">
+                    <Calendar className="w-3 h-3 shrink-0" />
+                    {exp.duration}
+                  </p>
+                </div>
+              ))}
             </div>
-
-            {EXPERIENCE.length > visibleExperience.length && (
-              <button className="mt-3 w-full text-center text-xs font-semibold text-primary border border-primary/30 rounded-xl py-2 hover:bg-primary/5 transition">
-                View all experience →
-              </button>
-            )}
           </div>
         </div>
       </div>
