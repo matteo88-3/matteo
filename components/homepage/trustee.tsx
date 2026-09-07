@@ -9,9 +9,6 @@ const imagePaths = Array.from(
   (_, i) => `/companies/picture${i + 1}.png`
 );
 
-// Duplicated once for the seamless infinite-scroll loop.
-const duplicatedImages = [...imagePaths, ...imagePaths];
-
 export default function Trustee() {
   return (
     <>
@@ -57,7 +54,7 @@ export default function Trustee() {
             border-radius: 14px;
           }
 
-          /* Fixed container + full-color image */
+          /* Full-color images — no grayscale, no opacity, no hover */
           .marquee-tile img {
             width: 100%;
             height: 100%;
@@ -103,6 +100,7 @@ export default function Trustee() {
 
       <section className="bg-white py-14 border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4">
+
           <p className="text-center text-xs sm:text-sm font-semibold text-slate-400 uppercase tracking-[0.2em] mb-8">
             Trusted by industry leaders
           </p>
@@ -123,6 +121,7 @@ export default function Trustee() {
                 </div>
               ))}
 
+              {/* Duplicate logos for seamless infinite scrolling */}
               {imagePaths.map((src, index) => (
                 <div
                   key={`logo-dup-${index}`}
@@ -139,6 +138,7 @@ export default function Trustee() {
 
             </div>
           </div>
+
         </div>
       </section>
     </>
