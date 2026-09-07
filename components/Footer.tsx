@@ -24,9 +24,7 @@ const Footer = () => {
 
         {/* About Matteo */}
         <div>
-          <div className="flex-shrink-0 cursor-pointer flex items-center gap-3 mb-4">
-            <img src="/logomr2.png" alt="Matteo Rizzi" className="w-[180px] h-[75px] rounded-full object-cover" />
-          </div>
+          
           <h4 className="text-white font-bold mb-3 uppercase text-sm tracking-wider">
             About Matteo
           </h4>
