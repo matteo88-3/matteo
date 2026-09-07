@@ -200,7 +200,7 @@ const BIOS: Bio[] = [
 ];
 
 // Generate image paths from 1.jpeg to 18.jpeg
-const TOTAL_IMAGES = 18;
+const TOTAL_IMAGES = 17;
 const imagePaths = Array.from(
   { length: TOTAL_IMAGES },
   (_, i) => `/images/${TOTAL_IMAGES - i}.jpeg`
