@@ -12,6 +12,7 @@ import {
   Mic2,
   Briefcase,
   MapPin,
+  Calendar,
 } from "lucide-react";
 
 const PROFILE = {
@@ -26,6 +27,83 @@ const PROFILE = {
   ],
   location: "Lisbon, Portugal",
 };
+
+// ---------------------------------------------------------------------------
+// EXPERIENCE — full career history, copied from LinkedIn.
+// ---------------------------------------------------------------------------
+type ExperienceItem = {
+  title: string;
+  company: string;
+  duration: string;
+};
+
+const EXPERIENCE: ExperienceItem[] = [
+  {
+    title: "Senior Partner - Africa & Middle East, Global Strategic Initiatives",
+    company: "Global Finance & Technology Network · Contract",
+    duration: "Jan 2025 - Present · 1 yr 9 mos",
+  },
+  {
+    title: "Founder",
+    company: "Timepledge.org",
+    duration: "Dec 2014 - Present · 11 yrs 10 mos",
+  },
+  {
+    title: "Co-Host & Executive Producer",
+    company: "Breaking Banks Africa",
+    duration: "Oct 2019 - Present · 7 yrs",
+  },
+  {
+    title: "Founder & Startup Coach",
+    company: "TimePledge · Full-time",
+    duration: "Sep 2009 - Present · 17 yrs 1 mo",
+  },
+  {
+    title: "Venture Partner",
+    company: "NEVA Finventures",
+    duration: "Jun 2018 - Jun 2024 · 6 yrs 1 mo",
+  },
+  {
+    title: "Strategic Advisor",
+    company: "Finnovating · Contract",
+    duration: "Sep 2022 - Jan 2023 · 5 mos",
+  },
+  {
+    title: "Venture Partner",
+    company: "Bamboo Capital Partners · Contract",
+    duration: "Jan 2021 - Jun 2022 · 1 yr 6 mos",
+  },
+  {
+    title: "Venture Partner - SG Ventures",
+    company: "Société Générale",
+    duration: "May 2019 - Dec 2020 · 1 yr 8 mos",
+  },
+  {
+    title: "Advisor",
+    company: "Omidyar Network",
+    duration: "Oct 2015 - Mar 2017 · 1 yr 6 mos",
+  },
+  {
+    title: "General Partner",
+    company: "SBT Venture Capital",
+    duration: "Sep 2013 - Dec 2015 · 2 yrs 4 mos",
+  },
+  {
+    title: "Co-founder Innotribe @ SWIFT",
+    company: "SWIFT",
+    duration: "Jun 2009 - Sep 2013 · 4 yrs 4 mos",
+  },
+  {
+    title: "Head of Community Channels - www.swiftcommunity.net",
+    company: "SWIFT",
+    duration: "Jan 2001 - Jun 2009 · 8 yrs 6 mos",
+  },
+  {
+    title: "Co-founder",
+    company: "www.italiansonline.net",
+    duration: "Feb 2003 - Jun 2009 · 6 yrs 5 mos",
+  },
+];
 
 // ---------------------------------------------------------------------------
 // BIOS — one entry per language. `text` is shown in full on the slide.
@@ -86,6 +164,8 @@ const imagePaths = Array.from(
   (_, i) => `/images/${TOTAL_IMAGES - i}.jpeg`
 );
 
+const EXPERIENCE_PER_PAGE = 12; // 6 columns × 2 rows
+
 export default function ProfileWithSlideshow() {
   // --- Image slideshow state ---
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -95,6 +175,16 @@ export default function ProfileWithSlideshow() {
 
   // --- Bio slider state ---
   const [bioIndex, setBioIndex] = useState(0);
+
+  // --- Experience pagination state (6 cols x 2 rows per page) ---
+  const [expPage, setExpPage] = useState(0);
+  const expTotalPages = Math.ceil(EXPERIENCE.length / EXPERIENCE_PER_PAGE);
+  const pagedExperience = EXPERIENCE.slice(
+    expPage * EXPERIENCE_PER_PAGE,
+    expPage * EXPERIENCE_PER_PAGE + EXPERIENCE_PER_PAGE
+  );
+  const expPrev = () => setExpPage((p) => (p === 0 ? expTotalPages - 1 : p - 1));
+  const expNext = () => setExpPage((p) => (p === expTotalPages - 1 ? 0 : p + 1));
 
   // Clear and reset autoplay timer
   const resetAutoplay = useCallback(() => {
@@ -164,218 +254,278 @@ export default function ProfileWithSlideshow() {
           </p>
         </div>
 
-        {/* Two-column layout */}
-        <div className="flex flex-col xl:flex-row gap-8 items-start">
-          {/* SLIDESHOW COLUMN */}
-          <div className="flex-1 w-full">
-            <div
-              className="relative bg-gray-900 rounded-2xl overflow-hidden shadow-lg"
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
-            >
-              {/* Main image */}
-              <div className="relative aspect-video bg-gray-100 flex items-center justify-center">
-                <img
-                  src={imagePaths[currentIndex]}
-                  alt={`Matteo Rizzi - image ${currentIndex + 1}`}
-                  className="w-full h-full object-contain transition-opacity duration-300"
-                  loading="lazy"
+        {/* ══════════════════════════════════════════
+            ROW 1 — IMAGE CAROUSEL
+        ══════════════════════════════════════════ */}
+        <div
+          className="relative bg-gray-900 rounded-2xl overflow-hidden shadow-lg"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        >
+          {/* Main image */}
+          <div className="relative aspect-video bg-gray-100 flex items-center justify-center">
+            <img
+              src={imagePaths[currentIndex]}
+              alt={`Matteo Rizzi - image ${currentIndex + 1}`}
+              className="w-full h-full object-contain transition-opacity duration-300"
+              loading="lazy"
+            />
+            {/* Subtle image counter overlay (top-right) */}
+            <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
+              <ImageIcon className="w-3 h-3 inline mr-1" />
+              {currentIndex + 1} / {TOTAL_IMAGES}
+            </div>
+          </div>
+
+          {/* Slideshow controls (always visible below image) */}
+          <div className="bg-white border-t border-gray-200 px-4 py-3 flex items-center justify-between gap-2 flex-wrap">
+            <div className="flex items-center gap-1">
+              <button
+                onClick={goPrev}
+                className="p-2 rounded-full hover:bg-gray-100 transition text-gray-700"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={goNext}
+                className="p-2 rounded-full hover:bg-gray-100 transition text-gray-700"
+                aria-label="Next image"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+              <button
+                onClick={toggleAutoplay}
+                className={`ml-1 p-2 rounded-full transition ${
+                  isAutoPlaying
+                    ? "bg-primary/10 text-primary hover:bg-primary/20"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+                aria-label={isAutoPlaying ? "Pause slideshow" : "Play slideshow"}
+              >
+                {isAutoPlaying ? (
+                  <Pause className="w-4 h-4" />
+                ) : (
+                  <Play className="w-4 h-4 ml-0.5" />
+                )}
+              </button>
+            </div>
+
+            {/* Dot indicators */}
+            <div className="flex gap-1.5 overflow-x-auto max-w-[200px] py-1">
+              {imagePaths.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => goToIndex(idx)}
+                  className={`h-2 rounded-full transition-all ${
+                    idx === currentIndex
+                      ? "w-6 bg-primary"
+                      : "w-2 bg-gray-300 hover:bg-gray-400"
+                  }`}
+                  aria-label={`Go to image ${idx + 1}`}
                 />
-                {/* Subtle image counter overlay (top-right) */}
-                <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
-                  <ImageIcon className="w-3 h-3 inline mr-1" />
-                  {currentIndex + 1} / {TOTAL_IMAGES}
-                </div>
-              </div>
+              ))}
+            </div>
 
-              {/* Slideshow controls (always visible below image) */}
-              <div className="bg-white border-t border-gray-200 px-4 py-3 flex items-center justify-between gap-2 flex-wrap">
-                <div className="flex items-center gap-1">
+            {/* Counter text for small screens */}
+            <span className="text-xs text-gray-500 sm:hidden">
+              {currentIndex + 1}/{TOTAL_IMAGES}
+            </span>
+          </div>
+        </div>
+
+        {/* Below carousel: name + location */}
+        <div className="mt-4 flex flex-wrap items-start justify-between gap-2">
+          <div>
+            <h2 className="text-gray-900 font-bold text-xl">{PROFILE.name}</h2>
+            <p className="text-gray-500 text-sm">{PROFILE.tagline}</p>
+          </div>
+          <div className="flex items-center gap-1.5 text-sm text-gray-400">
+            <MapPin className="w-4 h-4" />
+            {PROFILE.location}
+          </div>
+        </div>
+
+        {/* ══════════════════════════════════════════
+            ROW 2 — BIO IN ALL LANGUAGES
+        ══════════════════════════════════════════ */}
+        <div className="mt-6 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+          <div className="flex items-center justify-between px-5 pt-4">
+            <h3 className="text-gray-900 font-semibold text-sm flex items-center gap-2">
+              <Globe className="w-4 h-4 text-primary" />
+              Bio in {BIOS.length} languages
+            </h3>
+            <span className="text-xs text-gray-400">
+              {bioIndex + 1} / {BIOS.length}
+            </span>
+          </div>
+
+          <div className="relative px-5 py-4">
+            {/* Language pill row */}
+            <div className="flex gap-2 overflow-x-auto pb-3 -mx-1 px-1 scrollbar-thin">
+              {BIOS.map((bio, idx) => (
+                <button
+                  key={bio.code}
+                  onClick={() => setBioIndex(idx)}
+                  className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition whitespace-nowrap ${
+                    idx === bioIndex
+                      ? "bg-primary text-white"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  }`}
+                >
+                  <span className="text-sm leading-none">{bio.flag}</span>
+                  {bio.language}
+                </button>
+              ))}
+            </div>
+
+            {/* Active bio card */}
+            <div className="rounded-xl bg-gray-50 border border-gray-100 p-4 flex flex-col">
+              <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-line">
+                {activeBio.text}
+              </p>
+              <div className="mt-4 flex items-center justify-between gap-3">
+                <a
+                  href={MEDIA_KIT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-primary text-sm font-semibold hover:underline underline-offset-2 shrink-0"
+                >
+                  Read full bio & media kit →
+                </a>
+
+                {/* Slide nav */}
+                <div className="flex items-center gap-1 shrink-0">
                   <button
-                    onClick={goPrev}
-                    className="p-2 rounded-full hover:bg-gray-100 transition text-gray-700"
-                    aria-label="Previous image"
+                    onClick={bioPrev}
+                    className="p-1.5 rounded-full hover:bg-gray-200 transition text-gray-600"
+                    aria-label="Previous language"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-4 h-4" />
                   </button>
                   <button
-                    onClick={goNext}
-                    className="p-2 rounded-full hover:bg-gray-100 transition text-gray-700"
-                    aria-label="Next image"
+                    onClick={bioNext}
+                    className="p-1.5 rounded-full hover:bg-gray-200 transition text-gray-600"
+                    aria-label="Next language"
                   >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={toggleAutoplay}
-                    className={`ml-1 p-2 rounded-full transition ${
-                      isAutoPlaying
-                        ? "bg-primary/10 text-primary hover:bg-primary/20"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    }`}
-                    aria-label={isAutoPlaying ? "Pause slideshow" : "Play slideshow"}
-                  >
-                    {isAutoPlaying ? (
-                      <Pause className="w-4 h-4" />
-                    ) : (
-                      <Play className="w-4 h-4 ml-0.5" />
-                    )}
+                    <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
-
-                {/* Dot indicators */}
-                <div className="flex gap-1.5 overflow-x-auto max-w-[200px] py-1">
-                  {imagePaths.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => goToIndex(idx)}
-                      className={`h-2 rounded-full transition-all ${
-                        idx === currentIndex
-                          ? "w-6 bg-primary"
-                          : "w-2 bg-gray-300 hover:bg-gray-400"
-                      }`}
-                      aria-label={`Go to image ${idx + 1}`}
-                    />
-                  ))}
-                </div>
-
-                {/* Counter text for small screens */}
-                <span className="text-xs text-gray-500 sm:hidden">
-                  {currentIndex + 1}/{TOTAL_IMAGES}
-                </span>
               </div>
             </div>
 
-            {/* Below slideshow: name + location */}
-            <div className="mt-4 flex flex-wrap items-start justify-between gap-2">
-              <div>
-                <h2 className="text-gray-900 font-bold text-xl">{PROFILE.name}</h2>
-                <p className="text-gray-500 text-sm">{PROFILE.tagline}</p>
-              </div>
-              <div className="flex items-center gap-1.5 text-sm text-gray-400">
-                <MapPin className="w-4 h-4" />
-                {PROFILE.location}
-              </div>
+            {/* Dot indicators for bio slides */}
+            <div className="flex justify-center gap-1.5 mt-3">
+              {BIOS.map((bio, idx) => (
+                <button
+                  key={bio.code}
+                  onClick={() => setBioIndex(idx)}
+                  className={`h-1.5 rounded-full transition-all ${
+                    idx === bioIndex
+                      ? "w-5 bg-primary"
+                      : "w-1.5 bg-gray-300 hover:bg-gray-400"
+                  }`}
+                  aria-label={`Go to ${bio.language} bio`}
+                />
+              ))}
             </div>
+          </div>
+        </div>
 
-            {/* BIO SLIDER (replaces the old static bio paragraph) */}
-            <div className="mt-6 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-              <div className="flex items-center justify-between px-5 pt-4">
-                <h3 className="text-gray-900 font-semibold text-sm flex items-center gap-2">
-                  <Globe className="w-4 h-4 text-primary" />
-                  Bio in {BIOS.length} languages
-                </h3>
-                <span className="text-xs text-gray-400">
-                  {bioIndex + 1} / {BIOS.length}
-                </span>
-              </div>
+        {/* ══════════════════════════════════════════
+            ROW 3 — EXPERIENCE GRID (6 columns × 2 rows, paginated)
+        ══════════════════════════════════════════ */}
+        <div className="mt-10">
+          <div className="flex items-center justify-between mb-5">
+            <h3 className="text-gray-900 font-bold text-xl flex items-center gap-2">
+              <Briefcase className="w-5 h-5 text-primary" />
+              Experience
+            </h3>
+            {expTotalPages > 1 && (
+              <span className="text-xs text-gray-400">
+                Page {expPage + 1} / {expTotalPages}
+              </span>
+            )}
+          </div>
 
-              <div className="relative px-5 py-4">
-                {/* Language pill row */}
-                <div className="flex gap-2 overflow-x-auto pb-3 -mx-1 px-1 scrollbar-thin">
-                  {BIOS.map((bio, idx) => (
-                    <button
-                      key={bio.code}
-                      onClick={() => setBioIndex(idx)}
-                      className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition whitespace-nowrap ${
-                        idx === bioIndex
-                          ? "bg-primary text-white"
-                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                      }`}
-                    >
-                      <span className="text-sm leading-none">{bio.flag}</span>
-                      {bio.language}
-                    </button>
-                  ))}
-                </div>
+          <div className="flex items-center gap-3">
+            {expTotalPages > 1 && (
+              <button
+                onClick={expPrev}
+                className="hidden md:flex shrink-0 w-10 h-10 rounded-full border border-gray-200 items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-colors"
+                aria-label="Previous experience page"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+            )}
 
-                {/* Active bio card */}
-                <div className="rounded-xl bg-gray-50 border border-gray-100 p-4 flex flex-col">
-                  <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-line">
-                    {activeBio.text}
-                  </p>
-                  <div className="mt-4 flex items-center justify-between gap-3">
-                    <a
-                      href={MEDIA_KIT_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-primary text-sm font-semibold hover:underline underline-offset-2 shrink-0"
-                    >
-                      Read full bio & media kit →
-                    </a>
-
-                    {/* Slide nav */}
-                    <div className="flex items-center gap-1 shrink-0">
-                      <button
-                        onClick={bioPrev}
-                        className="p-1.5 rounded-full hover:bg-gray-200 transition text-gray-600"
-                        aria-label="Previous language"
-                      >
-                        <ChevronLeft className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={bioNext}
-                        className="p-1.5 rounded-full hover:bg-gray-200 transition text-gray-600"
-                        aria-label="Next language"
-                      >
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
-                    </div>
+            <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+              {pagedExperience.map((exp, i) => (
+                <div
+                  key={`${expPage}-${i}`}
+                  className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-primary/30 transition-all flex flex-col gap-2"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <Briefcase className="w-4 h-4 text-primary" />
                   </div>
-                </div>
-
-                {/* Dot indicators for bio slides */}
-                <div className="flex justify-center gap-1.5 mt-3">
-                  {BIOS.map((bio, idx) => (
-                    <button
-                      key={bio.code}
-                      onClick={() => setBioIndex(idx)}
-                      className={`h-1.5 rounded-full transition-all ${
-                        idx === bioIndex
-                          ? "w-5 bg-primary"
-                          : "w-1.5 bg-gray-300 hover:bg-gray-400"
-                      }`}
-                      aria-label={`Go to ${bio.language} bio`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* SIDEBAR (bio removed, roles unchanged) */}
-          <div className="w-full xl:w-80 flex flex-col gap-4 xl:sticky xl:top-8">
-            {/* Profile card */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl shrink-0 select-none">
-                  MR
-                </div>
-                <div>
-                  <p className="font-bold text-gray-900 text-base leading-tight">
-                    {PROFILE.name}
+                  <p className="text-gray-900 font-semibold text-sm leading-snug">
+                    {exp.title}
                   </p>
-                  <p className="text-gray-500 text-xs mt-0.5">{PROFILE.tagline}</p>
+                  <p className="text-gray-500 text-xs leading-snug">{exp.company}</p>
+                  <p className="text-gray-400 text-xs flex items-center gap-1 mt-auto pt-1">
+                    <Calendar className="w-3 h-3 shrink-0" />
+                    {exp.duration}
+                  </p>
                 </div>
-              </div>
+              ))}
             </div>
 
-            {/* Current roles */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
-              <h3 className="text-gray-900 font-semibold text-sm mb-3 pb-2 border-b border-gray-100">
-                Current Roles
-              </h3>
-              <ul className="space-y-3">
-                {PROFILE.roles.map(({ icon: Icon, label }) => (
-                  <li key={label} className="flex items-start gap-3">
-                    <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                      <Icon className="w-3.5 h-3.5 text-primary" />
-                    </div>
-                    <span className="text-gray-700 text-sm leading-snug">{label}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {expTotalPages > 1 && (
+              <button
+                onClick={expNext}
+                className="hidden md:flex shrink-0 w-10 h-10 rounded-full border border-gray-200 items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-colors"
+                aria-label="Next experience page"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            )}
           </div>
+
+          {/* Mobile arrows (below grid, since side arrows don't fit on small screens) */}
+          {expTotalPages > 1 && (
+            <div className="flex md:hidden items-center justify-center gap-4 mt-4">
+              <button
+                onClick={expPrev}
+                className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-colors"
+                aria-label="Previous experience page"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={expNext}
+                className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary transition-colors"
+                aria-label="Next experience page"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+
+          {/* Page dots */}
+          {expTotalPages > 1 && (
+            <div className="flex justify-center gap-2 mt-5">
+              {Array.from({ length: expTotalPages }, (_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setExpPage(i)}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    i === expPage ? "w-6 bg-primary" : "w-1.5 bg-gray-300"
+                  }`}
+                  aria-label={`Experience page ${i + 1}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>
