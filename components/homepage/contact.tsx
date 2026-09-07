@@ -130,7 +130,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                     <Linkedin className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-500 mb-1">LinkedIn</p>
+                    
                     <a 
                       href="https://www.linkedin.com/in/matteorizzi/" target='_blank'
                       className="font-semibold text-gray-900 hover:text-primary transition-colors text-lg"
