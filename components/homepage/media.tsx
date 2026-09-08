@@ -275,31 +275,30 @@ const MediaInsights: React.FC = () => {
         ══════════════════════════════════════════ */}
         {activeTab === 'articles' && (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {ARTICLES.map((article) => (
                 <button
                   key={article.slug}
                   onClick={() => setSelectedArticle(article)}
-                  className="group text-left bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden transform hover:-translate-y-2"
+                  className="group text-left bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
                 >
-                  <div className="relative h-64 overflow-hidden">
+                  <div className="relative h-40 overflow-hidden">
                     <img
                       src={article.image}
                       alt={article.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-300" />
-                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-white text-xs font-semibold flex items-center gap-1 shadow-lg bg-gradient-to-r from-orange-500 to-red-600">
+                  </div>
+                  <div className="p-4">
+                    <span className="inline-flex items-center gap-1 text-primary text-xs font-bold uppercase tracking-wide mb-2">
                       <Newspaper className="w-3 h-3" />
                       Article
-                    </div>
-                  </div>
-                  <div className="p-5">
-                    <h3 className="text-base font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-primary transition-colors">
+                    </span>
+                    <h3 className="text-base font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
                       {article.title}
                     </h3>
                     <span className="inline-flex items-center gap-1.5 text-primary font-semibold text-sm">
-                      Read article
+                      Read More
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </span>
                   </div>
