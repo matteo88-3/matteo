@@ -282,14 +282,14 @@ const MediaInsights: React.FC = () => {
                   onClick={() => setSelectedArticle(article)}
                   className="group text-left bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
                 >
-                  <div className="relative h-40 overflow-hidden">
+                  <div className="relative h-56 overflow-hidden">
                     <img
                       src={article.image}
                       alt={article.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
-                  <div className="p-4">
+                  <div className="p-5">
                     <span className="inline-flex items-center gap-1 text-primary text-xs font-bold uppercase tracking-wide mb-2">
                       <Newspaper className="w-3 h-3" />
                       Article
@@ -297,6 +297,9 @@ const MediaInsights: React.FC = () => {
                     <h3 className="text-base font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
                       {article.title}
                     </h3>
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-3">
+                      {article.fullText}
+                    </p>
                     <span className="inline-flex items-center gap-1.5 text-primary font-semibold text-sm">
                       Read More
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
