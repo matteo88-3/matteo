@@ -12,6 +12,7 @@ import { usePodcasts, Podcast } from '@/lib/api/fetch.podcasts';
 type InsightType = 'podcasts' | 'articles';
 
 const PODCASTS_PER_PAGE = 6;
+const NEWSLETTER_LINK = 'https://www.linkedin.com/newsletters/news-from-the-rebel-s-front-6978747108887531520/';
 
 /*
   Static articles list — pulled from Matteo's LinkedIn Pulse posts.
@@ -273,37 +274,52 @@ const MediaInsights: React.FC = () => {
             ARTICLES TAB — 4-column grid, click opens modal
         ══════════════════════════════════════════ */}
         {activeTab === 'articles' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {ARTICLES.map((article) => (
-              <button
-                key={article.slug}
-                onClick={() => setSelectedArticle(article)}
-                className="group text-left bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden transform hover:-translate-y-2"
-              >
-                <div className="relative h-40 overflow-hidden">
-                  <img
-                    src={article.image}
-                    alt={article.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-300" />
-                  <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-white text-xs font-semibold flex items-center gap-1 shadow-lg bg-gradient-to-r from-orange-500 to-red-600">
-                    <Newspaper className="w-3 h-3" />
-                    Article
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {ARTICLES.map((article) => (
+                <button
+                  key={article.slug}
+                  onClick={() => setSelectedArticle(article)}
+                  className="group text-left bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden transform hover:-translate-y-2"
+                >
+                  <div className="relative h-64 overflow-hidden">
+                    <img
+                      src={article.image}
+                      alt={article.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-300" />
+                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-white text-xs font-semibold flex items-center gap-1 shadow-lg bg-gradient-to-r from-orange-500 to-red-600">
+                      <Newspaper className="w-3 h-3" />
+                      Article
+                    </div>
                   </div>
-                </div>
-                <div className="p-5">
-                  <h3 className="text-base font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-primary transition-colors">
-                    {article.title}
-                  </h3>
-                  <span className="inline-flex items-center gap-1.5 text-primary font-semibold text-sm">
-                    Read article
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                </div>
-              </button>
-            ))}
-          </div>
+                  <div className="p-5">
+                    <h3 className="text-base font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-primary transition-colors">
+                      {article.title}
+                    </h3>
+                    <span className="inline-flex items-center gap-1.5 text-primary font-semibold text-sm">
+                      Read article
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            {/* See more articles — links out to the full LinkedIn newsletter */}
+            <div className="flex justify-center mt-10">
+              <a
+                href={NEWSLETTER_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold bg-primary text-white shadow-lg hover:opacity-90 transition-opacity"
+              >
+                See more articles
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
+          </>
         )}
 
         {/* Category Filter Bar — podcasts only */}
