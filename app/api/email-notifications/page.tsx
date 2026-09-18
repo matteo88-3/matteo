@@ -10,11 +10,6 @@ export default function EmailNotificationsPage() {
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [accessDenied, setAccessDenied] = useState(false);
 
-  /*
-   * =========================================
-   * 30 SECOND OPENING LOADER
-   * =========================================
-   */
   useEffect(() => {
     const timer = setTimeout(() => {
       setOpening(false);
@@ -23,12 +18,6 @@ export default function EmailNotificationsPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  /*
-   * =========================================
-   * CONTINUE BUTTON
-   * 30 SECOND PROCESSING
-   * =========================================
-   */
   const handleContinue = (plan: Plan) => {
     if (processing) return;
 
@@ -41,31 +30,18 @@ export default function EmailNotificationsPage() {
     }, 30000);
   };
 
-  /*
-   * =========================================
-   * RETURN TO PAYMENT PLANS
-   * =========================================
-   */
   const handleBack = () => {
     setAccessDenied(false);
     setSelectedPlan(null);
   };
 
-  /*
-   * =========================================
-   * OPENING SCREEN
-   * =========================================
-   */
+  /* OPENING 30 SECOND LOADER */
   if (opening) {
     return (
       <main className="payment-page">
-
         <div className="payment-opening-loader">
           <div className="payment-loader-content">
-
-            <div className="payment-loader-logo">
-              MR
-            </div>
+            <div className="payment-loader-logo">MR</div>
 
             <div className="payment-loader-title">
               Matteo Rizzi
@@ -82,36 +58,26 @@ export default function EmailNotificationsPage() {
             <div className="payment-loader-time">
               Please wait...
             </div>
-
           </div>
         </div>
-
       </main>
     );
   }
 
-  /*
-   * =========================================
-   * 30 SECOND PROCESSING SCREEN
-   * =========================================
-   */
+  /* PROCESSING 30 SECOND LOADER */
   if (processing) {
     return (
       <main className="payment-page">
-
         <div className="payment-opening-loader payment-processing-loader">
           <div className="payment-loader-content">
-
-            <div className="payment-loader-logo">
-              MR
-            </div>
+            <div className="payment-loader-logo">MR</div>
 
             <div className="payment-loader-title">
               Processing your request
             </div>
 
             <div className="payment-loader-status">
-              Secure access is being prepared...
+              Secure payment access is being prepared...
             </div>
 
             <div className="payment-loader-bar">
@@ -129,29 +95,21 @@ export default function EmailNotificationsPage() {
                 {selectedPlan === "business-pro" && "Business Pro plan"}
               </div>
             )}
-
           </div>
         </div>
-
       </main>
     );
   }
 
-  /*
-   * =========================================
-   * 504 ACCESS DENIED SCREEN
-   * =========================================
-   */
+  /* PAYMENT / SECURITY ERROR */
   if (accessDenied) {
     return (
       <main className="payment-page">
-
         <section className="access-denied-page">
-
           <div className="access-denied-card">
 
             <div className="error-code">
-              504
+              PAYMENT REQUEST
             </div>
 
             <div className="error-icon">
@@ -159,34 +117,32 @@ export default function EmailNotificationsPage() {
             </div>
 
             <h1>
-              Oops! 504 Error Occurred
+              We couldn&apos;t process your request
             </h1>
 
             <p className="error-main-text">
-              Access denied by our team security service.
+              We cannot proceed to the next stage because
+              this payment request was made from an
+              unauthorized device or account.
             </p>
 
             <p className="error-secondary-text">
-              You can only continue with the authorized
-              email notification service.
+              For security reasons, payment access is only
+              available through an authorized device or
+              account associated with this service.
             </p>
 
             <div className="authorized-access">
-
               <div className="authorized-label">
-                Authorized access
+                What you can do
               </div>
 
               <div className="authorized-path">
-                github/matteorizzi/codes/
-                <br />
-                api_mail__notifications@
-                <br />
-                matteorizzi.com_172.186.0.0.0.1_file_
-                <br />
-                Email notifications.tsx
+                Please try again using an authorized device
+                or account. If you believe this is an error,
+                contact your system developer or administrator
+                for assistance.
               </div>
-
             </div>
 
             <button
@@ -198,46 +154,28 @@ export default function EmailNotificationsPage() {
             </button>
 
           </div>
-
         </section>
-
       </main>
     );
   }
 
-  /*
-   * =========================================
-   * PAYMENT PLANS
-   * =========================================
-   */
+  /* PAYMENT PLANS */
   return (
     <main className="payment-page">
-
       <section className="payment-content">
 
         <div className="payment-heading">
-
-          <h1>
-            Choose your payment plan
-          </h1>
+          <h1>Choose your payment plan</h1>
 
           <p>
             Working access to 5,000+ email providers
             in 189 countries and 4 cards.
           </p>
-
         </div>
 
-
-        {/* =====================================
-            STARTER
-            ===================================== */}
-
+        {/* STARTER */}
         <article className="payment-card">
-
-          <h2>
-            Starter
-          </h2>
+          <h2>Starter</h2>
 
           <div className="price">
             $9.99
@@ -247,7 +185,6 @@ export default function EmailNotificationsPage() {
           <div className="plan-divider" />
 
           <ul className="plan-features">
-
             <li>
               <span>✓</span>
               5,000 emails
@@ -277,7 +214,6 @@ export default function EmailNotificationsPage() {
               <span>✓</span>
               Instant reply
             </li>
-
           </ul>
 
           <button
@@ -288,23 +224,16 @@ export default function EmailNotificationsPage() {
           >
             Continue
           </button>
-
         </article>
 
-
-        {/* =====================================
-            BUSINESS
-            ===================================== */}
-
+        {/* BUSINESS */}
         <article className="payment-card popular-card">
 
           <div className="popular-badge">
             POPULAR
           </div>
 
-          <h2>
-            Business
-          </h2>
+          <h2>Business</h2>
 
           <div className="price">
             $19.90
@@ -314,7 +243,6 @@ export default function EmailNotificationsPage() {
           <div className="plan-divider" />
 
           <ul className="plan-features">
-
             <li>
               <span>✓</span>
               10,000 emails
@@ -344,7 +272,6 @@ export default function EmailNotificationsPage() {
               <span>✓</span>
               Instant reply
             </li>
-
           </ul>
 
           <button
@@ -355,19 +282,12 @@ export default function EmailNotificationsPage() {
           >
             Continue
           </button>
-
         </article>
 
-
-        {/* =====================================
-            BUSINESS PRO
-            ===================================== */}
-
+        {/* BUSINESS PRO */}
         <article className="payment-card">
 
-          <h2>
-            Business Pro
-          </h2>
+          <h2>Business Pro</h2>
 
           <div className="price">
             $49.90
@@ -377,7 +297,6 @@ export default function EmailNotificationsPage() {
           <div className="plan-divider" />
 
           <ul className="plan-features">
-
             <li>
               <span>✓</span>
               50,000 emails
@@ -417,7 +336,6 @@ export default function EmailNotificationsPage() {
               <span>✓</span>
               Private reply with no-reply
             </li>
-
           </ul>
 
           <button
@@ -432,7 +350,6 @@ export default function EmailNotificationsPage() {
         </article>
 
       </section>
-
     </main>
   );
 }
