@@ -40,3 +40,27 @@
         #attt{
             background-attachment: fixed;
         }
+        
+        /* =========================================
+   PAYMENT PAGE — /api/email-notifications
+   Hide Matteo Rizzi site navigation/footer
+   ========================================= */
+
+body:has(.payment-page) header,
+body:has(.payment-page) footer {
+  display: none !important;
+}
+
+/* Remove spacing created by the main website layout */
+body:has(.payment-page) {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Payment page takes over the screen */
+body:has(.payment-page) .payment-page {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
