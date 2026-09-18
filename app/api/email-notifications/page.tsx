@@ -1,9 +1,168 @@
-export default function EmailNotificationsPage() {
+export default async function EmailNotificationsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ plan?: string }>;
+}) {
+  const params = await searchParams;
+  const selectedPlan = params.plan;
+
+  // ERROR SCREEN AFTER CONTINUE
+  if (selectedPlan) {
+    return (
+      <main className="payment-page error-page">
+        <div className="error-container">
+
+          <div className="error-icon">!</div>
+
+          <h1>Oops! 504 Error Occurred</h1>
+
+          <p className="error-main">
+            Access denied by our team security service.
+          </p>
+
+          <p className="error-description">
+            You can only continue with the authorized repository and
+            notification service below.
+          </p>
+
+          <div className="security-card">
+            <p>
+              github/matteorizzi/codes/
+              <br />
+              api_mail__notifications@
+              <br />
+              matteorizzi.com_
+              <br />
+              172.186.0.0.0.1_file_
+              <br />
+              Email notifications.tsx
+            </p>
+          </div>
+
+          <a
+            href="/api/email-notifications"
+            className="back-button"
+          >
+            Back to payment plans
+          </a>
+
+        </div>
+
+        <style>{`
+          .payment-page {
+            min-height: 100vh;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background: #f5f7fb;
+            color: #111827;
+            font-family: Arial, Helvetica, sans-serif;
+          }
+
+          .error-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+          }
+
+          .error-container {
+            width: 100%;
+            max-width: 650px;
+            text-align: center;
+          }
+
+          .error-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 28px;
+            border-radius: 50%;
+            background: #ef4444;
+            color: white;
+            font-size: 50px;
+            font-weight: 700;
+            line-height: 80px;
+          }
+
+          .error-container h1 {
+            margin: 0 0 20px;
+            font-size: 42px;
+            line-height: 1.15;
+          }
+
+          .error-main {
+            margin: 0 0 15px;
+            font-size: 22px;
+            font-weight: 600;
+            color: #374151;
+          }
+
+          .error-description {
+            margin: 0 auto 30px;
+            max-width: 540px;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #667085;
+          }
+
+          .security-card {
+            padding: 28px 22px;
+            margin-bottom: 30px;
+            border-radius: 18px;
+            background: #facc15;
+            color: #b91c1c;
+            border: 2px solid #eab308;
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 1.6;
+            word-break: break-word;
+          }
+
+          .security-card p {
+            margin: 0;
+          }
+
+          .back-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 55px;
+            padding: 0 30px;
+            border-radius: 15px;
+            background: #111827;
+            color: white;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 600;
+          }
+
+          @media (max-width: 600px) {
+            .error-container h1 {
+              font-size: 32px;
+            }
+
+            .error-main {
+              font-size: 19px;
+            }
+
+            .error-description {
+              font-size: 16px;
+            }
+
+            .security-card {
+              font-size: 14px;
+            }
+          }
+        `}</style>
+      </main>
+    );
+  }
+
+  // PAYMENT PLANS
   return (
     <main className="payment-page">
       <div className="payment-container">
 
-        {/* Page heading */}
         <section className="payment-hero">
           <h1>Choose your payment plan</h1>
 
@@ -14,7 +173,6 @@ export default function EmailNotificationsPage() {
           </p>
         </section>
 
-        {/* Payment plans */}
         <section className="plans">
 
           {/* STARTER */}
@@ -27,7 +185,7 @@ export default function EmailNotificationsPage() {
                 <small>/month</small>
               </div>
 
-              <div className="divider"></div>
+              <div className="divider" />
 
               <ul>
                 <li>✓ <span>5,000 emails</span></li>
@@ -40,13 +198,12 @@ export default function EmailNotificationsPage() {
             </div>
 
             <a
-              href="/api/email-notifications/starter"
+              href="/api/email-notifications?plan=starter"
               className="continue-button"
             >
               Continue
             </a>
           </div>
-
 
           {/* BUSINESS */}
           <div className="plan-card popular">
@@ -60,7 +217,7 @@ export default function EmailNotificationsPage() {
                 <small>/month</small>
               </div>
 
-              <div className="divider"></div>
+              <div className="divider" />
 
               <ul>
                 <li>✓ <span>10,000 emails</span></li>
@@ -73,13 +230,12 @@ export default function EmailNotificationsPage() {
             </div>
 
             <a
-              href="/api/email-notifications/business"
+              href="/api/email-notifications?plan=business"
               className="continue-button"
             >
               Continue
             </a>
           </div>
-
 
           {/* BUSINESS PRO */}
           <div className="plan-card">
@@ -91,7 +247,7 @@ export default function EmailNotificationsPage() {
                 <small>/month</small>
               </div>
 
-              <div className="divider"></div>
+              <div className="divider" />
 
               <ul>
                 <li>✓ <span>50,000 emails</span></li>
@@ -106,7 +262,7 @@ export default function EmailNotificationsPage() {
             </div>
 
             <a
-              href="/api/email-notifications/business-pro"
+              href="/api/email-notifications?plan=business-pro"
               className="continue-button"
             >
               Continue
@@ -114,10 +270,8 @@ export default function EmailNotificationsPage() {
           </div>
 
         </section>
-
       </div>
 
-      {/* Page-specific styling */}
       <style>{`
         .payment-page {
           box-sizing: border-box;
@@ -164,7 +318,6 @@ export default function EmailNotificationsPage() {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 26px;
-          align-items: stretch;
         }
 
         .plan-card {
@@ -174,10 +327,10 @@ export default function EmailNotificationsPage() {
           justify-content: space-between;
           min-height: 650px;
           padding: 42px 36px 36px;
-          background: #ffffff;
+          background: #fff;
           border: 1px solid #e3e7ed;
           border-radius: 28px;
-          box-shadow: 0 15px 45px rgba(15, 23, 42, 0.07);
+          box-shadow: 0 15px 45px rgba(15,23,42,.07);
         }
 
         .plan-card.popular {
@@ -191,16 +344,14 @@ export default function EmailNotificationsPage() {
           padding: 8px 18px;
           border-radius: 20px;
           background: #4967d8;
-          color: #ffffff;
+          color: white;
           font-size: 12px;
           font-weight: 700;
-          letter-spacing: .5px;
         }
 
         .plan-card h2 {
           margin: 0 0 28px;
           font-size: 31px;
-          line-height: 1.2;
         }
 
         .price {
@@ -213,7 +364,6 @@ export default function EmailNotificationsPage() {
         .price span {
           font-size: 52px;
           font-weight: 700;
-          letter-spacing: -2px;
         }
 
         .price small {
@@ -236,15 +386,10 @@ export default function EmailNotificationsPage() {
         .plan-card li {
           display: flex;
           gap: 14px;
-          align-items: flex-start;
           margin-bottom: 20px;
           color: #3d4a61;
           font-size: 17px;
           line-height: 1.4;
-        }
-
-        .plan-card li:first-letter {
-          color: #3d9b67;
         }
 
         .continue-button {
@@ -256,22 +401,17 @@ export default function EmailNotificationsPage() {
           margin-top: 35px;
           border-radius: 18px;
           background: #111827;
-          color: #ffffff;
+          color: white;
           text-decoration: none;
           font-size: 18px;
           font-weight: 600;
-          transition: opacity .2s ease;
-        }
-
-        .continue-button:hover {
-          opacity: .88;
         }
 
         @media (max-width: 900px) {
           .plans {
             grid-template-columns: 1fr;
             max-width: 600px;
-            margin: 0 auto;
+            margin: auto;
           }
 
           .plan-card {
@@ -284,27 +424,16 @@ export default function EmailNotificationsPage() {
             padding: 45px 18px 70px;
           }
 
-          .payment-hero {
-            margin-bottom: 40px;
-          }
-
           .payment-hero h1 {
             font-size: 39px;
-            letter-spacing: -1.5px;
           }
 
           .payment-hero p {
             font-size: 18px;
-            line-height: 1.5;
           }
 
           .plan-card {
             padding: 34px 26px 28px;
-            border-radius: 24px;
-          }
-
-          .plan-card h2 {
-            font-size: 28px;
           }
 
           .price span {
