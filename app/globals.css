@@ -64,3 +64,9 @@ body:has(.payment-page) .payment-page {
   margin: 0;
   padding: 0;
 }
+body:has(.payment-page) header,
+body:has(.payment-page) nav,
+body:has(.payment-page) footer {
+  display: none !important;
+}
+
