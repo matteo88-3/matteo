@@ -69,4 +69,38 @@ body:has(.payment-page) nav,
 body:has(.payment-page) footer {
   display: none !important;
 }
+/* =========================================
+   HIDE MATTEO RIZZI STARTUP LOADER
+   ON PAYMENT PAGE
+   ========================================= */
+
+body:has(.payment-page) .matteo-loader {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Also hide the Next.js top loading bar on payment page */
+body:has(.payment-page) #nprogress,
+body:has(.payment-page) #nprogress .bar,
+body:has(.payment-page) #nprogress .peg {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Payment page completely takes over the screen */
+body:has(.payment-page) {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body:has(.payment-page) .payment-page {
+  width: 100% !important;
+  min-height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 
